@@ -1,1 +1,4 @@
-{\n  \"installCommand\": \"npm install\",\n  \"framework\": \"nextjs\"\n}\n
+{
+  "installCommand": "npm install",
+  "framework": "nextjs"
+}
