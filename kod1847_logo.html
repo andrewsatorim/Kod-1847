@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КОД 1847 — Логотип</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+  padding: 60px 40px;
+  background: #08080a;
+  min-height: 100vh;
+  font-family: 'Raleway', sans-serif;
+}
+.version-label {
+  font-family: 'Raleway', sans-serif;
+  font-size: 9px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: #9a958b;
+  opacity: 0.4;
+  font-weight: 300;
+  margin-bottom: -60px;
+}
+
+/* ===== DARK VERSION ===== */
+.logo-dark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+/* ===== LIGHT VERSION ===== */
+.logo-light-wrap {
+  background: #f5f0e8;
+  padding: 60px 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* ===== TEXT LOCKUP ===== */
+.lockup {
+  text-align: center;
+}
+.lockup-name {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: 14px;
+  margin-bottom: 16px;
+}
+.lockup-name.dark { color: #b89860; }
+.lockup-name.light { color: #08080a; font-size: 22px; letter-spacing: 10px; }
+
+.lockup-line {
+  width: 80px;
+  height: 1px;
+  margin: 0 auto 16px;
+  opacity: 0.4;
+}
+.lockup-line.dark { background: #b89860; }
+.lockup-line.light { background: #08080a; }
+
+.lockup-sub {
+  font-family: 'Raleway', sans-serif;
+  font-size: 9px;
+  letter-spacing: 7px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.lockup-sub.dark { color: #9a958b; }
+.lockup-sub.light { color: #08080a; opacity: 0.5; }
+
+.lockup-loc {
+  font-family: 'Raleway', sans-serif;
+  font-size: 8px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-top: 8px;
+  opacity: 0.4;
+}
+.lockup-loc.dark { color: #9a958b; }
+.lockup-loc.light { color: #08080a; }
+
+/* ===== HORIZONTAL LOCKUP ===== */
+.horizontal {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.h-sep {
+  width: 1px;
+  height: 32px;
+  opacity: 0.2;
+}
+.h-sep.dark { background: #b89860; }
+.h-sep.light { background: #08080a; }
+.h-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.h-name {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 8px;
+}
+.h-name.dark { color: #b89860; }
+.h-name.light { color: #08080a; }
+.h-sub {
+  font-family: 'Raleway', sans-serif;
+  font-size: 7px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.h-sub.dark { color: #9a958b; }
+.h-sub.light { color: #08080a; opacity: 0.5; }
+
+.font-info {
+  font-family: 'Raleway', sans-serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: #9a958b;
+  opacity: 0.25;
+  text-align: center;
+  font-weight: 300;
+  margin-top: -40px;
+}
+</style>
+</head>
+<body>
+
+<div class="version-label">Dark version — primary</div>
+
+<!-- ===== DARK: MAIN MARK + VERTICAL LOCKUP ===== -->
+<div class="logo-dark">
+  <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="158" height="158" stroke="#b89860" stroke-width="1"/>
+    <rect x="10" y="10" width="140" height="140" stroke="#b89860" stroke-width="0.5" opacity="0.3"/>
+    <path d="M80 18 L87 25 L80 32 L73 25 Z" fill="#b89860" opacity="0.55"/>
+    <line x1="42" y1="52" x2="42" y2="112" stroke="#b89860" stroke-width="2.2"/>
+    <line x1="42" y1="82" x2="70" y2="52" stroke="#b89860" stroke-width="2.2"/>
+    <line x1="42" y1="82" x2="70" y2="112" stroke="#b89860" stroke-width="2.2"/>
+    <line x1="84" y1="55" x2="84" y2="109" stroke="#b89860" stroke-width="0.5" opacity="0.25"/>
+    <text x="96" y="78" font-family="'Bodoni Moda', Georgia, serif" font-size="23" fill="#b89860" letter-spacing="2" font-weight="400">18</text>
+    <text x="96" y="105" font-family="'Bodoni Moda', Georgia, serif" font-size="23" fill="#b89860" letter-spacing="2" font-weight="400">47</text>
+  </svg>
+
+  <div class="lockup">
+    <div class="lockup-name dark">КОД 1847</div>
+    <div class="lockup-line dark"></div>
+    <div class="lockup-sub dark">Закрытый клуб</div>
+    <div class="lockup-loc dark">Москва · Арбат · Est. 1847</div>
+  </div>
+</div>
+
+<!-- ===== DARK: HORIZONTAL LOCKUP ===== -->
+<div class="horizontal">
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x=".5" y=".5" width="47" height="47" stroke="#b89860" stroke-width=".6"/>
+    <rect x="4" y="4" width="40" height="40" stroke="#b89860" stroke-width=".3" opacity=".3"/>
+    <path d="M24 8 L27 11 L24 14 L21 11 Z" fill="#b89860" opacity=".5"/>
+    <line x1="14" y1="17" x2="14" y2="35" stroke="#b89860" stroke-width="1"/>
+    <line x1="14" y1="26" x2="23" y2="17" stroke="#b89860" stroke-width="1"/>
+    <line x1="14" y1="26" x2="23" y2="35" stroke="#b89860" stroke-width="1"/>
+    <line x1="27" y1="18" x2="27" y2="34" stroke="#b89860" stroke-width=".3" opacity=".25"/>
+    <text x="30" y="25" font-family="'Bodoni Moda', Georgia, serif" font-size="6.5" fill="#b89860" letter-spacing=".8" font-weight="400">18</text>
+    <text x="30" y="33" font-family="'Bodoni Moda', Georgia, serif" font-size="6.5" fill="#b89860" letter-spacing=".8" font-weight="400">47</text>
+  </svg>
+  <div class="h-sep dark"></div>
+  <div class="h-text">
+    <div class="h-name dark">КОД 1847</div>
+    <div class="h-sub dark">Закрытый клуб · Москва</div>
+  </div>
+</div>
+
+<div class="version-label">Light version</div>
+
+<!-- ===== LIGHT VERSION ===== -->
+<div class="logo-light-wrap">
+  <div class="horizontal">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x=".5" y=".5" width="47" height="47" stroke="#08080a" stroke-width=".6"/>
+      <rect x="4" y="4" width="40" height="40" stroke="#08080a" stroke-width=".3" opacity=".2"/>
+      <path d="M24 8 L27 11 L24 14 L21 11 Z" fill="#08080a" opacity=".35"/>
+      <line x1="14" y1="17" x2="14" y2="35" stroke="#08080a" stroke-width="1"/>
+      <line x1="14" y1="26" x2="23" y2="17" stroke="#08080a" stroke-width="1"/>
+      <line x1="14" y1="26" x2="23" y2="35" stroke="#08080a" stroke-width="1"/>
+      <line x1="27" y1="18" x2="27" y2="34" stroke="#08080a" stroke-width=".3" opacity=".2"/>
+      <text x="30" y="25" font-family="'Bodoni Moda', Georgia, serif" font-size="6.5" fill="#08080a" letter-spacing=".8" font-weight="400">18</text>
+      <text x="30" y="33" font-family="'Bodoni Moda', Georgia, serif" font-size="6.5" fill="#08080a" letter-spacing=".8" font-weight="400">47</text>
+    </svg>
+    <div class="h-sep light"></div>
+    <div class="h-text">
+      <div class="h-name light">КОД 1847</div>
+      <div class="h-sub light">Закрытый клуб · Москва</div>
+    </div>
+  </div>
+
+  <div class="lockup">
+    <div class="lockup-name light">КОД 1847</div>
+    <div class="lockup-line light"></div>
+    <div class="lockup-sub light">Закрытый клуб</div>
+    <div class="lockup-loc light">Москва · Арбат · Est. 1847</div>
+  </div>
+</div>
+
+<div class="font-info">Bodoni Moda · Raleway · kod1847.club</div>
+
+</body>
+</html>
