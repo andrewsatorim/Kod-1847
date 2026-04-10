@@ -164,7 +164,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 @media(max-width: 420px) { .modal-box { padding: 32px 20px; } }
 
 /* ===== EVENTS PREVIEW (main page) ===== */
-.events-preview { position: relative; padding: 100px 24px; background: #08080A; }
+.events-preview { position: relative; padding: 100px 24px; background: #08080A; display: flex; flex-direction: column; align-items: center; }
 .events-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
 @media(min-width: 768px) { .events-grid { grid-template-columns: repeat(3, 1fr); } }
 .event-card { border: 1px solid rgba(184,152,96,0.12); padding: 28px 24px; transition: border-color 0.4s ease; }
