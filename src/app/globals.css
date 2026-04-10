@@ -74,7 +74,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 /* ===== PHILOSOPHY ===== */
 .philosophy { position: relative; display: flex; flex-direction: column; align-items: center; padding: 120px 24px 140px; background: #08080A; }
 .philosophy::before { content: ''; position: absolute; top: -100px; left: 0; right: 0; height: 200px; background: linear-gradient(to bottom, transparent, #08080A); pointer-events: none; }
-.section-divider { display: flex; align-items: center; gap: 16px; margin-bottom: 80px; opacity: 0; transform: translateY(10px); transition: opacity 1.5s ease, transform 1.5s ease; }
+.section-divider { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 80px; opacity: 0; transform: translateY(10px); transition: opacity 1.5s ease, transform 1.5s ease; width: 100%; }
 .section-divider.phil-visible { opacity: 1; transform: translateY(0); }
 .div-line { width: 40px; height: 1px; background: #B89860; opacity: 0.3; }
 .phil-content { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 560px; padding: 0 20px; }
@@ -178,5 +178,5 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .section-subtitle { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 11px; color: #9A958B; text-align: center; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 48px; }
 .view-all-link { display: inline-block; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; text-decoration: none; border: 1px solid rgba(184,152,96,0.25); padding: 14px 36px; transition: all 0.4s ease; }
 .view-all-link:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
-.reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.2s ease, transform 1.2s ease; }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.2s ease, transform 1.2s ease; width: 100%; }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
