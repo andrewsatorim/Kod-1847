@@ -48,7 +48,6 @@ export default function EventsPage() {
           <form onSubmit={(e) => { e.preventDefault(); setRegisterModal(null); }}>
             <div className="modal-field"><label className="modal-label">{t("\u0418\u043c\u044f", "Name")}</label><input type="text" className="modal-input" placeholder={t("\u0418\u043c\u044f \u0438 \u0444\u0430\u043c\u0438\u043b\u0438\u044f", "Full name")} required /></div>
             <div className="modal-field"><label className="modal-label">{t("\u0422\u0435\u043b\u0435\u0444\u043e\u043d", "Phone")}</label><input type="tel" className="modal-input" placeholder="+7 (___) ___ __ __" required /></div>
-            <div className="modal-field"><label className="modal-label">Email</label><input type="email" className="modal-input" placeholder="email@example.com" required /></div>
             <button type="submit" className="modal-submit">{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c", "Book")}</button>
           </form>
           <div className="modal-note">{t("\u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0434\u043b\u044f \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f", "We will contact you to confirm")}</div>
