@@ -192,7 +192,9 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .event-register-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
 
 /* ===== MENU PREVIEW (main page) ===== */
-.menu-preview { position: relative; padding: 80px 24px; background: #08080A; display: flex; flex-direction: column; align-items: center; }
-.menu-pdf-buttons { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+.menu-preview { position: relative; padding: 100px 24px; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+.menu-preview-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, #08080A, #0a0a0c, #08080A); }
+.menu-preview-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(184,152,96,0.08), transparent 65%); }
+.menu-pdf-buttons { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-top: 8px; position: relative; z-index: 2; }
 .menu-pdf-btn { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; text-decoration: none; border: 1px solid rgba(184,152,96,0.35); padding: 16px 40px; transition: all 0.4s ease; }
 .menu-pdf-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
