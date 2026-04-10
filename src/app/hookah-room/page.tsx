@@ -42,14 +42,14 @@ export default function HookahRoomPage() {
       </section>
       <div className="room-body">
         <p>{t("Кальян здесь \u2014 не фон, а повод для разговора. Приготовление начинается с вопроса о настроении: плотнее и дымнее или легче и дольше, ближе к фруктам или к табачной классике, согреть вечер или освежить полдень. Кальянщик собирает чашу под ответ, а не по прайс-листу.", "Hookah here is not background \u2014 it is a reason for conversation.")}</p>
-        <p>{t("Комната оформлена в той же палитре, что и весь клуб: т\u0451плый камень стен, т\u0451мное дерево, свет \u2014 ровно столько, чтобы читать и видеть лицо собеседника. Вентиляция выведена отдельно \u2014 одежда не пахнет дымом, воздух прозрачный. На столе \u2014 чайная пара из соседнего зала.", "The room is decorated in the club's palette.")}</p>
+        <p>{t("Комната оформлена в той же палитре, что и весь клуб: тёплый камень стен, тёмное дерево, свет \u2014 ровно столько, чтобы читать и видеть лицо собеседника. Вентиляция выведена отдельно \u2014 одежда не пахнет дымом, воздух прозрачный. На столе \u2014 чайная пара из соседнего зала.", "The room is decorated in the club's palette.")}</p>
         <p>{t("Комната подходит для вечера в компании до шести человек. Работа с чашей занимает от полутора до двух часов; за один вечер кальянщик готовит одну или две чаши \u2014 смена табака, посуды и углей входит в сервис.", "The room suits an evening with up to six people.")}</p>
       </div>
       <div className="room-session">
         <div className="room-session-title">{t("Что входит в сессию", "Session includes")}</div>
         <ul className="room-session-list">{sessionItems.map((item, i) => <li key={i}>{t(item.ru, item.en)}</li>)}</ul>
       </div>
-      <div className="room-cta"><button className="room-cta-btn" onClick={() => setModalOpen(true)}>{t("Забронировать Кальянную комнату", "Book the Hookah Room")}</button></div>
+      <div className="room-cta"><button className="room-cta-btn" onClick={() => setModalOpen(true)}>{t("Забронировать визит", "Book a visit")}</button></div>
       <div className="room-faq">
         <div className="room-faq-title">{t("Частые вопросы", "FAQ")}</div>
         {faqData.map((item, i) => (
