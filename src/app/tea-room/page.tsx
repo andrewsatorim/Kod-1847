@@ -111,7 +111,7 @@ export default function TeaRoomPage() {
       <section className="room-hero">
         <div className="room-hero-img">
           <img
-            src="https://raw.githubusercontent.com/andrewsatorim/Kod-1847/main/IMG_0647.jpeg"
+            src="/IMG_0647.jpeg"
             alt={t("Чайный зал Код 1847", "Tea Room Kod 1847")}
             loading="eager"
           />

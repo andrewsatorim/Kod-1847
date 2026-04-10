@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "prebuild": "mkdir -p public && cp -f IMG_0646.jpeg IMG_0647.jpeg IMG_0648.jpeg IMG_0651.jpeg public/ 2>/dev/null || true",
+    "prebuild": "mkdir -p public && cp -n IMG_0646.jpeg IMG_0647.jpeg IMG_0648.jpeg IMG_0651.jpeg public/ 2>/dev/null || true",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

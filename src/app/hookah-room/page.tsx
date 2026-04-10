@@ -111,7 +111,7 @@ export default function HookahRoomPage() {
       <section className="room-hero">
         <div className="room-hero-img">
           <img
-            src="https://raw.githubusercontent.com/andrewsatorim/Kod-1847/main/IMG_0646.jpeg"
+            src="/IMG_0646.jpeg"
             alt={t("Кальянная комната Код 1847", "Hookah Room Kod 1847")}
             loading="eager"
           />
