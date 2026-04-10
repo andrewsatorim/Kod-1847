@@ -39,7 +39,7 @@ const faqData = [
   {
     qRu: "Есть ли детское меню или можно ли с детьми?",
     qEn: "Is there a children's menu or can I bring children?",
-    aRu: "«Код 1847» — клуб для взрослых. Детей в залы не допускают.",
+    aRu: "\"Код 1847\" — клуб для взрослых. Детей в залы не допускают.",
     aEn: "\"Kod 1847\" is an adults-only club. Children are not admitted.",
   },
   {
@@ -111,7 +111,7 @@ export default function TeaRoomPage() {
       <section className="room-hero">
         <div className="room-hero-img">
           <img
-            src="https://i.postimg.cc/YhPWrVPR/IMG-0647.jpg"
+            src="https://raw.githubusercontent.com/andrewsatorim/Kod-1847/main/IMG_0647.jpeg"
             alt={t("Чайный зал Код 1847", "Tea Room Kod 1847")}
             loading="eager"
           />
