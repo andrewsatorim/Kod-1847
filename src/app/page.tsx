@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
 import RoomPreviews from "@/components/RoomPreviews";
+import EventsPreview from "@/components/EventsPreview";
 import ReservationModal from "@/components/ReservationModal";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <Hero onReserve={() => setModalOpen(true)} />
       <Philosophy />
       <RoomPreviews />
+      <EventsPreview />
       <ReservationModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
