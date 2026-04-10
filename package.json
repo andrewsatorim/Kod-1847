@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "mkdir -p public && cp -f IMG_0646.jpeg IMG_0647.jpeg IMG_0648.jpeg IMG_0651.jpeg Kod1847_Tea_Menu.pdf Kod1847_Hookah_Menu2.pdf public/ 2>/dev/null || true",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -11,6 +12,7 @@
   "dependencies": {
     "framer-motion": "^12.38.0",
     "next": "16.2.3",
+    "next-intl": "^4.9.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
