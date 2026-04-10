@@ -229,97 +229,6 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
   .phil-content { max-width: 640px; }
 }
 
-/* ===== HALLS ===== */
-.halls {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.hall-card {
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 1.2s ease, transform 1.2s ease;
-}
-.hall-card.hall-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hall-img-wrap {
-  position: absolute;
-  inset: 0;
-}
-
-.hall-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-.hall-tint {
-  position: absolute;
-  inset: 0;
-  background: rgba(8, 8, 10, 0.7);
-}
-
-.hall-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 520px;
-  padding: 40px 24px;
-  text-align: center;
-}
-
-.hall-label {
-  font-family: 'Bodoni Moda', serif;
-  font-weight: 400;
-  font-size: 32px;
-  color: #B89860;
-  letter-spacing: 3px;
-  margin-bottom: 20px;
-}
-
-.hall-line {
-  width: 40px;
-  height: 1px;
-  background: #B89860;
-  opacity: 0.4;
-  margin-bottom: 28px;
-}
-
-.hall-desc {
-  font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-  color: rgba(245, 240, 232, 0.75);
-  line-height: 2;
-  letter-spacing: 0.3px;
-}
-
-@media(max-width: 420px) {
-  .hall-card { min-height: 80vh; }
-  .hall-label { font-size: 26px; }
-  .hall-desc { font-size: 13px; }
-}
-
-@media(min-width: 768px) {
-  .hall-label { font-size: 38px; letter-spacing: 4px; }
-  .hall-desc { font-size: 15px; }
-  .hall-content { max-width: 580px; padding: 60px 40px; }
-}
-
 /* ===== MODAL ===== */
 .modal-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(8,8,10,0.85); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; padding: 20px; }
 .modal-overlay.open { opacity: 1; pointer-events: auto; }
@@ -337,3 +246,35 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .modal-submit:hover { background: #c9a96e; }
 .modal-note { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 9px; color: #9A958B; text-align: center; margin-top: 16px; opacity: 0.5; letter-spacing: 1px; }
 @media(max-width: 420px) { .modal-box { padding: 32px 20px; } }
+
+/* ===== ROOM PAGES ===== */
+.room-hero { position: relative; width: 100%; min-height: 70vh; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; padding: 60px 24px; }
+.room-hero-img { position: absolute; inset: 0; }
+.room-hero-img img { width: 100%; height: 100%; object-fit: cover; }
+.room-hero-tint { position: absolute; inset: 0; background: rgba(8,8,10,0.7); }
+.room-hero-text { position: relative; z-index: 2; max-width: 700px; font-family: 'Playfair Display', serif; font-size: 24px; color: #F5F0E8; line-height: 1.6; text-align: center; font-weight: 400; }
+@media(min-width: 768px) { .room-hero-text { font-size: 30px; } .room-hero { min-height: 80vh; padding: 80px 40px; } }
+
+.room-body { max-width: 640px; margin: 0 auto; padding: 80px 24px; }
+.room-body p { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 15px; color: rgba(245,240,232,0.85); line-height: 2; letter-spacing: 0.2px; margin-bottom: 32px; }
+
+.room-session { max-width: 640px; margin: 0 auto; padding: 0 24px 60px; }
+.room-session-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #B89860; margin-bottom: 28px; text-align: center; }
+.room-session-list { list-style: none; padding: 0; }
+.room-session-list li { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 14px; color: rgba(245,240,232,0.8); padding: 14px 0; border-bottom: 1px solid rgba(184,152,96,0.1); display: flex; align-items: baseline; gap: 12px; }
+.room-session-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #B89860; opacity: 0.5; flex-shrink: 0; margin-top: 2px; }
+
+.room-cta { text-align: center; padding: 20px 24px 80px; }
+.room-cta-btn { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; background: transparent; border: 1px solid rgba(184,152,96,0.35); padding: 16px 40px; cursor: pointer; transition: all 0.4s ease; }
+.room-cta-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
+
+.room-faq { max-width: 640px; margin: 0 auto; padding: 0 24px 100px; }
+.room-faq-title { font-family: 'Playfair Display', serif; font-size: 20px; color: #B89860; margin-bottom: 40px; text-align: center; }
+.faq-item { border-bottom: 1px solid rgba(184,152,96,0.1); }
+.faq-q { width: 100%; background: none; border: none; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+.faq-q h3 { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 14px; color: #F5F0E8; letter-spacing: 0.2px; }
+.faq-q .faq-icon { font-family: 'Bodoni Moda', serif; font-size: 18px; color: #B89860; transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
+.faq-q.open .faq-icon { transform: rotate(45deg); }
+.faq-a { overflow: hidden; max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease; padding: 0 0; }
+.faq-a.open { max-height: 200px; padding: 0 0 20px; }
+.faq-a p { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 13px; color: #9A958B; line-height: 1.9; }
