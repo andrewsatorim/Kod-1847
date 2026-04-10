@@ -22,7 +22,8 @@ export default function Header() {
   const navLinks = [
     { href: "/#about", labelRu: "\u041e \u043a\u043b\u0443\u0431\u0435", labelEn: "About" },
     { href: "/tea-room", labelRu: "\u0427\u0430\u0439\u043d\u044b\u0439 \u0437\u0430\u043b", labelEn: "Tea Room" },
-    { href: "/hookah-room", labelRu: "\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u043a\u043e\u043c\u043d\u0430\u0442\u0430", labelEn: "Hookah Room" },
+    { href: "/hookah-room", labelRu: "\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u044b\u0439 \u0437\u0430\u043b", labelEn: "Hookah Room" },
+    { href: "/events", labelRu: "\u041c\u0435\u0440\u043e\u043f\u0440\u0438\u044f\u0442\u0438\u044f", labelEn: "Events" },
     { href: "/#contacts", labelRu: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b", labelEn: "Contact" },
   ];
 
