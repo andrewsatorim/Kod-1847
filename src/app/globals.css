@@ -162,3 +162,21 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .modal-submit:hover { background: #c9a96e; }
 .modal-note { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 9px; color: #9A958B; text-align: center; margin-top: 16px; opacity: 0.5; letter-spacing: 1px; }
 @media(max-width: 420px) { .modal-box { padding: 32px 20px; } }
+
+/* ===== EVENTS PREVIEW (main page) ===== */
+.events-preview { position: relative; padding: 100px 24px; background: #08080A; }
+.events-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
+@media(min-width: 768px) { .events-grid { grid-template-columns: repeat(3, 1fr); } }
+.event-card { border: 1px solid rgba(184,152,96,0.12); padding: 28px 24px; transition: border-color 0.4s ease; }
+.event-card:hover { border-color: rgba(184,152,96,0.35); }
+.event-date { font-family: 'Bodoni Moda', serif; font-size: 32px; color: #B89860; margin-bottom: 4px; }
+.event-month { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 10px; color: #9A958B; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+.event-name { font-family: 'Bodoni Moda', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 10px; letter-spacing: 0.5px; }
+.event-desc { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 12px; color: #9A958B; line-height: 1.8; }
+.event-time { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; color: #B89860; letter-spacing: 2px; margin-top: 16px; }
+.section-title { font-family: 'Bodoni Moda', serif; font-size: 32px; color: #B89860; text-align: center; margin-bottom: 16px; letter-spacing: 2px; }
+.section-subtitle { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 11px; color: #9A958B; text-align: center; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 48px; }
+.view-all-link { display: inline-block; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; text-decoration: none; border: 1px solid rgba(184,152,96,0.25); padding: 14px 36px; transition: all 0.4s ease; }
+.view-all-link:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 1.2s ease, transform 1.2s ease; }
+.reveal.in-view { opacity: 1; transform: translateY(0); }
