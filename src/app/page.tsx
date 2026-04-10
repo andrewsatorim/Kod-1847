@@ -17,7 +17,7 @@ export default function Home() {
       <Hero onReserve={() => setModalOpen(true)} />
       <Philosophy />
       <RoomPreviews />
-      <MenuPreview />
+      <MenuPreview onReserve={() => setModalOpen(true)} />
       <EventsPreview />
       <ReservationModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>

@@ -2,7 +2,7 @@
 import { useLang } from "@/context/LanguageContext";
 import DiamondDivider from "./DiamondDivider";
 
-export default function MenuPreview() {
+export default function MenuPreview({ onReserve }: { onReserve: () => void }) {
   const { t } = useLang();
 
   return (
@@ -18,6 +18,9 @@ export default function MenuPreview() {
           {t("\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0430", "Hookah Menu")}
         </a>
       </div>
+      <button className="menu-reserve-btn" onClick={onReserve}>
+        {t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432\u0438\u0437\u0438\u0442", "Book a visit")}
+      </button>
     </section>
   );
 }
