@@ -1,26 +1,68 @@
 "use client";
 import { useLang } from "@/context/LanguageContext";
+import { useReveal } from "@/hooks/useReveal";
 import DiamondDivider from "./DiamondDivider";
+import Link from "next/link";
 
-export default function MenuPreview({ onReserve }: { onReserve: () => void }) {
+const items = [
+  {
+    titleRu: "Да Хун Пао", titleEn: "Da Hong Pao",
+    descRu: "Утёсный улун. Уишань, весна 2024. Глубокий минеральный вкус с нотами обжаренного ореха",
+    descEn: "Rock oolong. Wuyi, spring 2024. Deep mineral taste with roasted nut notes",
+    price: "2 800 ₽", flagship: true,
+  },
+  {
+    titleRu: "Купаж мастера №3", titleEn: "Master's Blend #3",
+    descRu: "Авторский микс шеф-кальянщика. Многослойный, создан специально для «Код 1847»",
+    descEn: "Signature blend by head hookah master. Multi-layered, crafted for Code 1847",
+    price: "3 200 ₽", flagship: true,
+  },
+  {
+    titleRu: "Гёкуро", titleEn: "Gyokuro",
+    descRu: "Теневой японский зелёный чай. Умами, морские ноты, долгое шелковистое послевкусие",
+    descEn: "Shade-grown Japanese green tea. Umami, ocean notes, long silky finish",
+    price: "2 400 ₽", flagship: false,
+  },
+  {
+    titleRu: "Дымная церемония", titleEn: "Smoke Ceremony",
+    descRu: "Ритуал подачи кальяна с элементами чайной церемонии. Редкий чай и сезонные сладости",
+    descEn: "Hookah ritual with tea ceremony elements. Rare tea and seasonal sweets",
+    price: "5 500 ₽", flagship: false,
+  },
+];
+
+export default function MenuPreview() {
   const { t } = useLang();
+  const ref = useReveal();
 
   return (
-    <section className="menu-preview" id="menu-preview">
-      <DiamondDivider className="phil-visible" />
-      <div className="section-title">{t("\u041c\u0435\u043d\u044e", "Menu")}</div>
-      <div className="section-subtitle">{t("\u0427\u0430\u0439\u043d\u0430\u044f \u0438 \u043a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u044b \u043a\u043b\u0443\u0431\u0430", "Tea and hookah menus")}</div>
-      <div className="menu-pdf-buttons">
-        <a href="/Kod1847_Tea_Menu.pdf" target="_blank" rel="noopener noreferrer" className="menu-pdf-btn">
-          {t("\u0427\u0430\u0439\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0430", "Tea Menu")}
-        </a>
-        <a href="/Kod1847_Hookah_Menu2.pdf" target="_blank" rel="noopener noreferrer" className="menu-pdf-btn">
-          {t("\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0430", "Hookah Menu")}
-        </a>
+    <section className="menu-preview" ref={ref} id="menu-preview">
+      <div className="reveal">
+        <DiamondDivider className="phil-visible" />
+        <div className="section-title">{t("Карта", "Menu")}</div>
+        <div className="section-subtitle">{t("Избранные позиции", "Featured selections")}</div>
       </div>
-      <button className="menu-reserve-btn" onClick={onReserve}>
-        {t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432\u0438\u0437\u0438\u0442", "Book a visit")}
-      </button>
+
+      <div className="menu-preview-grid">
+        {items.map((item, i) => (
+          <div key={i} className="menu-card reveal" style={{ transitionDelay: `${i * 150}ms` }}>
+            <div className="menu-card-title">
+              {t(item.titleRu, item.titleEn)}
+              {item.flagship && (
+                <span className="flagship-badge">{t("Флагман", "Flagship")}</span>
+              )}
+            </div>
+            <div className="menu-card-desc">{t(item.descRu, item.descEn)}</div>
+            <div className="menu-card-price">{item.price}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ textAlign: "center", marginTop: 48 }}>
+        <Link href="/menu" className="view-all-link">
+          {t("Полная карта", "Full menu")}
+        </Link>
+      </div>
     </section>
   );
 }
