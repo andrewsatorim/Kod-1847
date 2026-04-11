@@ -28,13 +28,11 @@ export default function EventsPage() {
         <div className="events-page-grid">
           {events.map((ev, i) => (
             <div key={i} className="event-page-card">
+              <div className="event-page-dateline">{ev.day} {t(ev.monthRu, ev.monthEn).toLowerCase()} · {ev.time}</div>
               <div className="event-badge">{t(ev.tagRu, ev.tagEn)}</div>
-              <div className="event-date">{ev.day}</div>
-              <div className="event-month">{t(ev.monthRu, ev.monthEn)}</div>
               <div className="event-name">{t(ev.nameRu, ev.nameEn)}</div>
               <div className="event-desc">{t(ev.descRu, ev.descEn)}</div>
-              <div className="event-time">{ev.time}</div>
-              <button className="event-register-btn" onClick={() => setRegisterModal(i)}>{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c", "Book")}</button>
+              <button className="event-register-btn" onClick={() => setRegisterModal(i)}>{t("Забронировать", "Book")}</button>
             </div>
           ))}
         </div>
