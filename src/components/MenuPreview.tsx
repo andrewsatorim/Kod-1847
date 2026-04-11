@@ -16,6 +16,7 @@ export default function MenuPreview({ onReserve }: { onReserve: () => void }) {
         <a href="/Kod1847_Tea_Menu.pdf" target="_blank" rel="noopener noreferrer" className="menu-pdf-btn">
           {t("\u0427\u0430\u0439\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0430", "Tea Menu")}
         </a>
+        <div className="menu-pdf-divider" />
         <a href="/Kod1847_Hookah_Menu2.pdf" target="_blank" rel="noopener noreferrer" className="menu-pdf-btn">
           {t("\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0430", "Hookah Menu")}
         </a>

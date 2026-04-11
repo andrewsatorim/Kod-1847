@@ -35,11 +35,9 @@ export default function EventsPreview() {
       <div className="events-grid">
         {events.map((ev, i) => (
           <div key={i} className="event-card reveal" style={{ transitionDelay: `${i * 150}ms` }}>
-            <div className="event-date">{ev.day}</div>
-            <div className="event-month">{t(ev.monthRu, ev.monthEn)}</div>
+            <div className="event-card-dateline">{ev.day} {t(ev.monthRu, ev.monthEn).toLowerCase()} · {ev.time}</div>
             <div className="event-name">{t(ev.nameRu, ev.nameEn)}</div>
             <div className="event-desc">{t(ev.descRu, ev.descEn)}</div>
-            <div className="event-time">{ev.time}</div>
           </div>
         ))}
       </div>

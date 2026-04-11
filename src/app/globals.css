@@ -169,6 +169,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 @media(min-width: 768px) { .events-grid { grid-template-columns: repeat(3, 1fr); } }
 .event-card { border: 1px solid rgba(184,152,96,0.12); padding: 28px 24px; transition: border-color 0.4s ease; }
 .event-card:hover { border-color: rgba(184,152,96,0.35); }
+.event-card-dateline { font-family: 'Bodoni Moda', serif; font-weight: 400; font-size: 20px; color: #B89860; letter-spacing: 1px; margin-bottom: 12px; }
 .event-date { font-family: 'Bodoni Moda', serif; font-size: 32px; color: #B89860; margin-bottom: 4px; }
 .event-month { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 10px; color: #9A958B; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
 .event-name { font-family: 'Bodoni Moda', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 10px; letter-spacing: 0.5px; }
@@ -197,7 +198,8 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .menu-preview-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, #08080A, #0a0a0c, #08080A); }
 .menu-preview-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(184,152,96,0.08), transparent 65%); }
 .menu-preview .section-divider, .menu-preview .section-title, .menu-preview .section-subtitle { position: relative; z-index: 2; }
-.menu-pdf-buttons { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; margin-top: 8px; position: relative; z-index: 2; }
+.menu-pdf-buttons { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 8px; position: relative; z-index: 2; }
+.menu-pdf-divider { width: 1px; height: 32px; background: rgba(184,152,96,0.25); }
 .menu-pdf-btn { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; text-decoration: none; border: 1px solid rgba(184,152,96,0.35); padding: 16px 40px; transition: all 0.4s ease; }
 .menu-pdf-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
 .menu-reserve-btn { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; background: transparent; border: 1px solid rgba(184,152,96,0.35); padding: 16px 40px; cursor: pointer; transition: all 0.4s ease; margin-top: 60px; display: block; position: relative; z-index: 2; }
