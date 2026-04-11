@@ -5,9 +5,9 @@ import DiamondDivider from "./DiamondDivider";
 import Link from "next/link";
 
 const events = [
-  { day: "18", monthRu: "\u0410\u043f\u0440\u0435\u043b\u044c", monthEn: "April", nameRu: "\u0427\u0430\u0439\u043d\u0430\u044f \u0434\u0435\u0433\u0443\u0441\u0442\u0430\u0446\u0438\u044f", nameEn: "Tea Tasting", descRu: "\u0427\u0435\u0442\u044b\u0440\u0435 \u0443\u043b\u0443\u043d\u0441\u043a\u0438\u0445 \u0441\u043e\u0440\u0442\u0430, \u0443\u0440\u043e\u0436\u0430\u0439 2024.", descEn: "Four oolong varieties, 2024 harvest.", time: "18:00" },
-  { day: "22", monthRu: "\u0410\u043f\u0440\u0435\u043b\u044c", monthEn: "April", nameRu: "\u0414\u0436\u0430\u0437-\u0432\u0435\u0447\u0435\u0440", nameEn: "Jazz Evening", descRu: "\u0416\u0438\u0432\u0430\u044f \u043c\u0443\u0437\u044b\u043a\u0430, \u0430\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0435 \u043d\u0430\u043f\u0438\u0442\u043a\u0438.", descEn: "Live music, signature drinks.", time: "20:00" },
-  { day: "27", monthRu: "\u0410\u043f\u0440\u0435\u043b\u044c", monthEn: "April", nameRu: "\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u0446\u0435\u0440\u0435\u043c\u043e\u043d\u0438\u044f", nameEn: "Hookah Ceremony", descRu: "\u0420\u0438\u0442\u0443\u0430\u043b \u043f\u043e\u0434\u0430\u0447\u0438 \u0441 \u044d\u043b\u0435\u043c\u0435\u043d\u0442\u0430\u043c\u0438 \u0447\u0430\u0439\u043d\u043e\u0439 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u0438.", descEn: "Serving ritual with tea tradition elements.", time: "19:00" },
+  { day: "12", monthRu: "Апрель", monthEn: "April", nameRu: "Чайная дегустация: улуны Уишань", nameEn: "Tea Tasting: Wuyi Oolongs", descRu: "Четыре улунских сорта, урожай 2024. Комментарии чайного мастера.", descEn: "Four oolong varieties, 2024 harvest. Tea master commentary.", time: "18:00" },
+  { day: "18", monthRu: "Апрель", monthEn: "April", nameRu: "Джаз-вечер", nameEn: "Jazz Evening", descRu: "Живая музыка, авторские напитки, камерная атмосфера.", descEn: "Live music, signature drinks, intimate atmosphere.", time: "20:00" },
+  { day: "22", monthRu: "Апрель", monthEn: "April", nameRu: "Дымная церемония", nameEn: "Smoke Ceremony", descRu: "Ритуал подачи кальяна с элементами японской чайной традиции.", descEn: "Hookah serving ritual with Japanese tea tradition elements.", time: "19:00" },
 ];
 
 export default function EventsPreview() {

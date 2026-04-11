@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { useLang } from "@/context/LanguageContext";
 import Link from "next/link";
 
@@ -27,11 +28,23 @@ const rooms = [
 
 export default function RoomPreviews() {
   const { t } = useLang();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const els = sectionRef.current?.querySelectorAll(".room-preview-card");
+    if (!els) return;
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("room-preview-visible"); }),
+      { threshold: 0.15 }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <section className="room-previews">
+    <section className="room-previews" ref={sectionRef}>
       {rooms.map((room) => (
-        <div key={room.id} className="room-preview-card" style={{ opacity: 1, transform: 'none' }}>
+        <div key={room.id} className="room-preview-card">
           <picture className="room-preview-img">
             <source media="(min-width: 768px)" srcSet={room.desktopImg} />
             {/* eslint-disable-next-line @next/next/no-img-element */}

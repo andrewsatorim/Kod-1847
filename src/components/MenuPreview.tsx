@@ -7,6 +7,8 @@ export default function MenuPreview({ onReserve }: { onReserve: () => void }) {
 
   return (
     <section className="menu-preview" id="menu-preview">
+      <div className="menu-preview-bg" />
+      <div className="menu-preview-glow" />
       <DiamondDivider className="phil-visible" />
       <div className="section-title">{t("\u041c\u0435\u043d\u044e", "Menu")}</div>
       <div className="section-subtitle">{t("\u0427\u0430\u0439\u043d\u0430\u044f \u0438 \u043a\u0430\u043b\u044c\u044f\u043d\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u044b \u043a\u043b\u0443\u0431\u0430", "Tea and hookah menus")}</div>
