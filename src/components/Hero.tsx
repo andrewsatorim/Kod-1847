@@ -19,7 +19,7 @@ export default function Hero({ onReserve }: { onReserve: () => void }) {
   const [scrollVisible, setScrollVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setScrollVisible(true), 6500);
+    const timer = setTimeout(() => setScrollVisible(true), 3500);
     return () => clearTimeout(timer);
   }, []);
 
