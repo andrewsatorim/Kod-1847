@@ -1,25 +1,23 @@
 "use client";
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import { useLang } from "@/context/LanguageContext";
-import DiamondDivider from "./DiamondDivider";
 
 const halls = [
   {
     id: "tea",
     image: "https://i.postimg.cc/YhPWrVPR/IMG-0647.jpg",
     titleRu: "Чайный зал",
-    titleEn: "Tea room",
-    subRu: "Редкие сорта · Гунфу-ча · Дегустации мастера",
-    subEn: "Rare teas · Gongfu-cha · Master tastings",
+    titleEn: "Tea Room",
+    descRu: "Место, где время замедляется. Редкие улуны и выдержанные пуэры, поданные по традиции гунфу-ча. Каждая чашка\u00a0— диалог с мастером, каждый пролив\u00a0— новый оттенок вкуса. Здесь не пьют чай\u00a0— здесь его проживают.",
+    descEn: "A place where time slows down. Rare oolongs and aged pu-erhs served in the gongfu-cha tradition. Each cup is a dialogue with the master, each infusion reveals a new shade of taste. Here, tea is not drunk\u00a0— it is lived.",
   },
   {
     id: "hookah",
     image: "https://i.postimg.cc/rDttKj6H/IMG-0646.jpg",
     titleRu: "Кальянный лаундж",
-    titleEn: "Hookah lounge",
-    subRu: "Купажи мастера · Дымные церемонии · Авторские миксы",
-    subEn: "Master blends · Smoke ceremonies · Signature mixes",
+    titleEn: "Hookah Lounge",
+    descRu: "Пространство густого дыма и негромких разговоров. Авторские купажи шеф-кальянщика, созданные специально для \u00abКод 1847\u00bb. Каждый микс\u00a0— результат месяцев поиска идеального баланса. Дым здесь\u00a0— искусство.",
+    descEn: "A space of dense smoke and quiet conversations. Signature blends by the head hookah master, crafted exclusively for Code 1847. Each mix is the result of months searching for perfect balance. Smoke here is art.",
   },
 ];
 
@@ -28,46 +26,31 @@ export default function Halls() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const hallEls = sectionRef.current?.querySelectorAll(".hall-section");
-    const divEls = sectionRef.current?.querySelectorAll(".halls-obs");
-    if (!hallEls) return;
-
-    const hallObs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("in-view"); }),
-      { threshold: 0.2 }
+    const els = sectionRef.current?.querySelectorAll(".hall-card");
+    if (!els) return;
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add("hall-visible");
+      }),
+      { threshold: 0.15 }
     );
-    hallEls.forEach((el) => hallObs.observe(el));
-
-    const divObs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("phil-visible"); }),
-      { threshold: 0.3 }
-    );
-    divEls?.forEach((el) => divObs.observe(el));
-
-    return () => { hallObs.disconnect(); divObs.disconnect(); };
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
   }, []);
 
   return (
     <section className="halls" ref={sectionRef} id="zones">
-      <DiamondDivider className="halls-obs" />
-
-      {halls.map((hall, i) => (
-        <div key={hall.id}>
-          {i > 0 && <div className="hall-mid-divider" />}
-          <div className="hall-section">
-            <Image
-              src={hall.image}
-              alt={hall.titleEn}
-              fill
-              sizes="100vw"
-              style={{ objectFit: "cover" }}
-              priority={i === 0}
-            />
-            <div className="hall-overlay" />
-            <div className="hall-info">
-              <div className="hall-title">{t(hall.titleRu, hall.titleEn)}</div>
-              <div className="hall-subtitle">{t(hall.subRu, hall.subEn)}</div>
-            </div>
+      {halls.map((hall) => (
+        <div key={hall.id} className="hall-card">
+          <div className="hall-img-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={hall.image} alt={t(hall.titleRu, hall.titleEn)} className="hall-img" loading="lazy" />
+          </div>
+          <div className="hall-tint" />
+          <div className="hall-content">
+            <div className="hall-label">{t(hall.titleRu, hall.titleEn)}</div>
+            <div className="hall-line" />
+            <div className="hall-desc">{t(hall.descRu, hall.descEn)}</div>
           </div>
         </div>
       ))}
