@@ -7,10 +7,10 @@ import DiamondDivider from "@/components/DiamondDivider";
 import ReservationModal from "@/components/ReservationModal";
 
 const stats = [
-  { valueRu: "4", labelRu: "формата сотрудничества", labelEn: "partnership formats" },
-  { valueRu: "6—40", labelRu: "гостей на мероприятие", labelEn: "guests per event" },
-  { valueRu: "145", labelRu: "м² клубного пространства", labelEn: "m² of club space" },
-  { valueRu: "5", labelRu: "собственных мероприятий", labelEn: "signature events" },
+  { value: "4", labelRu: "формата сотрудничества", labelEn: "partnership formats" },
+  { value: "6—40", labelRu: "гостей на мероприятие", labelEn: "guests per event" },
+  { value: "145", labelRu: "м² клубного пространства", labelEn: "m² of club space" },
+  { value: "5", labelRu: "собственных мероприятий", labelEn: "signature events" },
 ];
 
 const advantages = [
@@ -20,11 +20,71 @@ const advantages = [
   { ru: "Камерность: от 6 до 40 гостей", en: "Intimacy: from 6 to 40 guests" },
 ];
 
-const formats = [
+const partnershipFormats = [
+  {
+    numRu: "01", titleRu: "Фиксированная аренда", titleEn: "Fixed Venue Rental",
+    pointsRu: [
+      "Билеты и сбор полностью остаются у организатора",
+      "Клуб предоставляет площадку за фиксированную стоимость",
+      "Может быть включено чайное сопровождение",
+      "Гости могут заказывать напитки, десерты и кальяны по желанию",
+      "Заказы оплачиваются отдельно",
+    ],
+    pointsEn: [
+      "Tickets and fees stay entirely with the organizer",
+      "Club provides venue for a fixed fee",
+      "Tea service can be included",
+      "Guests may order drinks, desserts, and hookah",
+      "Orders are charged separately",
+    ],
+    suitRu: "10—40 гостей: выставки, лекции, презентации, закрытые показы",
+    suitEn: "10–40 guests: exhibitions, lectures, presentations, private screenings",
+  },
+  {
+    numRu: "02", titleRu: "Билетный формат", titleEn: "Ticket Format",
+    pointsRu: [
+      "Билеты и сбор полностью остаются у организатора",
+      "Площадка без фиксированной аренды",
+      "Условие клуба: каждый гость заказывает напитки (1\u00a0300\u00a0₽)",
+      "Дополнительные заказы оплачиваются отдельно",
+    ],
+    pointsEn: [
+      "Tickets and fees stay entirely with the organizer",
+      "No fixed venue rental",
+      "Club condition: each guest orders drinks (1\u00a0300\u00a0₽)",
+      "Additional orders are charged separately",
+    ],
+    suitRu: "6—14 гостей: сессии, разборы, мастермайнды, камерные встречи",
+    suitEn: "6–14 guests: sessions, reviews, masterminds, intimate meetings",
+  },
+  {
+    numRu: "03", titleRu: "Партнёрский формат", titleEn: "Partnership Format",
+    pointsRu: [
+      "Мероприятие для гостей бесплатное",
+      "Площадка без аренды",
+      "Клуб зарабатывает на напитках, десертах и кальянах",
+      "Может быть включено чайное сопровождение",
+      "Организатор получает 15—25% от выручки",
+      "Организатор за себя не платит",
+    ],
+    pointsEn: [
+      "Event is free for guests",
+      "No venue rental",
+      "Club earns from drinks, desserts, and hookah",
+      "Tea service can be included",
+      "Organizer receives 15–25% of revenue",
+      "Organizer pays nothing for themselves",
+    ],
+    suitRu: "",
+    suitEn: "",
+  },
+];
+
+const clubFormats = [
   {
     nameRu: "Пятничный «Открытый» стол", nameEn: "Friday Open Table",
     descRu: "Варка чая на огне, пролив 3—5 чаев. Идеально для общения и знакомства.",
-    descEn: "Fire-brewed tea, 3–5 tea infusions. Ideal for socializing.",
+    descEn: "Fire-brewed tea, 3–5 infusions. Ideal for socializing.",
     detailRu: "До 20 гостей · 3 часа", detailEn: "Up to 20 guests · 3 hours",
   },
   {
@@ -34,16 +94,55 @@ const formats = [
     detailRu: "До 20 гостей · 2—3 часа · 2 раза в месяц", detailEn: "Up to 20 guests · 2–3 hours · Twice a month",
   },
   {
-    nameRu: "Чайное действие", nameEn: "Tea Experience",
+    nameRu: "Чайное действо", nameEn: "Tea Experience",
     descRu: "Погружение в чайные традиции и историю. Серьёзные переговоры с тактичным разливом.",
-    descEn: "Immersion into tea traditions and history. Thoughtful meetings with tactful service.",
+    descEn: "Immersion into tea traditions. Thoughtful meetings with tactful service.",
     detailRu: "До 8 гостей · 1,5—2 часа · 3—5 чаев", detailEn: "Up to 8 guests · 1.5–2 hours · 3–5 teas",
   },
   {
     nameRu: "Стилизованные чаепития", nameEn: "Themed Tea Ceremonies",
     descRu: "Самоварное, чаоджоуское, тайваньское чаепития. Вау-эффект и новые эмоции.",
-    descEn: "Samovar, Chaozhou, Taiwanese tea ceremonies. Wow-effect and new emotions.",
+    descEn: "Samovar, Chaozhou, Taiwanese ceremonies. Wow-effect and new emotions.",
     detailRu: "3—12 гостей · 1,5—2 часа", detailEn: "3–12 guests · 1.5–2 hours",
+  },
+];
+
+const conditions = [
+  {
+    numRu: "01", titleRu: "Согласование", titleEn: "Coordination",
+    descRu: "Дата, формат и количество гостей согласуются заранее. Мы подбираем оптимальную конфигурацию пространства.",
+    descEn: "Date, format, and number of guests are agreed upon in advance. We select the optimal space configuration.",
+  },
+  {
+    numRu: "02", titleRu: "Подтверждение", titleEn: "Confirmation",
+    descRu: "Клуб подтверждает мероприятие после согласования сценария. Каждое событие должно соответствовать духу пространства.",
+    descEn: "The club confirms the event after reviewing the scenario. Each event must match the spirit of the space.",
+  },
+  {
+    numRu: "03", titleRu: "Партнёрский %", titleEn: "Partner %",
+    descRu: "Кухня в расчёт партнёрского процента не входит. Процент рассчитывается от выручки с напитков и кальянов.",
+    descEn: "Kitchen is not included in the partner percentage. Percentage is calculated from drink and hookah revenue.",
+  },
+];
+
+const summaryTable = [
+  {
+    formatRu: "Фиксированная аренда", formatEn: "Fixed Rental",
+    col1Ru: "10—40 гостей", col1En: "10–40 guests",
+    col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
+    col3Ru: "Фиксированная стоимость", col3En: "Fixed price",
+  },
+  {
+    formatRu: "Билетный формат", formatEn: "Ticket Format",
+    col1Ru: "6—14 гостей", col1En: "6–14 guests",
+    col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
+    col3Ru: "Мин. заказ 1\u00a0300\u00a0₽/гость", col3En: "Min. order 1\u00a0300\u00a0₽/guest",
+  },
+  {
+    formatRu: "Партнёрский формат", formatEn: "Partnership Format",
+    col1Ru: "Бесплатно для гостей", col1En: "Free for guests",
+    col2Ru: "Без аренды", col2En: "No rental",
+    col3Ru: "15—25% организатору", col3En: "15–25% to organizer",
   },
 ];
 
@@ -68,8 +167,8 @@ export default function PartnershipPage() {
         <h1 className="partner-hero-title">{t("Партнёрство", "Partnership")}</h1>
         <p className="partner-hero-sub">{t("Пространство для камерных событий", "Space for intimate events")}</p>
         <p className="partner-hero-desc">{t(
-          "«Код 1847» — клубное пространство для сессий, мастермайндов, выставок, закрытых встреч и авторских вечеров. Историческое здание 1847 года на Арбате.",
-          "Kod 1847 is a club space for sessions, masterminds, exhibitions, private meetings, and signature evenings. A historic 1847 building on Arbat."
+          "«Код 1847» — клубное пространство для сессий, мастермайндов, выставок, закрытых встреч и авторских вечеров. Историческое здание 1847 года на Арбате, 145\u00a0м².",
+          "Kod 1847 is a club space for sessions, masterminds, exhibitions, private meetings, and signature evenings. A historic 1847 building on Arbat, 145\u00a0m²."
         )}</p>
       </section>
 
@@ -77,7 +176,7 @@ export default function PartnershipPage() {
       <section className="partner-stats">
         {stats.map((s, i) => (
           <div key={i} className="partner-stat">
-            <div className="partner-stat-value">{s.valueRu}</div>
+            <div className="partner-stat-value">{s.value}</div>
             <div className="partner-stat-label">{t(s.labelRu, s.labelEn)}</div>
           </div>
         ))}
@@ -96,17 +195,52 @@ export default function PartnershipPage() {
         </div>
       </section>
 
-      {/* Formats */}
+      {/* Partnership Formats */}
       <section className="partner-section">
         <DiamondDivider className="phil-visible" />
-        <div className="partner-section-title">{t("Форматы мероприятий", "Event formats")}</div>
+        <div className="partner-section-title">{t("Форматы сотрудничества", "Partnership formats")}</div>
+        <div className="partner-collab-grid">
+          {partnershipFormats.map((f, i) => (
+            <div key={i} className="partner-collab-card">
+              <div className="partner-collab-num">{f.numRu}</div>
+              <div className="partner-collab-name">{t(f.titleRu, f.titleEn)}</div>
+              <ul className="partner-collab-list">
+                {(t(f.pointsRu.join("|||"), f.pointsEn.join("|||"))).split("|||").map((p, pi) => (
+                  <li key={pi}>{p}</li>
+                ))}
+              </ul>
+              {f.suitRu && (
+                <div className="partner-collab-suit">
+                  <span className="partner-section-label" style={{ marginBottom: 0, fontSize: 8 }}>{t("Подходит для", "Suitable for")}</span>
+                  <span className="partner-collab-suit-text">{t(f.suitRu, f.suitEn)}</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Club Formats */}
+      <section className="partner-section">
+        <DiamondDivider className="phil-visible" />
+        <div className="partner-section-title">{t("Собственные мероприятия клуба", "Club signature events")}</div>
         <div className="partner-formats">
-          {formats.map((f, i) => (
+          {clubFormats.map((f, i) => (
             <div key={i} className="partner-format-card">
               <div className="partner-format-name">{t(f.nameRu, f.nameEn)}</div>
               <div className="partner-format-desc">{t(f.descRu, f.descEn)}</div>
               <div className="partner-format-detail">{t(f.detailRu, f.detailEn)}</div>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Suitable for */}
+      <section className="partner-section">
+        <div className="partner-section-label">{t("Подходит для", "Suitable for")}</div>
+        <div className="partner-suitable">
+          {suitableFor.map((s, i) => (
+            <div key={i} className="partner-suitable-item">{t(s.ru, s.en)}</div>
           ))}
         </div>
       </section>
@@ -127,22 +261,53 @@ export default function PartnershipPage() {
         </div>
       </section>
 
-      {/* Suitable for */}
+      {/* Conditions */}
       <section className="partner-section">
-        <div className="partner-section-label">{t("Подходит для", "Suitable for")}</div>
-        <div className="partner-suitable">
-          {suitableFor.map((s, i) => (
-            <div key={i} className="partner-suitable-item">{t(s.ru, s.en)}</div>
+        <DiamondDivider className="phil-visible" />
+        <div className="partner-section-title">{t("Общие условия", "General conditions")}</div>
+        <div className="partner-conditions">
+          {conditions.map((c, i) => (
+            <div key={i} className="partner-condition">
+              <div className="partner-condition-num">{c.numRu}</div>
+              <div className="partner-condition-title">{t(c.titleRu, c.titleEn)}</div>
+              <div className="partner-condition-desc">{t(c.descRu, c.descEn)}</div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Tagline + CTA */}
+      {/* Summary Table */}
+      <section className="partner-section">
+        <div className="partner-section-label">{t("Краткая сводка форматов", "Format summary")}</div>
+        <div className="partner-summary">
+          {summaryTable.map((row, i) => (
+            <div key={i} className="partner-summary-row">
+              <div className="partner-summary-format">{t(row.formatRu, row.formatEn)}</div>
+              <div className="partner-summary-details">
+                <span>{t(row.col1Ru, row.col1En)}</span>
+                <span>{t(row.col2Ru, row.col2En)}</span>
+                <span>{t(row.col3Ru, row.col3En)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Tagline + CTA + Contact */}
       <section className="partner-section" style={{ paddingBottom: 80 }}>
-        <div className="partner-tagline">{t("Чай и кальян — инструменты, а не самоцель", "Tea and hookah are tools, not the goal")}</div>
-        <button className="room-cta-btn" onClick={() => setModalOpen(true)} style={{ marginTop: 40 }}>
+        <div className="partner-tagline">{t("Доступ по ценности, не только по деньгам", "Access by value, not just by money")}</div>
+        <div className="partner-contact-block">
+          <div className="partner-contact-line">
+            <a href="tel:+79015359000" className="partner-contact-link">+7 (901) 535-90-00</a>
+          </div>
+          <div className="partner-contact-line">
+            <a href="https://t.me/kod1847" target="_blank" rel="noopener noreferrer" className="partner-contact-link">t.me/kod1847</a>
+          </div>
+        </div>
+        <button className="room-cta-btn" onClick={() => setModalOpen(true)} style={{ marginTop: 32 }}>
           {t("Обсудить сотрудничество", "Discuss partnership")}
         </button>
+        <div className="partner-closing">{t("Приватность без снобизма", "Privacy without snobbery")}</div>
       </section>
 
       <Footer />
