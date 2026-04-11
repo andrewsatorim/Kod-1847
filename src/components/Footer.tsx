@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-logo">КОД 1847</div>
         <div className="footer-links">
-          <Link href="/menu" className="footer-link">{t("Карта", "Menu")}</Link>
+          <Link href="/menu" className="footer-link">{t("Меню", "Menu")}</Link>
           <Link href="/events" className="footer-link">{t("Мероприятия", "Events")}</Link>
           <a href="#contacts" className="footer-link">{t("Контакты", "Contact")}</a>
           <a href="#" className="footer-link">Telegram</a>
