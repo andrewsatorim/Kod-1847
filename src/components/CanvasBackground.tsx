@@ -115,9 +115,26 @@ export default function CanvasBackground() {
     resize();
     draw();
     window.addEventListener("resize", resize);
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!animId) draw();
+          } else {
+            cancelAnimationFrame(animId);
+            animId = 0;
+          }
+        });
+      },
+      { threshold: 0 }
+    );
+    if (c) obs.observe(c);
+
     return () => {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animId);
+      obs.disconnect();
     };
   }, []);
 
