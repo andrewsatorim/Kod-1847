@@ -232,3 +232,55 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .menu-item-price { font-family: 'Bodoni Moda', serif; font-size: 16px; color: #B89860; white-space: nowrap; margin-left: 24px; }
 .flagship-badge { display: inline-block; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #B89860; border: 1px solid rgba(184,152,96,0.3); padding: 3px 10px; margin-left: 12px; vertical-align: middle; }
 @media(max-width: 420px) { .menu-tabs { flex-direction: column; } .menu-tab { padding: 12px 20px; } .menu-item { flex-direction: column; gap: 4px; } .menu-item-price { margin-left: 0; } }
+
+/* ===== PARTNERSHIP PREVIEW (main page) ===== */
+.partner-preview { position: relative; padding: 40px 24px 60px; display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+.partner-preview-bg { position: absolute; inset: 0; background: linear-gradient(to bottom, #08080A, #0a0a0c, #08080A); }
+.partner-preview-glow { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(184,152,96,0.06), transparent 65%); }
+.partner-preview .section-divider { position: relative; z-index: 2; }
+.partner-preview-stats { display: flex; align-items: center; gap: 32px; margin: 24px 0 40px; position: relative; z-index: 2; }
+.partner-preview-stat { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.partner-preview-stat-num { font-family: 'Bodoni Moda', serif; font-size: 32px; color: #B89860; }
+.partner-preview-stat-label { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #9A958B; }
+.partner-preview-divider { width: 1px; height: 40px; background: rgba(184,152,96,0.2); }
+@media(max-width: 420px) { .partner-preview-stats { gap: 20px; } .partner-preview-stat-num { font-size: 24px; } }
+
+/* ===== PARTNERSHIP PAGE ===== */
+.partner-hero { padding: 120px 24px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.partner-hero-title { font-family: 'Bodoni Moda', serif; font-size: 40px; color: #B89860; letter-spacing: 3px; margin-bottom: 12px; font-weight: 400; }
+.partner-hero-sub { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 11px; letter-spacing: 5px; text-transform: uppercase; color: #9A958B; margin-bottom: 40px; }
+.partner-hero-desc { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 15px; color: rgba(245,240,232,0.85); line-height: 2; max-width: 560px; }
+@media(max-width: 420px) { .partner-hero-title { font-size: 28px; } }
+
+.partner-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 700px; margin: 40px auto 0; padding: 40px 24px; }
+.partner-stat { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; }
+.partner-stat-value { font-family: 'Bodoni Moda', serif; font-size: 40px; color: #B89860; line-height: 1; }
+.partner-stat-label { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #9A958B; }
+@media(max-width: 480px) { .partner-stats { grid-template-columns: repeat(2, 1fr); gap: 32px; } }
+
+.partner-section { display: flex; flex-direction: column; align-items: center; padding: 40px 24px; max-width: 800px; margin: 0 auto; }
+.partner-section-label { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; margin-bottom: 28px; }
+.partner-section-title { font-family: 'Bodoni Moda', serif; font-size: 28px; color: #B89860; text-align: center; margin: 16px 0 32px; letter-spacing: 1px; font-weight: 400; }
+
+.partner-advantages { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 480px; }
+.partner-adv-item { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 15px; color: rgba(245,240,232,0.85); display: flex; gap: 12px; align-items: baseline; }
+.partner-adv-dash { color: #B89860; font-weight: 400; flex-shrink: 0; }
+
+.partner-formats { display: grid; grid-template-columns: 1fr; gap: 20px; width: 100%; }
+@media(min-width: 768px) { .partner-formats { grid-template-columns: repeat(2, 1fr); } }
+.partner-format-card { border: 1px solid rgba(184,152,96,0.12); padding: 28px 24px; transition: border-color 0.4s ease; }
+.partner-format-card:hover { border-color: rgba(184,152,96,0.35); }
+.partner-format-name { font-family: 'Bodoni Moda', serif; font-size: 18px; color: #F5F0E8; margin-bottom: 12px; letter-spacing: 0.5px; }
+.partner-format-desc { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 13px; color: #9A958B; line-height: 1.8; margin-bottom: 16px; }
+.partner-format-detail { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 2px; color: #B89860; text-transform: uppercase; }
+
+.partner-ambassador { display: flex; flex-direction: column; gap: 16px; align-items: center; border: 1px solid rgba(184,152,96,0.15); padding: 32px; width: 100%; max-width: 480px; }
+.partner-amb-item { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 15px; color: rgba(245,240,232,0.85); display: flex; gap: 8px; align-items: baseline; }
+.partner-amb-highlight { font-family: 'Bodoni Moda', serif; font-size: 22px; color: #B89860; }
+.partner-amb-dash { color: #B89860; font-weight: 400; }
+
+.partner-suitable { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.partner-suitable-item { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #9A958B; border: 1px solid rgba(184,152,96,0.2); padding: 10px 20px; transition: all 0.3s; }
+.partner-suitable-item:hover { border-color: rgba(184,152,96,0.4); color: #B89860; }
+
+.partner-tagline { font-family: 'Bodoni Moda', serif; font-size: 22px; color: #9A958B; font-style: italic; text-align: center; letter-spacing: 0.3px; }
