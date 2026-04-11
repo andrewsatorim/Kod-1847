@@ -8,7 +8,7 @@ import ReservationModal from "@/components/ReservationModal";
 
 const stats = [
   { value: "4", labelRu: "формата сотрудничества", labelEn: "partnership formats" },
-  { value: "6—40", labelRu: "гостей на мероприятие", labelEn: "guests per event" },
+  { value: "6–40", labelRu: "гостей на мероприятие", labelEn: "guests per event" },
   { value: "145", labelRu: "м² клубного пространства", labelEn: "m² of club space" },
   { value: "5", labelRu: "собственных мероприятий", labelEn: "signature events" },
 ];
@@ -37,7 +37,7 @@ const partnershipFormats = [
       "Guests may order drinks, desserts, and hookah",
       "Orders are charged separately",
     ],
-    suitRu: "10—40 гостей: выставки, лекции, презентации, закрытые показы",
+    suitRu: "10–40 гостей: выставки, лекции, презентации, закрытые показы",
     suitEn: "10–40 guests: exhibitions, lectures, presentations, private screenings",
   },
   {
@@ -54,7 +54,7 @@ const partnershipFormats = [
       "Club condition: each guest orders drinks (1\u00a0300\u00a0₽)",
       "Additional orders are charged separately",
     ],
-    suitRu: "6—14 гостей: сессии, разборы, мастермайнды, камерные встречи",
+    suitRu: "6–14 гостей: сессии, разборы, мастермайнды, камерные встречи",
     suitEn: "6–14 guests: sessions, reviews, masterminds, intimate meetings",
   },
   {
@@ -64,7 +64,7 @@ const partnershipFormats = [
       "Площадка без аренды",
       "Клуб зарабатывает на напитках, десертах и кальянах",
       "Может быть включено чайное сопровождение",
-      "Организатор получает 15—25% от выручки",
+      "Организатор получает 15–25% от выручки",
       "Организатор за себя не платит",
     ],
     pointsEn: [
@@ -83,7 +83,7 @@ const partnershipFormats = [
 const clubFormats = [
   {
     nameRu: "Пятничный «Открытый» стол", nameEn: "Friday Open Table",
-    descRu: "Варка чая на огне, пролив 3—5 чаев. Идеально для общения и знакомства.",
+    descRu: "Варка чая на огне, пролив 3–5 чаев. Идеально для общения и знакомства.",
     descEn: "Fire-brewed tea, 3–5 infusions. Ideal for socializing.",
     detailRu: "До 20 гостей · 3 часа", detailEn: "Up to 20 guests · 3 hours",
   },
@@ -91,19 +91,19 @@ const clubFormats = [
     nameRu: "КиноЧай", nameEn: "CineTea",
     descRu: "Совместный просмотр глубокого кинематографа и обсуждение с модератором и экспертами.",
     descEn: "Screening of art-house cinema with moderated discussion.",
-    detailRu: "До 20 гостей · 2—3 часа · 2 раза в месяц", detailEn: "Up to 20 guests · 2—3 hours · Twice a month",
+    detailRu: "До 20 гостей · 2–3 часа · 2 раза в месяц", detailEn: "Up to 20 guests · 2–3 hours · Twice a month",
   },
   {
     nameRu: "Чайное действо", nameEn: "Tea Experience",
     descRu: "Погружение в чайные традиции и историю. Серьёзные переговоры с тактичным разливом.",
     descEn: "Immersion into tea traditions. Thoughtful meetings with tactful service.",
-    detailRu: "До 8 гостей · 1,5—2 часа · 3—5 чаев", detailEn: "Up to 8 guests · 1.5—2 hours · 3—5 teas",
+    detailRu: "До 8 гостей · 1,5–2 часа · 3–5 чаев", detailEn: "Up to 8 guests · 1.5–2 hours · 3–5 teas",
   },
   {
     nameRu: "Стилизованные чаепития", nameEn: "Themed Tea Ceremonies",
     descRu: "Самоварное, чаоджоуское, тайваньское чаепития. Вау-эффект и новые эмоции.",
     descEn: "Samovar, Chaozhou, Taiwanese ceremonies. Wow-effect and new emotions.",
-    detailRu: "3—12 гостей · 1,5—2 часа", detailEn: "3—12 guests · 1.5—2 hours",
+    detailRu: "3–12 гостей · 1,5–2 часа", detailEn: "3–12 guests · 1.5–2 hours",
   },
 ];
 
@@ -128,13 +128,13 @@ const conditions = [
 const summaryTable = [
   {
     formatRu: "Фиксированная аренда", formatEn: "Fixed Rental",
-    col1Ru: "10—40 гостей", col1En: "10—40 guests",
+    col1Ru: "10–40 гостей", col1En: "10–40 guests",
     col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
     col3Ru: "Фиксированная стоимость", col3En: "Fixed price",
   },
   {
     formatRu: "Билетный формат", formatEn: "Ticket Format",
-    col1Ru: "6—14 гостей", col1En: "6—14 guests",
+    col1Ru: "6–14 гостей", col1En: "6–14 guests",
     col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
     col3Ru: "Мин. заказ 1\u00a0300\u00a0₽/гость", col3En: "Min. order 1\u00a0300\u00a0₽/guest",
   },
@@ -142,7 +142,7 @@ const summaryTable = [
     formatRu: "Партнёрский формат", formatEn: "Partnership Format",
     col1Ru: "Бесплатно для гостей", col1En: "Free for guests",
     col2Ru: "Без аренды", col2En: "No rental",
-    col3Ru: "15—25% организатору", col3En: "15—25% to organizer",
+    col3Ru: "15–25% организатору", col3En: "15–25% to organizer",
   },
 ];
 
@@ -251,7 +251,7 @@ export default function PartnershipPage() {
         <div className="partner-section-title">{t("Амбассадор", "Ambassador")}</div>
         <div className="partner-ambassador">
           <div className="partner-amb-item">
-            <span className="partner-amb-highlight">15—25%</span>
+            <span className="partner-amb-highlight">15–25%</span>
             <span>{t(" от чека приведённого гостя", " of the referred guest's check")}</span>
           </div>
           <div className="partner-amb-item">
