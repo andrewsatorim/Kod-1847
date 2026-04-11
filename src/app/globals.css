@@ -206,10 +206,10 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .menu-reserve-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
 
 /* ===== CONTACT ===== */
-.contact-section { padding: 60px 24px 40px; background: #08080A; display: flex; flex-direction: column; align-items: center; }
-.contact-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-top: 32px; width: 100%; max-width: 600px; }
+.contact-section { padding: 32px 24px 24px; background: #08080A; display: flex; flex-direction: column; align-items: center; }
+.contact-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 60px; margin-top: 20px; width: 100%; max-width: 600px; }
 @media(max-width: 480px) { .contact-two-col { grid-template-columns: 1fr; gap: 32px; } }
-.contact-col { display: flex; flex-direction: column; gap: 24px; }
+.contact-col { display: flex; flex-direction: column; gap: 16px; }
 .contact-item { }
 .contact-label { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #9A958B; margin-bottom: 8px; }
 .contact-value { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 15px; color: #F5F0E8; line-height: 1.6; }
