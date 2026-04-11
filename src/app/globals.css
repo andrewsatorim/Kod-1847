@@ -187,7 +187,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 @media(min-width: 768px) { .events-page-grid { grid-template-columns: repeat(2, 1fr); } }
 .event-page-card { border: 1px solid rgba(184,152,96,0.15); padding: 32px 28px; transition: border-color 0.4s ease; }
 .event-page-card:hover { border-color: rgba(184,152,96,0.4); }
-.event-page-dateline { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 13px; color: #B89860; letter-spacing: 1px; margin-bottom: 12px; }
+.event-page-dateline { font-family: 'Bodoni Moda', serif; font-weight: 400; font-size: 22px; color: #B89860; letter-spacing: 1px; margin-bottom: 14px; }
 .event-badge { display: inline-block; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #B89860; border: 1px solid rgba(184,152,96,0.3); padding: 4px 12px; margin-bottom: 16px; }
 .event-register-btn { display: inline-block; margin-top: 20px; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #B89860; border: 1px solid rgba(184,152,96,0.3); padding: 10px 24px; cursor: pointer; background: none; transition: all 0.3s; }
 .event-register-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
