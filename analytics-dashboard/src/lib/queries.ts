@@ -36,7 +36,7 @@ export async function getOverviewStats(range: DateRange) {
 
 export async function getPageviewsByDay(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_pageviews")
     .select("created_at")
     .gte("created_at", gte)
@@ -56,7 +56,7 @@ export async function getPageviewsByDay(range: DateRange) {
 
 export async function getTopPages(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_pageviews")
     .select("page")
     .gte("created_at", gte)
@@ -68,7 +68,7 @@ export async function getTopPages(range: DateRange) {
   });
 
   // Get time_on_page events for avg time calculation
-  const { data: timeData } = await supabase
+  const { data: timeData } = await getSupabase()
     .from("analytics_events")
     .select("metadata")
     .eq("event_type", "time_on_page")
@@ -97,7 +97,7 @@ export async function getTopPages(range: DateRange) {
 
 export async function getBookingsByDay(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_events")
     .select("created_at, metadata")
     .eq("event_type", "booking_submit")
@@ -116,7 +116,7 @@ export async function getBookingsByDay(range: DateRange) {
 
 export async function getBookingSources(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_events")
     .select("metadata")
     .eq("event_type", "booking_submit")
@@ -137,7 +137,7 @@ export async function getBookingSources(range: DateRange) {
 
 export async function getClickStats(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_events")
     .select("event_type, metadata")
     .in("event_type", ["click_reserve", "click_pdf", "click_phone", "click_telegram", "click_instagram"])
@@ -163,7 +163,7 @@ export async function getClickStats(range: DateRange) {
 
 export async function getDeviceStats(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_sessions")
     .select("device, browser")
     .gte("started_at", gte)
@@ -189,7 +189,7 @@ export async function getDeviceStats(range: DateRange) {
 
 export async function getReferrerStats(range: DateRange) {
   const { gte, lte } = dateFilter(range);
-  const { data } = await supabase
+  const { data } = await getSupabase()
     .from("analytics_pageviews")
     .select("referrer")
     .gte("created_at", gte)
