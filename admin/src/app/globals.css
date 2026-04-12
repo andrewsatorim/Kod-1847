@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #08080a;
+  --color-panel: #111114;
+  --color-card: #19191e;
+  --color-border: #27272e;
+  --color-border-light: #35353e;
+  --color-gold: #b89860;
+  --color-gold-light: #d4b47a;
+  --color-gold-dim: #8a7245;
+  --color-linen: #f5f0e8;
+  --color-stone: #9a958b;
+  --color-danger: #e54545;
+  --color-danger-dim: #3a1515;
+  --color-success: #45b870;
+  --color-success-dim: #153a20;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-linen);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+input,
+textarea,
+select {
+  color-scheme: dark;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--color-linen);
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-gold);
+}
+
+::placeholder {
+  color: var(--color-stone);
+  opacity: 0.6;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-stone);
+}
