@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReservationModal from "@/components/ReservationModal";
@@ -55,7 +56,7 @@ export default function TeaRoomPage() {
         <ul className="room-session-list">{sessionItems.map((item, i) => <li key={i}>{t(item.ru, item.en)}</li>)}</ul>
       </div>
 
-      <div className="room-cta"><button className="room-cta-btn" onClick={() => setModalOpen(true)}>{t("Забронировать визит", "Book a visit")}</button></div>
+      <div className="room-cta"><button className="room-cta-btn" onClick={() => { trackEvent("click_reserve", { location: "tea-room" }); setModalOpen(true); }}>{t("Забронировать визит", "Book a visit")}</button></div>
 
       <div className="room-faq">
         <div className="room-faq-title">{t("Частые вопросы", "FAQ")}</div>

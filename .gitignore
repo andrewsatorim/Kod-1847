@@ -28,8 +28,14 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files
+# env files (keep .env.example)
 .env*
+!.env.example
+
+# analytics dashboard
+analytics-dashboard/node_modules
+analytics-dashboard/.next
+analytics-dashboard/next-env.d.ts
 
 # vercel
 .vercel

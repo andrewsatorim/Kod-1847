@@ -1,5 +1,6 @@
 "use client";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 import DiamondDivider from "./DiamondDivider";
 
 export default function Contact() {
@@ -23,13 +24,13 @@ export default function Contact() {
         <div className="contact-col">
           <div className="contact-item">
             <div className="contact-label">{t("\u0422\u0435\u043b\u0435\u0444\u043e\u043d", "Phone")}</div>
-            <div className="contact-value"><a href="tel:+74951234567">+7 (495) 123-45-67</a></div>
+            <div className="contact-value"><a href="tel:+74951234567" onClick={() => trackEvent("click_phone", { location: "contacts" })}>+7 (495) 123-45-67</a></div>
           </div>
           <div className="contact-item">
             <div className="contact-label">{t("\u041c\u0435\u0441\u0441\u0435\u043d\u0434\u0436\u0435\u0440\u044b", "Messengers")}</div>
             <div className="contact-social-inline">
-              <a href="#" className="social-link">Telegram</a>
-              <a href="#" className="social-link">Instagram</a>
+              <a href="#" className="social-link" onClick={() => trackEvent("click_telegram", { location: "contacts" })}>Telegram</a>
+              <a href="#" className="social-link" onClick={() => trackEvent("click_instagram", { location: "contacts" })}>Instagram</a>
             </div>
           </div>
         </div>

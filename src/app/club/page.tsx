@@ -1,6 +1,7 @@
 "use client";
 import { FormEvent, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
@@ -21,7 +22,7 @@ const howHeardOptions = [
 export default function ClubPage() {
   const { t } = useLang();
   const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e: FormEvent) => { e.preventDefault(); setSubmitted(true); };
+  const handleSubmit = (e: FormEvent) => { e.preventDefault(); trackEvent("booking_submit", { source: "club_membership" }); setSubmitted(true); };
 
   return (
     <>

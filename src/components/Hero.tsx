@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 import LogoSVG from "./LogoSVG";
 
 const particles = [
@@ -77,7 +78,7 @@ export default function Hero({ onReserve }: { onReserve: () => void }) {
         <div className="lockup-loc" dangerouslySetInnerHTML={{ __html: t('\u041c\u043e\u0441\u043a\u0432\u0430 \u00b7 \u0410\u0440\u0431\u0430\u0442 \u00b7 Est. <span class="nums">1847</span>', 'Moscow \u00b7 Arbat \u00b7 Est. <span class="nums">1847</span>') }} />
       </div>
 
-      <button className="cta-hero" onClick={onReserve}>{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432\u0438\u0437\u0438\u0442", "Book a visit")}</button>
+      <button className="cta-hero" onClick={() => { trackEvent("click_reserve", { location: "hero" }); onReserve(); }}>{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c \u0432\u0438\u0437\u0438\u0442", "Book a visit")}</button>
 
       <div className={`scroll-hint ${scrollVisible ? "visible" : ""}`}>
         <div className="scroll-hint-label">{t("\u0432\u043d\u0438\u0437", "scroll")}</div>

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
@@ -298,13 +299,13 @@ export default function PartnershipPage() {
         <div className="partner-tagline">{t("Доступ по ценности, не только по деньгам", "Access by value, not just by money")}</div>
         <div className="partner-contact-block">
           <div className="partner-contact-line">
-            <a href="tel:+79015359000" className="partner-contact-link">+7 (901) 535-90-00</a>
+            <a href="tel:+79015359000" className="partner-contact-link" onClick={() => trackEvent("click_phone", { location: "partnership" })}>+7 (901) 535-90-00</a>
           </div>
           <div className="partner-contact-line">
-            <a href="https://t.me/kod1847" target="_blank" rel="noopener noreferrer" className="partner-contact-link">t.me/kod1847</a>
+            <a href="https://t.me/kod1847" target="_blank" rel="noopener noreferrer" className="partner-contact-link" onClick={() => trackEvent("click_telegram", { location: "partnership" })}>t.me/kod1847</a>
           </div>
         </div>
-        <button className="room-cta-btn" onClick={() => setModalOpen(true)} style={{ marginTop: 32 }}>
+        <button className="room-cta-btn" onClick={() => { trackEvent("click_reserve", { location: "partnership" }); setModalOpen(true); }} style={{ marginTop: 32 }}>
           {t("Обсудить сотрудничество", "Discuss partnership")}
         </button>
         <div className="partner-closing">{t("Приватность без снобизма", "Privacy without snobbery")}</div>

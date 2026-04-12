@@ -1,12 +1,13 @@
 "use client";
 import { FormEvent } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 
 interface Props { open: boolean; onClose: () => void; }
 
 export default function ReservationModal({ open, onClose }: Props) {
   const { t } = useLang();
-  const handleSubmit = (e: FormEvent) => { e.preventDefault(); onClose(); };
+  const handleSubmit = (e: FormEvent) => { e.preventDefault(); trackEvent("booking_submit", { source: window.location.pathname }); onClose(); };
 
   return (
     <div className={`modal-overlay ${open ? "open" : ""}`} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
+import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
@@ -32,7 +33,7 @@ export default function EventsPage() {
               <div className="event-badge">{t(ev.tagRu, ev.tagEn)}</div>
               <div className="event-name">{t(ev.nameRu, ev.nameEn)}</div>
               <div className="event-desc">{t(ev.descRu, ev.descEn)}</div>
-              <button className="event-register-btn" onClick={() => setRegisterModal(i)}>{t("Забронировать", "Book")}</button>
+              <button className="event-register-btn" onClick={() => { trackEvent("click_reserve", { location: "events", event: ev.nameRu }); setRegisterModal(i); }}>{t("Забронировать", "Book")}</button>
             </div>
           ))}
         </div>
@@ -43,7 +44,7 @@ export default function EventsPage() {
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><line x1="2" y1="2" x2="14" y2="14" stroke="#9A958B" strokeWidth="1" /><line x1="14" y1="2" x2="2" y2="14" stroke="#9A958B" strokeWidth="1" /></svg>
           </button>
           <div className="modal-header">{registerModal !== null ? t(events[registerModal].nameRu, events[registerModal].nameEn) : ""}</div>
-          <form onSubmit={(e) => { e.preventDefault(); setRegisterModal(null); }}>
+          <form onSubmit={(e) => { e.preventDefault(); trackEvent("booking_submit", { source: "events", event: registerModal !== null ? events[registerModal].nameRu : "" }); setRegisterModal(null); }}>
             <div className="modal-field"><label className="modal-label">{t("\u0418\u043c\u044f", "Name")}</label><input type="text" className="modal-input" placeholder={t("\u0418\u043c\u044f \u0438 \u0444\u0430\u043c\u0438\u043b\u0438\u044f", "Full name")} required /></div>
             <div className="modal-field"><label className="modal-label">{t("\u0422\u0435\u043b\u0435\u0444\u043e\u043d", "Phone")}</label><input type="tel" className="modal-input" placeholder="+7 (___) ___ __ __" required /></div>
             <button type="submit" className="modal-submit">{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c", "Book")}</button>
