@@ -1,34 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Raleway:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 213 31% 91%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --ring: 216 34% 17%;
+    --gold: #B89860;
+    --gold-dim: #9A7D4A;
+    --ink: #08080A;
+    --ink-light: #111114;
+    --ink-lighter: #1A1A1F;
+    --stone: #9A958B;
+    --stone-dim: #6B6760;
+    --linen: #F5F0E8;
+    --linen-dim: #D4CFC7;
+
+    --background: 220 14% 4%;
+    --foreground: 40 30% 93%;
+    --card: 220 14% 6%;
+    --card-foreground: 40 30% 93%;
+    --popover: 220 14% 6%;
+    --popover-foreground: 40 30% 93%;
+    --primary: 37 34% 55%;
+    --primary-foreground: 220 14% 4%;
+    --secondary: 220 10% 12%;
+    --secondary-foreground: 40 30% 93%;
+    --muted: 220 10% 12%;
+    --muted-foreground: 40 6% 58%;
+    --accent: 220 10% 14%;
+    --accent-foreground: 40 30% 93%;
+    --destructive: 0 63% 45%;
+    --destructive-foreground: 40 30% 93%;
+    --border: 220 10% 15%;
+    --input: 220 10% 15%;
+    --ring: 37 34% 55%;
     --radius: 0.5rem;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+
+    --chart-1: 37 34% 55%;
+    --chart-2: 160 40% 42%;
+    --chart-3: 220 50% 55%;
+    --chart-4: 280 40% 55%;
+    --chart-5: 0 50% 55%;
   }
 }
 
@@ -38,5 +51,25 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bodoni Moda', serif;
+    font-weight: 400;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--stone-dim); border-radius: 3px; }
+
+/* Gold gradient text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--linen-dim));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

@@ -11,7 +11,20 @@ const config: Config = {
       screens: { "2xl": "1400px" },
     },
     extend: {
+      fontFamily: {
+        serif: ["'Bodoni Moda'", "serif"],
+        sans: ["'Raleway'", "sans-serif"],
+      },
       colors: {
+        gold: "#B89860",
+        "gold-dim": "#9A7D4A",
+        ink: "#08080A",
+        "ink-light": "#111114",
+        "ink-lighter": "#1A1A1F",
+        stone: "#9A958B",
+        "stone-dim": "#6B6760",
+        linen: "#F5F0E8",
+        "linen-dim": "#D4CFC7",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
