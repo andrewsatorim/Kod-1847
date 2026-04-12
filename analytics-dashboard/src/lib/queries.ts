@@ -1,4 +1,4 @@
-import { supabase } from "./supabase";
+import { getSupabase } from "./supabase";
 
 export type DateRange = { from: string; to: string };
 
@@ -12,9 +12,9 @@ export async function getOverviewStats(range: DateRange) {
   const { gte, lte } = dateFilter(range);
 
   const [pageviewsRes, sessionsRes, bookingsRes] = await Promise.all([
-    supabase.from("analytics_pageviews").select("id", { count: "exact", head: true }).gte("created_at", gte).lte("created_at", lte),
-    supabase.from("analytics_sessions").select("session_id, duration, pages_viewed").gte("started_at", gte).lte("started_at", lte),
-    supabase.from("analytics_events").select("id", { count: "exact", head: true }).eq("event_type", "booking_submit").gte("created_at", gte).lte("created_at", lte),
+    getSupabase().from("analytics_pageviews").select("id", { count: "exact", head: true }).gte("created_at", gte).lte("created_at", lte),
+    getSupabase().from("analytics_sessions").select("session_id, duration, pages_viewed").gte("started_at", gte).lte("started_at", lte),
+    getSupabase().from("analytics_events").select("id", { count: "exact", head: true }).eq("event_type", "booking_submit").gte("created_at", gte).lte("created_at", lte),
   ]);
 
   const totalPageviews = pageviewsRes.count || 0;

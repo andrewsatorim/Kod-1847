@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Панель аналитики сайта Код 1847",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className="dark">
