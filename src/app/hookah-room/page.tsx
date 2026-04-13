@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
+import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import ReservationModal from "@/components/ReservationModal";
 
@@ -33,7 +34,7 @@ export default function HookahRoomPage() {
   return (
     <>
       <Header />
-      <button className="menu-back-btn" onClick={() => window.location.replace("/")}>← На главную</button>
+      <BackButton />
       <section className="room-hero">
         <div className="room-hero-img">
           {/* eslint-disable-next-line @next/next/no-img-element */}

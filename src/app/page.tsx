@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Philosophy from "@/components/Philosophy";
@@ -13,6 +13,17 @@ import ReservationModal from "@/components/ReservationModal";
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const targetId = sessionStorage.getItem("scrollTo");
+    if (targetId) {
+      sessionStorage.removeItem("scrollTo");
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) el.scrollIntoView({ behavior: "auto", block: "start" });
+      }, 100);
+    }
+  }, []);
 
   return (
     <>

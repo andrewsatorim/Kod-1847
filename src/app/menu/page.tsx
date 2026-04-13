@@ -3,6 +3,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
 import Header from "@/components/Header";
+import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
 
@@ -93,7 +94,7 @@ function MenuContent() {
   return (
     <>
       <Header />
-      <button className="menu-back-btn" onClick={() => window.location.replace("/")}>← На главную</button>
+      <BackButton />
       <div className="menu-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("Меню", "Menu")}</div>
