@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
+import BackButton from "@/components/BackButton";
 
 const tabs = [
   { id: "tea", labelRu: "Чайное меню", labelEn: "Tea Menu" },
@@ -78,14 +80,21 @@ const foodCategories: MenuCategory[] = [
 
 const allCategories: Record<string, MenuCategory[]> = { tea: teaCategories, hookah: hookahCategories, food: foodCategories };
 
-export default function MenuPage() {
+function MenuContent() {
   const { t } = useLang();
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("tea");
   const categories = allCategories[activeTab];
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab && allCategories[tab]) setActiveTab(tab);
+  }, [searchParams]);
 
   return (
     <>
       <Header />
+      <BackButton />
       <div className="menu-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("Меню", "Menu")}</div>
@@ -117,5 +126,13 @@ export default function MenuPage() {
       </div>
       <Footer />
     </>
+  );
+}
+
+export default function MenuPage() {
+  return (
+    <Suspense>
+      <MenuContent />
+    </Suspense>
   );
 }

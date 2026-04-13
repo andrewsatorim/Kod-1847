@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
+import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
 
@@ -22,6 +23,7 @@ export default function EventsPage() {
   return (
     <>
       <Header />
+      <BackButton />
       <div className="events-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("\u041c\u0435\u0440\u043e\u043f\u0440\u0438\u044f\u0442\u0438\u044f", "Events")}</div>
