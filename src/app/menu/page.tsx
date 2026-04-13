@@ -94,7 +94,7 @@ function MenuContent() {
   return (
     <>
       <Header />
-      <BackButton />
+      <BackButton href="/#menu-preview" />
       <div className="menu-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("Меню", "Menu")}</div>

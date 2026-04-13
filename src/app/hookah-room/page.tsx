@@ -34,7 +34,7 @@ export default function HookahRoomPage() {
   return (
     <>
       <Header />
-      <BackButton />
+      <BackButton href="/#rooms" />
       <section className="room-hero">
         <div className="room-hero-img">
           {/* eslint-disable-next-line @next/next/no-img-element */}

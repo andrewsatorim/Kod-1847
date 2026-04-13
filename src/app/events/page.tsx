@@ -23,7 +23,7 @@ export default function EventsPage() {
   return (
     <>
       <Header />
-      <BackButton />
+      <BackButton href="/#events-preview" />
       <div className="events-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("\u041c\u0435\u0440\u043e\u043f\u0440\u0438\u044f\u0442\u0438\u044f", "Events")}</div>

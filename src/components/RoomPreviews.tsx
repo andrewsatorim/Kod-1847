@@ -42,7 +42,7 @@ export default function RoomPreviews() {
   }, []);
 
   return (
-    <section className="room-previews" ref={sectionRef}>
+    <section className="room-previews" ref={sectionRef} id="rooms">
       {rooms.map((room) => (
         <div key={room.id} className="room-preview-card">
           <picture className="room-preview-img">
