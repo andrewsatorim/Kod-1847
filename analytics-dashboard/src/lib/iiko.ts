@@ -1,68 +1,22 @@
-// iiko Cloud API client
-// Docs: https://api-ru.iiko.services/swagger/index.html
-// Base URL for Russia: https://api-ru.iiko.services
+// iiko Cloud API client — all calls go through /api/iiko server proxy (avoids CORS)
 
-const IIKO_BASE_URL = "https://api-ru.iiko.services";
-
-let _token: string | null = null;
-let _tokenExpiry: number = 0;
-
-// Hardcoded API login (public anon-level key, similar to Supabase anon key approach)
-const IIKO_API_LOGIN = "99bc25d40d5c4587afec2bcad7794e4e";
-
-// Organization ID will be auto-discovered on first call if not set
+// Organization ID will be auto-discovered on first call
 let _organizationId: string | null = null;
 
-function getApiLogin(): string | null {
-  return IIKO_API_LOGIN || process.env.NEXT_PUBLIC_IIKO_API_LOGIN || null;
-}
-
-function getOrganizationId(): string | null {
-  return _organizationId || process.env.NEXT_PUBLIC_IIKO_ORGANIZATION_ID || null;
-}
-
 export function isIikoConfigured(): boolean {
-  return !!getApiLogin();
-}
-
-async function getAccessToken(): Promise<string> {
-  // Token valid for ~60 min, refresh at 50 min
-  if (_token && Date.now() < _tokenExpiry) return _token;
-
-  const apiLogin = getApiLogin();
-  if (!apiLogin) throw new Error("NEXT_PUBLIC_IIKO_API_LOGIN not configured");
-
-  const res = await fetch(`${IIKO_BASE_URL}/api/1/access_token`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ apiLogin }),
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`iiko auth failed (${res.status}): ${text}`);
-  }
-
-  const data = await res.json();
-  _token = data.token;
-  _tokenExpiry = Date.now() + 50 * 60 * 1000; // 50 minutes
-  return _token!;
+  return true; // API key is hardcoded server-side in /api/iiko
 }
 
 export async function iikoPost<T = unknown>(path: string, body: Record<string, unknown>): Promise<T> {
-  const token = await getAccessToken();
-  const res = await fetch(`${IIKO_BASE_URL}${path}`, {
+  const res = await fetch("/api/iiko", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(body),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ path, body }),
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`iiko API error ${path} (${res.status}): ${text}`);
+    const data = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+    throw new Error(data.error || `iiko proxy error (${res.status})`);
   }
 
   return res.json();
@@ -72,32 +26,23 @@ export async function iikoPost<T = unknown>(path: string, body: Record<string, u
 
 /** Auto-discover organization ID on first call */
 export async function ensureOrgId(): Promise<string> {
-  const existing = getOrganizationId();
-  if (existing) return existing;
+  if (_organizationId) return _organizationId;
 
-  const token = await getAccessToken();
-  const res = await fetch(`${IIKO_BASE_URL}/api/1/organizations`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({}),
-  });
+  const data = await iikoPost<{ organizations: { id: string; name: string }[] }>(
+    "/api/1/organizations",
+    {}
+  );
 
-  if (!res.ok) throw new Error("Failed to discover iiko organization");
-  const data = await res.json();
   const orgs = data.organizations || [];
   if (orgs.length === 0) throw new Error("No iiko organizations found for this API login");
 
   _organizationId = orgs[0].id;
-  return _organizationId!;
+  return _organizationId;
 }
 
 export function getOrgId(): string {
-  const id = getOrganizationId();
-  if (!id) throw new Error("Organization ID not yet discovered. Call ensureOrgId() first.");
-  return id;
+  if (!_organizationId) throw new Error("Organization ID not yet discovered. Call ensureOrgId() first.");
+  return _organizationId;
 }
 
 export function getOrgIds(): string[] {
