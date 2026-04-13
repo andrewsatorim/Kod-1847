@@ -188,22 +188,6 @@ export default function PartnershipPage() {
         </div>
       </section>
 
-      {/* Ambassador */}
-      <section className="partner-section">
-        <DiamondDivider className="phil-visible" />
-        <div className="partner-section-title">{t("Амбассадор", "Ambassador")}</div>
-        <div className="partner-ambassador">
-          <div className="partner-amb-item">
-            <span className="partner-amb-highlight">15 - 25%</span>
-            <span>{t(" от чека приведённого гостя", " of the referred guest's check")}</span>
-          </div>
-          <div className="partner-amb-item">
-            <span className="partner-amb-marker" />
-            <span>{t("За себя не платит", "No personal charges")}</span>
-          </div>
-        </div>
-      </section>
-
       {/* Conditions */}
       <section className="partner-section">
         <DiamondDivider className="phil-visible" />
