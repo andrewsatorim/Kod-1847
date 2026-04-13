@@ -16,18 +16,17 @@ function scrollToTarget() {
   if (!targetId) return;
   sessionStorage.removeItem("scrollTo");
 
-  function tryScroll(attempts: number) {
-    const el = document.getElementById(targetId);
+  const doScroll = (id: string, attempts: number) => {
+    const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "instant", block: "start" });
+      el.scrollIntoView({ block: "start" });
       return;
     }
     if (attempts > 0) {
-      requestAnimationFrame(() => tryScroll(attempts - 1));
+      requestAnimationFrame(() => doScroll(id, attempts - 1));
     }
-  }
-  // Wait for next frame then try up to 60 frames (~1 second)
-  requestAnimationFrame(() => tryScroll(60));
+  };
+  requestAnimationFrame(() => doScroll(targetId, 60));
 }
 
 export default function Home() {
