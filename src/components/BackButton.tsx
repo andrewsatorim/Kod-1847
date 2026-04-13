@@ -1,20 +1,23 @@
 "use client";
+import { usePathname } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
 
-export default function BackButton({ href }: { href?: string }) {
-  const { t } = useLang();
+const backMap: Record<string, string> = {
+  "/tea-room": "/#rooms",
+  "/hookah-room": "/#rooms",
+  "/menu": "/#menu-preview",
+  "/events": "/#events-preview",
+  "/partnership": "/#partnership-preview",
+};
 
-  const handleClick = () => {
-    if (href) {
-      window.location.href = href;
-    } else {
-      window.history.back();
-    }
-  };
+export default function BackButton() {
+  const { t } = useLang();
+  const pathname = usePathname();
+  const target = backMap[pathname] || "/";
 
   return (
-    <button className="menu-back-btn" onClick={handleClick}>
+    <a href={target} className="menu-back-btn">
       {t("← Назад", "← Back")}
-    </button>
+    </a>
   );
 }

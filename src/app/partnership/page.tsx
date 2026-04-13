@@ -127,7 +127,7 @@ export default function PartnershipPage() {
   return (
     <>
       <Header />
-      <BackButton href="/#partnership-preview" />
+      <BackButton />
 
       {/* Hero */}
       <section className="partner-hero">
