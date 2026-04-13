@@ -126,7 +126,7 @@ export default function PartnershipPage() {
   return (
     <>
       <Header />
-      <a href="/#partnership-preview" className="menu-back-btn">← Назад</a>
+      <button className="menu-back-btn" onClick={() => window.location.replace("/#partnership-preview")}>← Назад</button>
 
       {/* Hero */}
       <section className="partner-hero">

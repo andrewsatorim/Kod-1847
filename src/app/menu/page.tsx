@@ -93,7 +93,7 @@ function MenuContent() {
   return (
     <>
       <Header />
-      <a href="/#menu-preview" className="menu-back-btn">← Назад</a>
+      <button className="menu-back-btn" onClick={() => window.location.replace("/#menu-preview")}>← Назад</button>
       <div className="menu-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("Меню", "Menu")}</div>
