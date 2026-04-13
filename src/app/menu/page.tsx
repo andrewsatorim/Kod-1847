@@ -5,7 +5,6 @@ import { useLang } from "@/context/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
-import BackButton from "@/components/BackButton";
 
 const tabs = [
   { id: "tea", labelRu: "Чайное меню", labelEn: "Tea Menu" },
@@ -94,7 +93,7 @@ function MenuContent() {
   return (
     <>
       <Header />
-      <BackButton />
+      <a href="/#menu-preview" className="menu-back-btn">← Назад</a>
       <div className="menu-page">
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("Меню", "Menu")}</div>

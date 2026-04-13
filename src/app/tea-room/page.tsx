@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
-import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import ReservationModal from "@/components/ReservationModal";
 
@@ -34,7 +33,7 @@ export default function TeaRoomPage() {
   return (
     <>
       <Header />
-      <BackButton />
+      <a href="/#rooms" className="menu-back-btn">← Назад</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Place", name: "Чайный зал — Код 1847", description: "Закрытый клуб на Арбате, где гостям подают коллекционные чаи в формате полной церемонии с титестером.", url: "https://kod1847.ru/tea-room", containedInPlace: { "@type": "LocalBusiness", name: "Код 1847", address: { "@type": "PostalAddress", streetAddress: "ул. Арбат", addressLocality: "Москва", addressCountry: "RU" } }, maximumAttendeeCapacity: 8 }) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqData.map((item) => ({ "@type": "Question", name: item.qRu, acceptedAnswer: { "@type": "Answer", text: item.aRu } })) }) }} />
 

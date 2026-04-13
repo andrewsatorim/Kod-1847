@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import Header from "@/components/Header";
-import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
 import ReservationModal from "@/components/ReservationModal";
@@ -127,7 +126,7 @@ export default function PartnershipPage() {
   return (
     <>
       <Header />
-      <BackButton />
+      <a href="/#partnership-preview" className="menu-back-btn">← Назад</a>
 
       {/* Hero */}
       <section className="partner-hero">
