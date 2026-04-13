@@ -33,7 +33,7 @@ export default function TeaRoomPage() {
   return (
     <>
       <Header />
-      <button className="menu-back-btn" onClick={() => window.location.replace("/#rooms")}>← Назад</button>
+      <button className="menu-back-btn" onClick={() => window.location.replace("/#rooms")}>← На главную</button>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "Place", name: "Чайный зал — Код 1847", description: "Закрытый клуб на Арбате, где гостям подают коллекционные чаи в формате полной церемонии с титестером.", url: "https://kod1847.ru/tea-room", containedInPlace: { "@type": "LocalBusiness", name: "Код 1847", address: { "@type": "PostalAddress", streetAddress: "ул. Арбат", addressLocality: "Москва", addressCountry: "RU" } }, maximumAttendeeCapacity: 8 }) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqData.map((item) => ({ "@type": "Question", name: item.qRu, acceptedAnswer: { "@type": "Answer", text: item.aRu } })) }) }} />
 

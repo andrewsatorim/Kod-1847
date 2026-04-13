@@ -33,7 +33,7 @@ export default function HookahRoomPage() {
   return (
     <>
       <Header />
-      <button className="menu-back-btn" onClick={() => window.location.replace("/#rooms")}>← Назад</button>
+      <button className="menu-back-btn" onClick={() => window.location.replace("/#rooms")}>← На главную</button>
       <section className="room-hero">
         <div className="room-hero-img">
           {/* eslint-disable-next-line @next/next/no-img-element */}
