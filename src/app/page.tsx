@@ -11,18 +11,30 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ReservationModal from "@/components/ReservationModal";
 
+function scrollToTarget() {
+  const targetId = sessionStorage.getItem("scrollTo");
+  if (!targetId) return;
+  sessionStorage.removeItem("scrollTo");
+
+  function tryScroll(attempts: number) {
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "instant", block: "start" });
+      return;
+    }
+    if (attempts > 0) {
+      requestAnimationFrame(() => tryScroll(attempts - 1));
+    }
+  }
+  // Wait for next frame then try up to 60 frames (~1 second)
+  requestAnimationFrame(() => tryScroll(60));
+}
+
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    const targetId = sessionStorage.getItem("scrollTo");
-    if (targetId) {
-      sessionStorage.removeItem("scrollTo");
-      setTimeout(() => {
-        const el = document.getElementById(targetId);
-        if (el) el.scrollIntoView({ behavior: "auto", block: "start" });
-      }, 100);
-    }
+    scrollToTarget();
   }, []);
 
   return (
