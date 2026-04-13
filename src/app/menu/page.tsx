@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
 import Header from "@/components/Header";
@@ -27,8 +27,8 @@ const teaCategories: MenuCategory[] = [
     { nameRu: "Фэн Хуан Дань Цун", nameEn: "Feng Huang Dan Cong", descRu: "Утёсный одинокий куст, медово-цветочный", descEn: "Rock single bush, honey-floral" },
   ]},
   { titleRu: "Церемониальные", titleEn: "Ceremonial", descRu: "Подача по традиции гунфу-ча. Полный ритуал с прогревом посуды и многократными проливами", descEn: "Served in gongfu-cha tradition. Full ritual with vessel warming and multiple infusions", items: [
-    { nameRu: "Церемония «Первая встреча»", nameEn: "\"First Meeting\" Ceremony", descRu: "3 сорта, 12 проливов, комментарии мастера", descEn: "3 varieties, 12 infusions, master commentary", flagship: true },
-    { nameRu: "Церемония «Путь чая»", nameEn: "\"Tea Way\" Ceremony", descRu: "5 сортов, полный ритуал, 90 мин", descEn: "5 varieties, full ritual, 90 min" },
+    { nameRu: "Церемония \u00abПервая встреча\u00bb", nameEn: "\"First Meeting\" Ceremony", descRu: "3 сорта, 12 проливов, комментарии мастера", descEn: "3 varieties, 12 infusions, master commentary", flagship: true },
+    { nameRu: "Церемония \u00abПуть чая\u00bb", nameEn: "\"Tea Way\" Ceremony", descRu: "5 сортов, полный ритуал, 90 мин", descEn: "5 varieties, full ritual, 90 min" },
   ]},
   { titleRu: "Светлые", titleEn: "Light Teas", descRu: "Белые и зелёные чаи. Нежный вкус, цветочные и травяные ноты", descEn: "White and green teas. Delicate taste, floral and herbal notes", items: [
     { nameRu: "Гёкуро", nameEn: "Gyokuro", descRu: "Теневой японский зелёный, умами", descEn: "Shade-grown Japanese green, umami" },
@@ -36,20 +36,20 @@ const teaCategories: MenuCategory[] = [
     { nameRu: "Лун Цзин", nameEn: "Long Jing", descRu: "Колодец дракона, весенний урожай", descEn: "Dragon Well, spring harvest" },
   ]},
   { titleRu: "Тёмные", titleEn: "Dark Teas", descRu: "Красные, чёрные и выдержанные пуэры. Глубокий вкус", descEn: "Red, black and aged pu-erhs. Deep taste", items: [
-    { nameRu: "Шу Пуэр «Старое дерево»", nameEn: "Shu Pu-erh \"Old Tree\"", descRu: "Юньнань, 2016, 400-летние деревья", descEn: "Yunnan, 2016, 400-year-old trees" },
+    { nameRu: "Шу Пуэр \u00abСтарое дерево\u00bb", nameEn: "Shu Pu-erh \"Old Tree\"", descRu: "Юньнань, 2016, 400-летние деревья", descEn: "Yunnan, 2016, 400-year-old trees" },
     { nameRu: "Цимэнь Хун Ча", nameEn: "Qimen Hong Cha", descRu: "Красный чай, медово-шоколадный", descEn: "Red tea, honey-chocolate" },
   ]},
   { titleRu: "Сезон", titleEn: "Seasonal", descRu: "Чаи текущего урожая и сезонные купажи", descEn: "Current harvest teas and seasonal blends", items: [
     { nameRu: "Весенний Те Гуань Инь", nameEn: "Spring Tie Guan Yin", descRu: "Аньси, весна 2026", descEn: "Anxi, spring 2026", flagship: true },
-    { nameRu: "Купаж «Арбат»", nameEn: "\"Arbat\" Blend", descRu: "Авторский сезонный купаж", descEn: "Signature seasonal blend" },
+    { nameRu: "Купаж \u00abАрбат\u00bb", nameEn: "\"Arbat\" Blend", descRu: "Авторский сезонный купаж", descEn: "Signature seasonal blend" },
   ]},
 ];
 
 const hookahCategories: MenuCategory[] = [
   { titleRu: "Купажи мастера", titleEn: "Master's Blends", descRu: "Авторские составы шеф-кальянщика. Сложные многослойные миксы", descEn: "Head hookah master's signature blends. Complex multi-layered mixes", items: [
-    { nameRu: "Купаж №1 «Арбатский»", nameEn: "Blend #1 \"Arbat\"", descRu: "Пряный, согревающий, с нотами корицы", descEn: "Spicy, warming, with cinnamon notes", flagship: true },
-    { nameRu: "Купаж №3 «Полночь»", nameEn: "Blend #3 \"Midnight\"", descRu: "Глубокий, дымный, чёрная смородина", descEn: "Deep, smoky, blackcurrant", flagship: true },
-    { nameRu: "Купаж №5 «Утёс»", nameEn: "Blend #5 \"Rock\"", descRu: "Минеральный, с нотами улунского чая", descEn: "Mineral, with oolong tea notes" },
+    { nameRu: "Купаж №1 \u00abАрбатский\u00bb", nameEn: "Blend #1 \"Arbat\"", descRu: "Пряный, согревающий, с нотами корицы", descEn: "Spicy, warming, with cinnamon notes", flagship: true },
+    { nameRu: "Купаж №3 \u00abПолночь\u00bb", nameEn: "Blend #3 \"Midnight\"", descRu: "Глубокий, дымный, чёрная смородина", descEn: "Deep, smoky, blackcurrant", flagship: true },
+    { nameRu: "Купаж №5 \u00abУтёс\u00bb", nameEn: "Blend #5 \"Rock\"", descRu: "Минеральный, с нотами улунского чая", descEn: "Mineral, with oolong tea notes" },
   ]},
   { titleRu: "Моно", titleEn: "Mono", descRu: "Чистый вкус одного сорта табака", descEn: "Pure single-variety tobacco taste", items: [
     { nameRu: "Darkside Core", nameEn: "Darkside Core" },
@@ -57,8 +57,8 @@ const hookahCategories: MenuCategory[] = [
     { nameRu: "Element Earth", nameEn: "Element Earth" },
   ]},
   { titleRu: "Дымные церемонии", titleEn: "Smoke Ceremonies", descRu: "Ритуал подачи с элементами чайной церемонии", descEn: "Serving ritual with tea ceremony elements", items: [
-    { nameRu: "Церемония «Код»", nameEn: "\"Code\" Ceremony", descRu: "Кальян + чайная пара + сладости, 120 мин", descEn: "Hookah + tea pairing + sweets, 120 min", flagship: true },
-    { nameRu: "Церемония «1847»", nameEn: "\"1847\" Ceremony", descRu: "Премиум кальян + 3 сорта чая + десерт", descEn: "Premium hookah + 3 tea varieties + dessert" },
+    { nameRu: "Церемония \u00abКод\u00bb", nameEn: "\"Code\" Ceremony", descRu: "Кальян + чайная пара + сладости, 120 мин", descEn: "Hookah + tea pairing + sweets, 120 min", flagship: true },
+    { nameRu: "Церемония \u00ab1847\u00bb", nameEn: "\"1847\" Ceremony", descRu: "Премиум кальян + 3 сорта чая + десерт", descEn: "Premium hookah + 3 tea varieties + dessert" },
   ]},
   { titleRu: "Лёгкий дым", titleEn: "Light Smoke", descRu: "Мягкие фруктовые и цветочные композиции", descEn: "Soft fruit and floral compositions", items: [
     { nameRu: "Персик и жасмин", nameEn: "Peach & Jasmine" },
@@ -85,11 +85,24 @@ function MenuContent() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("tea");
   const categories = allCategories[activeTab];
+  const tabsRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const tab = searchParams.get("tab");
-    if (tab && allCategories[tab]) setActiveTab(tab);
+    if (tab && allCategories[tab]) {
+      setActiveTab(tab);
+      setTimeout(() => {
+        tabsRef.current?.scrollIntoView({ block: "start" });
+      }, 50);
+    }
   }, [searchParams]);
+
+  const handleTabClick = (tabId: string) => {
+    setActiveTab(tabId);
+    setTimeout(() => {
+      tabsRef.current?.scrollIntoView({ block: "start" });
+    }, 50);
+  };
 
   return (
     <>
@@ -99,9 +112,9 @@ function MenuContent() {
         <DiamondDivider className="phil-visible" />
         <div className="section-title">{t("Меню", "Menu")}</div>
         <div className="section-subtitle" style={{ marginBottom: 40 }}>{t("Полное меню клуба", "Full club menu")}</div>
-        <div className="menu-tabs">
+        <div className="menu-tabs" ref={tabsRef}>
           {tabs.map((tab) => (
-            <button key={tab.id} className={`menu-tab ${activeTab === tab.id ? "menu-tab-active" : "menu-tab-inactive"}`} onClick={() => setActiveTab(tab.id)}>
+            <button key={tab.id} className={`menu-tab ${activeTab === tab.id ? "menu-tab-active" : "menu-tab-inactive"}`} onClick={() => handleTabClick(tab.id)}>
               {t(tab.labelRu, tab.labelEn)}
             </button>
           ))}
