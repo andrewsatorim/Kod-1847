@@ -1,16 +1,14 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useLang } from "@/context/LanguageContext";
 
 export default function BackButton({ href }: { href?: string }) {
-  const router = useRouter();
   const { t } = useLang();
 
   const handleClick = () => {
     if (href) {
-      router.push(href);
+      window.location.href = href;
     } else {
-      router.back();
+      window.history.back();
     }
   };
 
