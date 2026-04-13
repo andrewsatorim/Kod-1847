@@ -8,17 +8,16 @@ import DiamondDivider from "@/components/DiamondDivider";
 import ReservationModal from "@/components/ReservationModal";
 
 const stats = [
-  { value: "4", labelRu: "формата сотрудничества", labelEn: "partnership formats" },
-  { value: "6 - 40", labelRu: "гостей на мероприятие", labelEn: "guests per event" },
+  { value: "3", labelRu: "формата сотрудничества", labelEn: "partnership formats" },
+  { value: "6 - 50", labelRu: "гостей на мероприятие", labelEn: "guests per event" },
   { value: "145", labelRu: "м² клубного пространства", labelEn: "m² of club space" },
-  { value: "5", labelRu: "собственных мероприятий", labelEn: "signature events" },
 ];
 
 const advantages = [
   { ru: "Уникальная атмосфера и исторический контекст", en: "Unique atmosphere and historical context" },
   { ru: "Гибкие форматы сотрудничества", en: "Flexible partnership formats" },
   { ru: "Чайное сопровождение гостей", en: "Tea service for guests" },
-  { ru: "Камерность: от 6 до 40 гостей", en: "Intimacy: from 6 to 40 guests" },
+  { ru: "Камерность: от 6 до 50 гостей", en: "Intimacy: from 6 to 50 guests" },
 ];
 
 const partnershipFormats = [
@@ -81,33 +80,6 @@ const partnershipFormats = [
   },
 ];
 
-const clubFormats = [
-  {
-    nameRu: "Пятничный «Открытый» стол", nameEn: "Friday Open Table",
-    descRu: "Варка чая на огне, пролив 3 - 5 чаев. Идеально для общения и знакомства.",
-    descEn: "Fire-brewed tea, 3 - 5 infusions. Ideal for socializing.",
-    detailRu: "До 20 гостей · 3 часа", detailEn: "Up to 20 guests · 3 hours",
-  },
-  {
-    nameRu: "КиноЧай", nameEn: "CineTea",
-    descRu: "Совместный просмотр глубокого кинематографа и обсуждение с модератором и экспертами.",
-    descEn: "Screening of art-house cinema with moderated discussion.",
-    detailRu: "До 20 гостей · 2 - 3 часа · 2 раза в месяц", detailEn: "Up to 20 guests · 2 - 3 hours · Twice a month",
-  },
-  {
-    nameRu: "Чайное действо", nameEn: "Tea Experience",
-    descRu: "Погружение в чайные традиции и историю. Серьёзные переговоры с тактичным разливом.",
-    descEn: "Immersion into tea traditions. Thoughtful meetings with tactful service.",
-    detailRu: "До 8 гостей · 1,5 - 2 часа · 3 - 5 чаев", detailEn: "Up to 8 guests · 1.5 - 2 hours · 3 - 5 teas",
-  },
-  {
-    nameRu: "Стилизованные чаепития", nameEn: "Themed Tea Ceremonies",
-    descRu: "Самоварное, чаоджоуское, тайваньское чаепития. Вау-эффект и новые эмоции.",
-    descEn: "Samovar, Chaozhou, Taiwanese ceremonies. Wow-effect and new emotions.",
-    detailRu: "3 - 12 гостей · 1,5 - 2 часа", detailEn: "3 - 12 guests · 1.5 - 2 hours",
-  },
-];
-
 const conditions = [
   {
     numRu: "01", titleRu: "Согласование", titleEn: "Coordination",
@@ -145,13 +117,6 @@ const summaryTable = [
     col2Ru: "Без аренды", col2En: "No rental",
     col3Ru: "15 - 25% организатору", col3En: "15 - 25% to organizer",
   },
-];
-
-const suitableFor = [
-  { ru: "Дружественных встреч", en: "Friendly gatherings" },
-  { ru: "Региональных и иностранных делегаций", en: "Regional and international delegations" },
-  { ru: "Переговоров", en: "Negotiations" },
-  { ru: "Нетворкинга", en: "Networking" },
 ];
 
 export default function PartnershipPage() {
@@ -217,31 +182,6 @@ export default function PartnershipPage() {
                 </div>
               )}
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Club Formats */}
-      <section className="partner-section">
-        <DiamondDivider className="phil-visible" />
-        <div className="partner-section-title">{t("Собственные мероприятия клуба", "Club signature events")}</div>
-        <div className="partner-formats">
-          {clubFormats.map((f, i) => (
-            <div key={i} className="partner-format-card">
-              <div className="partner-format-name">{t(f.nameRu, f.nameEn)}</div>
-              <div className="partner-format-desc">{t(f.descRu, f.descEn)}</div>
-              <div className="partner-format-detail">{t(f.detailRu, f.detailEn)}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Suitable for */}
-      <section className="partner-section">
-        <div className="partner-section-label">{t("Подходит для", "Suitable for")}</div>
-        <div className="partner-suitable">
-          {suitableFor.map((s, i) => (
-            <div key={i} className="partner-suitable-item">{t(s.ru, s.en)}</div>
           ))}
         </div>
       </section>

@@ -24,7 +24,7 @@ export default function PartnershipPreview() {
         </div>
         <div className="partner-preview-divider" />
         <div className="partner-preview-stat">
-          <span className="partner-preview-stat-num">6 - 40</span>
+          <span className="partner-preview-stat-num">6 - 50</span>
           <span className="partner-preview-stat-label">{t("гостей", "guests")}</span>
         </div>
         <div className="partner-preview-divider" />
