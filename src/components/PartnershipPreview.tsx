@@ -19,7 +19,7 @@ export default function PartnershipPreview() {
       </div>
       <div className="partner-preview-stats">
         <div className="partner-preview-stat">
-          <span className="partner-preview-stat-num">4</span>
+          <span className="partner-preview-stat-num">3</span>
           <span className="partner-preview-stat-label">{t("формата", "formats")}</span>
         </div>
         <div className="partner-preview-divider" />
