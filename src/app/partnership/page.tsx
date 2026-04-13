@@ -37,8 +37,8 @@ const partnershipFormats = [
       "Guests may order drinks, desserts, and hookah",
       "Orders are charged separately",
     ],
-    suitRu: "10 - 40 гостей: выставки, лекции, презентации, закрытые показы",
-    suitEn: "10 - 40 guests: exhibitions, lectures, presentations, private screenings",
+    suitRu: "10 - 50 гостей: выставки, лекции, презентации, закрытые показы",
+    suitEn: "10 - 50 guests: exhibitions, lectures, presentations, private screenings",
   },
   {
     numRu: "02", titleRu: "Билетный формат", titleEn: "Ticket Format",
@@ -101,7 +101,7 @@ const conditions = [
 const summaryTable = [
   {
     formatRu: "Фиксированная аренда", formatEn: "Fixed Rental",
-    col1Ru: "10 - 40 гостей", col1En: "10 - 40 guests",
+    col1Ru: "10 - 50 гостей", col1En: "10 - 50 guests",
     col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
     col3Ru: "Фиксированная стоимость", col3En: "Fixed price",
   },
