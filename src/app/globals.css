@@ -212,7 +212,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 /* ===== CONTACT ===== */
 .contact-section { padding: 32px 24px 24px; background: #08080A; display: flex; flex-direction: column; align-items: center; }
 .contact-two-col { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 20px 48px; margin-top: 20px; width: 100%; max-width: 900px; }
-@media(max-width: 480px) { .contact-two-col { flex-direction: column; align-items: center; gap: 20px; } }
+@media(max-width: 480px) { .contact-two-col { flex-direction: column; align-items: center; gap: 20px; text-align: center; } }
 .contact-col { display: contents; }
 .contact-item { }
 .contact-label { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #9A958B; margin-bottom: 8px; }
@@ -224,8 +224,9 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .social-link:hover { color: #B89860; }
 
 /* ===== BACK BUTTON (all inner pages) ===== */
-.menu-back-btn { position: fixed; top: 80px; left: 24px; z-index: 40; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 2px; color: #9A958B; background: rgba(8,8,10,0.8); border: 1px solid rgba(184,152,96,0.15); padding: 8px 16px; cursor: pointer; transition: all 0.3s; backdrop-filter: blur(8px); text-decoration: none; display: inline-block; }
+.menu-back-btn { position: fixed; top: 80px; left: 24px; z-index: 40; font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 2px; color: #9A958B; background: rgba(8,8,10,0.9); border: 1px solid rgba(184,152,96,0.15); padding: 8px 16px; cursor: pointer; transition: all 0.3s; backdrop-filter: blur(8px); text-decoration: none; display: inline-block; }
 .menu-back-btn:hover { color: #B89860; border-color: rgba(184,152,96,0.4); }
+@media(max-width: 480px) { .menu-back-btn { position: relative; top: auto; left: auto; margin: 80px 24px 0; } }
 
 /* ===== MENU PAGE ===== */
 .menu-page { padding: 120px 24px 80px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
@@ -254,7 +255,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .partner-preview-stat-num { font-family: 'Bodoni Moda', serif; font-size: 32px; color: #B89860; }
 .partner-preview-stat-label { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #9A958B; }
 .partner-preview-divider { width: 1px; height: 40px; background: rgba(184,152,96,0.2); }
-@media(max-width: 420px) { .partner-preview-stats { gap: 20px; } .partner-preview-stat-num { font-size: 24px; } }
+@media(max-width: 420px) { .partner-preview-stats { gap: 16px; flex-wrap: wrap; justify-content: center; } .partner-preview-stat-num { font-size: 22px; } .partner-preview-divider { height: 28px; } }
 
 /* ===== PARTNERSHIP PAGE ===== */
 .partner-hero { padding: 120px 24px 40px; display: flex; flex-direction: column; align-items: center; text-align: center; }
