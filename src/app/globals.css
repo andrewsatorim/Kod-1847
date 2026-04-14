@@ -141,8 +141,8 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .site-footer { padding: 20px 24px 14px; border-top: 1px solid rgba(184,152,96,0.15); background: #08080A; }
 .footer-inner { max-width: 900px; margin: 0 auto; }
 .footer-columns { display: grid; grid-template-columns: 1fr; gap: 16px; }
-@media(min-width: 640px) { .footer-columns { grid-template-columns: 1fr 1fr 1fr; gap: 20px; } }
-.footer-col { display: flex; flex-direction: column; gap: 2px; text-align: center; align-items: center; }
+@media(min-width: 640px) { .footer-columns { grid-template-columns: auto auto auto; gap: 60px; justify-content: center; } }
+.footer-col { display: flex; flex-direction: column; gap: 2px; }
 .footer-logo { font-family: 'Bodoni Moda', serif; font-size: 10px; color: #B89860; letter-spacing: 4px; margin-bottom: 2px; }
 .footer-col-heading { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 7px; letter-spacing: 2px; text-transform: uppercase; color: rgba(154,149,139,0.5); margin-bottom: 2px; }
 .footer-col-sub { font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 7px; color: rgba(154,149,139,0.6); margin-bottom: 2px; }
