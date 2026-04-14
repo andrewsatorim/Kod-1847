@@ -99,27 +99,6 @@ const conditions = [
   },
 ];
 
-const summaryTable = [
-  {
-    formatRu: "Фиксированная аренда", formatEn: "Fixed Rental",
-    col1Ru: "10 - 50 гостей", col1En: "10 - 50 guests",
-    col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
-    col3Ru: "Фиксированная стоимость", col3En: "Fixed price",
-  },
-  {
-    formatRu: "Билетный формат", formatEn: "Ticket Format",
-    col1Ru: "6 - 14 гостей", col1En: "6 - 14 guests",
-    col2Ru: "Билеты у организатора", col2En: "Tickets with organizer",
-    col3Ru: "Мин. заказ 1\u00a0300\u00a0₽/гость", col3En: "Min. order 1\u00a0300\u00a0₽/guest",
-  },
-  {
-    formatRu: "Партнёрский формат", formatEn: "Partnership Format",
-    col1Ru: "Бесплатно для гостей", col1En: "Free for guests",
-    col2Ru: "Без аренды", col2En: "No rental",
-    col3Ru: "15 - 25% организатору", col3En: "15 - 25% to organizer",
-  },
-];
-
 export default function PartnershipPage() {
   const { t } = useLang();
   const [modalOpen, setModalOpen] = useState(false);
@@ -135,8 +114,8 @@ export default function PartnershipPage() {
         <h1 className="partner-hero-title">{t("Партнёрство", "Partnership")}</h1>
         <p className="partner-hero-sub">{t("Пространство для камерных событий", "Space for intimate events")}</p>
         <p className="partner-hero-desc">{t(
-          "«Код 1847» — клубное пространство для сессий, мастермайндов, выставок, закрытых встреч и авторских вечеров. Историческое здание 1847 года на Арбате, 145\u00a0м².",
-          "Kod 1847 is a club space for sessions, masterminds, exhibitions, private meetings, and signature evenings. A historic 1847 building on Arbat, 145\u00a0m²."
+          "\u00abКод 1847\u00bb \u2014 клубное пространство для сессий, мастермайндов, выставок, закрытых встреч и авторских вечеров. Историческое здание 1847 года на Арбате, 145\u00a0м\u00b2.",
+          "Kod 1847 is a club space for sessions, masterminds, exhibitions, private meetings, and signature evenings. A historic 1847 building on Arbat, 145\u00a0m\u00b2."
         )}</p>
       </section>
 
@@ -203,26 +182,8 @@ export default function PartnershipPage() {
         </div>
       </section>
 
-      {/* Summary Table */}
-      <section className="partner-section">
-        <div className="partner-section-label">{t("Краткая сводка форматов", "Format summary")}</div>
-        <div className="partner-summary">
-          {summaryTable.map((row, i) => (
-            <div key={i} className="partner-summary-row">
-              <div className="partner-summary-format">{t(row.formatRu, row.formatEn)}</div>
-              <div className="partner-summary-details">
-                <span>{t(row.col1Ru, row.col1En)}</span>
-                <span>{t(row.col2Ru, row.col2En)}</span>
-                <span>{t(row.col3Ru, row.col3En)}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Tagline + CTA + Contact */}
+      {/* CTA + Contact */}
       <section className="partner-section" style={{ paddingBottom: 80 }}>
-        <div className="partner-tagline">{t("Доступ по ценности, не только по деньгам", "Access by value, not just by money")}</div>
         <div className="partner-contact-block">
           <div className="partner-contact-line">
             <a href="tel:+79015359000" className="partner-contact-link" onClick={() => trackEvent("click_phone", { location: "partnership" })}>+7 (901) 535-90-00</a>
