@@ -139,7 +139,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 
 /* ===== FOOTER ===== */
 .site-footer { padding: 20px 24px 14px; border-top: 1px solid rgba(184,152,96,0.15); background: #08080A; }
-.footer-inner { max-width: 900px; margin: 0 auto; transform: scale(0.72); transform-origin: top center; }
+.footer-inner { max-width: 900px; margin: 0 auto; }
 .footer-columns { display: grid; grid-template-columns: 1fr; gap: 16px; }
 @media(min-width: 640px) { .footer-columns { grid-template-columns: 1fr 1fr 1fr; gap: 20px; } }
 .footer-col { display: flex; flex-direction: column; gap: 2px; }
