@@ -87,8 +87,6 @@ function MenuContent() {
   const categories = allCategories[activeTab];
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
-  const tabsRef = React.useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     const tab = searchParams.get("tab");
     if (tab && allCategories[tab]) {
