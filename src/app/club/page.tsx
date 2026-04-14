@@ -2,6 +2,7 @@
 import { FormEvent, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
@@ -22,7 +23,14 @@ const howHeardOptions = [
 export default function ClubPage() {
   const { t } = useLang();
   const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e: FormEvent) => { e.preventDefault(); trackEvent("booking_submit", { source: "club_membership" }); setSubmitted(true); };
+  const [consent, setConsent] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!consent) { setShowError(true); return; }
+    trackEvent("booking_submit", { source: "club_membership" });
+    setSubmitted(true);
+  };
 
   return (
     <>
@@ -67,7 +75,20 @@ export default function ClubPage() {
                 </select>
               </div>
               <textarea className="contact-input contact-textarea" placeholder={t("Сообщение (по желанию)", "Message (optional)")} />
-              <button type="submit" className="contact-submit" style={{ alignSelf: "center" }}>{t("Отправить заявку", "Submit application")}</button>
+              <div className="consent-block">
+                <label className="consent-label">
+                  <input type="checkbox" className="consent-checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setShowError(false); }} />
+                  <span className="consent-checkmark" />
+                  <span className="consent-text">
+                    {t("Я даю согласие на обработку персональных данных в соответствии с ", "I consent to the processing of personal data in accordance with the ")}
+                    <Link href="/privacy" target="_blank" className="consent-link" onClick={(e) => e.stopPropagation()}>
+                      {t("Политикой конфиденциальности", "Privacy Policy")}
+                    </Link>
+                  </span>
+                </label>
+                {showError && <p className="consent-error">{t("Для отправки заявки необходимо дать согласие на обработку персональных данных", "You must consent to the processing of personal data to submit")}</p>}
+              </div>
+              <button type="submit" className="contact-submit" style={{ alignSelf: "center" }} disabled={!consent}>{t("Отправить заявку", "Submit application")}</button>
             </form>
           )}
         </div>
