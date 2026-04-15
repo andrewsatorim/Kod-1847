@@ -25,7 +25,7 @@ export default function Philosophy() {
       <div className="phil-content">
         <div className="phil-block phil-hidden">
           <div className="phil-corner" />
-          <div className="phil-text">{t("\u0422\u0435\u043c, \u043a\u043e\u043c\u0443 \u0432\u0430\u0436\u043d\u043e \u0441\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435 \u0431\u0435\u0437 \u0441\u0443\u0435\u0442\u044b. \u041a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u0441\u0435\u0440\u0432\u0438\u0441 \u0431\u0435\u0437 \u043f\u0430\u0444\u043e\u0441\u0430. \u041c\u0430\u0441\u0442\u0435\u0440\u0441\u0442\u0432\u043e \u0431\u0435\u0437 \u043b\u0438\u0448\u043d\u0435\u0433\u043e \u0448\u0443\u043c\u0430. \u042d\u043a\u0441\u043a\u043b\u044e\u0437\u0438\u0432\u043d\u044b\u0439 \u043f\u0440\u043e\u0434\u0443\u043a\u0442. \u0412\u0437\u0430\u0438\u043c\u043e\u043f\u043e\u043d\u0438\u043c\u0430\u043d\u0438\u0435 \u0431\u0435\u0437 \u043b\u0438\u0448\u043d\u0438\u0445 \u0441\u043b\u043e\u0432. \u042d\u0442\u043e \u041a\u043e\u0434 1847.", "For those who value substance over fuss. Quality service without pretense. Mastery without noise. An exclusive product. Understanding without excess words. This is Code 1847.")}</div>
+          <div className="phil-text">{t("Тем, кому важно содержание без суеты.\nКачественный сервис без пафоса.\nМастерство без лишнего шума.\nЭксклюзивный продукт.\nВзаимопонимание без лишних слов.\nЭто Код 1847.", "For those who value substance over fuss.\nQuality service without pretense.\nMastery without noise.\nAn exclusive product.\nUnderstanding without excess words.\nThis is Code 1847.")}</div>
         </div>
       </div>
     </section>
