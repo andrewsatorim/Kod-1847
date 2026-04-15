@@ -19,8 +19,8 @@ export default function PartnershipPreview() {
       </div>
       <div className="partner-preview-stats">
         <div className="partner-preview-stat">
-          <span className="partner-preview-stat-num">3</span>
-          <span className="partner-preview-stat-label">{t("\u0444\u043e\u0440\u043c\u0430\u0442\u0430", "formats")}</span>
+          <span className="partner-preview-stat-num">145 <span style={{ fontSize: 16 }}>{t("\u043c\u00b2", "m\u00b2")}</span></span>
+          <span className="partner-preview-stat-label">{t("\u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e", "space")}</span>
         </div>
         <div className="partner-preview-divider" />
         <div className="partner-preview-stat">
@@ -29,8 +29,8 @@ export default function PartnershipPreview() {
         </div>
         <div className="partner-preview-divider" />
         <div className="partner-preview-stat">
-          <span className="partner-preview-stat-num">145 <span style={{ fontSize: 16 }}>{t("\u043c\u00b2", "m\u00b2")}</span></span>
-          <span className="partner-preview-stat-label">{t("\u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u043e", "space")}</span>
+          <span className="partner-preview-stat-num">3</span>
+          <span className="partner-preview-stat-label">{t("\u0444\u043e\u0440\u043c\u0430\u0442\u0430", "formats")}</span>
         </div>
       </div>
       <Link href="/partnership" className="view-all-link" style={{ position: "relative", zIndex: 2 }}>

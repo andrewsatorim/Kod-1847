@@ -128,7 +128,7 @@ body { font-family: 'Raleway', sans-serif; color: #F5F0E8; background: #08080A; 
 .room-preview-card { position: relative; width: 100%; overflow: hidden; opacity: 0; transform: translateY(30px); transition: opacity 1.2s ease, transform 1.2s ease; }
 .room-preview-card.room-preview-visible { opacity: 1; transform: translateY(0); }
 .room-preview-img { display: block; width: 100%; }
-.room-preview-img img { width: 100%; height: auto; display: block; opacity: 0.35; }
+.room-preview-img img { width: 100%; height: auto; display: block; opacity: 0.35; max-height: 70vh; object-fit: cover; }
 .room-preview-tint { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(8,8,10,0.3) 0%, rgba(8,8,10,0.7) 60%, rgba(8,8,10,0.95) 100%); }
 .room-preview-content { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; }
 .room-preview-title { font-family: 'Playfair Display', serif; font-size: 28px; color: #B89860; letter-spacing: 2px; margin-bottom: 16px; }
@@ -216,6 +216,7 @@ a.footer-col-line:hover { color: #B89860; }
 .menu-pdf-divider { width: 1px; height: 32px; background: rgba(184,152,96,0.25); justify-self: center; }
 .menu-pdf-btn { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; text-decoration: none; border: 1px solid rgba(184,152,96,0.35); padding: 14px 32px; transition: all 0.4s ease; text-align: center; }
 .menu-pdf-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
+@media(max-width: 480px) { .menu-pdf-buttons { grid-template-columns: 1fr; gap: 16px; max-width: 280px; } .menu-pdf-divider { display: none; } .menu-pdf-btn { padding: 14px 20px; } }
 .menu-reserve-btn { font-family: 'Raleway', sans-serif; font-weight: 400; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: #B89860; background: transparent; border: 1px solid rgba(184,152,96,0.35); padding: 14px 36px; cursor: pointer; transition: all 0.4s ease; margin-top: 40px; position: relative; z-index: 2; align-self: center; }
 .menu-reserve-btn:hover { background: rgba(184,152,96,0.06); border-color: #B89860; }
 
