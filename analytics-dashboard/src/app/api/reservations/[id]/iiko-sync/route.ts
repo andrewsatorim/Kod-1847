@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbQuery } from "@/lib/db";
 
-const IIKO_BASE_URL = "https://api-ru.iiko.services";
-const IIKO_API_LOGIN = "99bc25d40d5c4587afec2bcad7794e4e";
+const IIKO_BASE_URL = process.env.IIKO_BASE_URL || "https://api-ru.iiko.services";
+const IIKO_API_LOGIN = process.env.IIKO_API_LOGIN || "99bc25d40d5c4587afec2bcad7794e4e";
 
 let _token: string | null = null;
 let _tokenExpiry = 0;
