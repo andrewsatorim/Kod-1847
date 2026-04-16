@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
-import { submitBookingRequest } from "@/lib/bookings";
 import Header from "@/components/Header";
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
@@ -20,21 +19,6 @@ const events = [
 export default function EventsPage() {
   const { t } = useLang();
   const [registerModal, setRegisterModal] = useState<number | null>(null);
-  const [regName, setRegName] = useState("");
-  const [regPhone, setRegPhone] = useState("");
-  const handleEventSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const ev = registerModal !== null ? events[registerModal] : null;
-    await submitBookingRequest({
-      guest_name: regName,
-      phone: regPhone,
-      source: "events",
-      source_detail: ev?.nameRu || null,
-      consent_pdn: true,
-    });
-    trackEvent("booking_submit", { source: "events", event: ev?.nameRu || "" });
-    setRegName(""); setRegPhone(""); setRegisterModal(null);
-  };
 
   return (
     <>
@@ -62,9 +46,9 @@ export default function EventsPage() {
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><line x1="2" y1="2" x2="14" y2="14" stroke="#9A958B" strokeWidth="1" /><line x1="14" y1="2" x2="2" y2="14" stroke="#9A958B" strokeWidth="1" /></svg>
           </button>
           <div className="modal-header">{registerModal !== null ? t(events[registerModal].nameRu, events[registerModal].nameEn) : ""}</div>
-          <form onSubmit={handleEventSubmit}>
-            <div className="modal-field"><label className="modal-label">{t("\u0418\u043c\u044f", "Name")}</label><input type="text" className="modal-input" placeholder={t("\u0418\u043c\u044f \u0438 \u0444\u0430\u043c\u0438\u043b\u0438\u044f", "Full name")} required value={regName} onChange={(e) => setRegName(e.target.value)} /></div>
-            <div className="modal-field"><label className="modal-label">{t("\u0422\u0435\u043b\u0435\u0444\u043e\u043d", "Phone")}</label><input type="tel" className="modal-input" placeholder="+7 (___) ___ __ __" required value={regPhone} onChange={(e) => setRegPhone(e.target.value)} /></div>
+          <form onSubmit={(e) => { e.preventDefault(); trackEvent("booking_submit", { source: "events", event: registerModal !== null ? events[registerModal].nameRu : "" }); setRegisterModal(null); }}>
+            <div className="modal-field"><label className="modal-label">{t("\u0418\u043c\u044f", "Name")}</label><input type="text" className="modal-input" placeholder={t("\u0418\u043c\u044f \u0438 \u0444\u0430\u043c\u0438\u043b\u0438\u044f", "Full name")} required /></div>
+            <div className="modal-field"><label className="modal-label">{t("\u0422\u0435\u043b\u0435\u0444\u043e\u043d", "Phone")}</label><input type="tel" className="modal-input" placeholder="+7 (___) ___ __ __" required /></div>
             <button type="submit" className="modal-submit">{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c", "Book")}</button>
           </form>
           <div className="modal-note">{t("\u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0434\u043b\u044f \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f", "We will contact you to confirm")}</div>
