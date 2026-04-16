@@ -163,6 +163,8 @@ a.footer-col-line:hover { color: #B89860; }
 .modal-close:hover { opacity: 1; }
 .modal-header { font-family: 'Bodoni Moda', serif; font-size: 22px; font-weight: 400; color: #B89860; text-align: center; margin-bottom: 32px; }
 .modal-field { margin-bottom: 20px; }
+.modal-field-row { display: flex; gap: 16px; margin-bottom: 20px; }
+.modal-field-row > div { margin-bottom: 0 !important; }
 .modal-label { display: block; font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; color: #9A958B; margin-bottom: 8px; }
 .modal-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(184,152,96,0.2); font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 14px; color: #F5F0E8; padding: 8px 0; outline: none; transition: border-color 0.3s; }
 .modal-input:focus { border-color: #B89860; }

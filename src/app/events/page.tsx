@@ -1,11 +1,14 @@
 "use client";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
+import { formatPhoneInput, isPhoneValid, normalizePhone } from "@/lib/phone";
 import Header from "@/components/Header";
 import BackButton from "@/components/BackButton";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 const events = [
   { day: "12", monthRu: "\u0410\u043f\u0440\u0435\u043b\u044c", monthEn: "April", nameRu: "\u0427\u0430\u0439\u043d\u0430\u044f \u0434\u0435\u0433\u0443\u0441\u0442\u0430\u0446\u0438\u044f: \u0443\u043b\u0443\u043d\u044b \u0423\u0438\u0448\u0430\u043d\u044c", nameEn: "Tea Tasting: Wuyi Oolongs", descRu: "\u0427\u0435\u0442\u044b\u0440\u0435 \u0443\u043b\u0443\u043d\u0441\u043a\u0438\u0445 \u0441\u043e\u0440\u0442\u0430, \u0443\u0440\u043e\u0436\u0430\u0439 2024. \u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0438 \u0447\u0430\u0439\u043d\u043e\u0433\u043e \u043c\u0430\u0441\u0442\u0435\u0440\u0430.", descEn: "Four oolong varieties, 2024 harvest. Tea master commentary.", time: "18:00", tagRu: "\u0414\u0435\u0433\u0443\u0441\u0442\u0430\u0446\u0438\u044f", tagEn: "Tasting" },
@@ -16,9 +19,63 @@ const events = [
   { day: "10", monthRu: "\u041c\u0430\u0439", monthEn: "May", nameRu: "\u0417\u0430\u043a\u0440\u044b\u0442\u044b\u0439 \u0443\u0436\u0438\u043d", nameEn: "Private Dinner", descRu: "\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u043e\u0435 \u043c\u0435\u043d\u044e \u043e\u0442 \u043f\u0440\u0438\u0433\u043b\u0430\u0448\u0451\u043d\u043d\u043e\u0433\u043e \u0448\u0435\u0444\u0430. \u041f\u0430\u0440\u0438\u043d\u0433 \u0447\u0430\u044f \u043a \u043a\u0430\u0436\u0434\u043e\u043c\u0443 \u0431\u043b\u044e\u0434\u0443.", descEn: "Guest chef's signature menu. Tea pairing for each course.", time: "19:30", tagRu: "\u0423\u0436\u0438\u043d", tagEn: "Dinner" },
 ];
 
+// YYYY-MM-DD для поля date
+function dateForEvent(day: string, monthRu: string): string {
+  const months: Record<string, number> = { "Январь":1,"Февраль":2,"Март":3,"Апрель":4,"Май":5,"Июнь":6,"Июль":7,"Август":8,"Сентябрь":9,"Октябрь":10,"Ноябрь":11,"Декабрь":12 };
+  const m = months[monthRu];
+  if (!m) return "";
+  const now = new Date();
+  const year = now.getMonth() + 1 > m ? now.getFullYear() + 1 : now.getFullYear();
+  return `${year}-${String(m).padStart(2, "0")}-${String(parseInt(day)).padStart(2, "0")}`;
+}
+
 export default function EventsPage() {
   const { t } = useLang();
   const [registerModal, setRegisterModal] = useState<number | null>(null);
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [errors, setErrors] = useState<{ phone?: boolean }>({});
+  const [submitting, setSubmitting] = useState(false);
+
+  const closeModal = () => {
+    setRegisterModal(null);
+    setName(""); setPhone(""); setErrors({});
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!isPhoneValid(phone)) { setErrors({ phone: true }); return; }
+    setErrors({});
+
+    const ev = registerModal !== null ? events[registerModal] : null;
+    setSubmitting(true);
+    trackEvent("booking_submit", { source: "events", event: ev?.nameRu || "" });
+
+    try {
+      if (API_URL && ev) {
+        await fetch(`${API_URL}/api/public/reservations`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            phone: normalizePhone(phone),
+            date: dateForEvent(ev.day, ev.monthRu),
+            time: ev.time,
+            guests: "1",
+            comment: "",
+            consent: true,
+            source: "events",
+            event_name: ev.nameRu,
+          }),
+        });
+      }
+    } catch {
+      // silent
+    }
+
+    setSubmitting(false);
+    closeModal();
+  };
 
   return (
     <>
@@ -40,18 +97,35 @@ export default function EventsPage() {
           ))}
         </div>
       </div>
-      <div className={`modal-overlay ${registerModal !== null ? "open" : ""}`} onClick={(e) => { if (e.target === e.currentTarget) setRegisterModal(null); }}>
+      <div className={`modal-overlay ${registerModal !== null ? "open" : ""}`} onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}>
         <div className="modal-box">
-          <button className="modal-close" onClick={() => setRegisterModal(null)}>
+          <button className="modal-close" onClick={closeModal}>
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><line x1="2" y1="2" x2="14" y2="14" stroke="#9A958B" strokeWidth="1" /><line x1="14" y1="2" x2="2" y2="14" stroke="#9A958B" strokeWidth="1" /></svg>
           </button>
           <div className="modal-header">{registerModal !== null ? t(events[registerModal].nameRu, events[registerModal].nameEn) : ""}</div>
-          <form onSubmit={(e) => { e.preventDefault(); trackEvent("booking_submit", { source: "events", event: registerModal !== null ? events[registerModal].nameRu : "" }); setRegisterModal(null); }}>
-            <div className="modal-field"><label className="modal-label">{t("\u0418\u043c\u044f", "Name")}</label><input type="text" className="modal-input" placeholder={t("\u0418\u043c\u044f \u0438 \u0444\u0430\u043c\u0438\u043b\u0438\u044f", "Full name")} required /></div>
-            <div className="modal-field"><label className="modal-label">{t("\u0422\u0435\u043b\u0435\u0444\u043e\u043d", "Phone")}</label><input type="tel" className="modal-input" placeholder="+7 (___) ___ __ __" required /></div>
-            <button type="submit" className="modal-submit">{t("\u0417\u0430\u0431\u0440\u043e\u043d\u0438\u0440\u043e\u0432\u0430\u0442\u044c", "Book")}</button>
+          <form onSubmit={handleSubmit}>
+            <div className="modal-field">
+              <label className="modal-label">{t("Имя", "Name")}</label>
+              <input type="text" className="modal-input" placeholder={t("Имя и фамилия", "Full name")} required value={name} onChange={(e) => setName(e.target.value)} />
+            </div>
+            <div className="modal-field">
+              <label className="modal-label">{t("Телефон", "Phone")}</label>
+              <input
+                type="tel"
+                inputMode="tel"
+                className="modal-input"
+                placeholder="+7 (___) ___-__-__"
+                required
+                value={phone}
+                onChange={(e) => { setPhone(formatPhoneInput(e.target.value)); if (errors.phone) setErrors({}); }}
+              />
+              {errors.phone && <p className="consent-error">{t("Введите номер в формате +7 (999) 123-45-67", "Enter phone as +7 (999) 123-45-67")}</p>}
+            </div>
+            <button type="submit" className="modal-submit" disabled={submitting}>
+              {submitting ? t("Отправка...", "Submitting...") : t("Забронировать", "Book")}
+            </button>
           </form>
-          <div className="modal-note">{t("\u041c\u044b \u0441\u0432\u044f\u0436\u0435\u043c\u0441\u044f \u0434\u043b\u044f \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u0438\u044f", "We will contact you to confirm")}</div>
+          <div className="modal-note">{t("Мы свяжемся для подтверждения", "We will contact you to confirm")}</div>
         </div>
       </div>
       <Footer />

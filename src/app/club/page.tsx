@@ -2,10 +2,13 @@
 import { FormEvent, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
+import { formatPhoneInput, isPhoneValid, normalizePhone } from "@/lib/phone";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import DiamondDivider from "@/components/DiamondDivider";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 const levels = [
   { nameRu: "Разовое посещение", nameEn: "Single Visit", subRu: "По рекомендации члена клуба", subEn: "By member recommendation", featuresRu: ["Доступ в оба зала", "Полная карта чая и кальянов", "Бронирование через рекомендателя"], featuresEn: ["Access to both halls", "Full tea and hookah menu", "Booking via recommender"], priceRu: "По запросу", priceEn: "On request", featured: false },
@@ -24,11 +27,47 @@ export default function ClubPage() {
   const { t } = useLang();
   const [submitted, setSubmitted] = useState(false);
   const [consent, setConsent] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const handleSubmit = (e: FormEvent) => {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [howHeard, setHowHeard] = useState("");
+  const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState<{ consent?: boolean; phone?: boolean }>({});
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!consent) { setShowError(true); return; }
+    const newErrors: typeof errors = {};
+    if (!consent) newErrors.consent = true;
+    if (!isPhoneValid(phone)) newErrors.phone = true;
+    if (Object.keys(newErrors).length) { setErrors(newErrors); return; }
+    setErrors({});
+
+    setSubmitting(true);
     trackEvent("booking_submit", { source: "club_membership" });
+
+    try {
+      if (API_URL) {
+        await fetch(`${API_URL}/api/public/reservations`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            phone: normalizePhone(phone),
+            date: "",
+            time: "",
+            guests: "",
+            comment: `Email: ${email}\nКак узнал: ${howHeard}${message ? "\nСообщение: " + message : ""}`,
+            consent: true,
+            source: "club_membership",
+          }),
+        });
+      }
+    } catch {
+      // Молча продолжаем — заявка отображается как отправленная
+    }
+
+    setSubmitting(false);
     setSubmitted(true);
   };
 
@@ -64,20 +103,29 @@ export default function ClubPage() {
             </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
-              <input type="text" className="contact-input" placeholder={t("Имя", "Name")} required />
-              <input type="tel" className="contact-input" placeholder={t("Телефон", "Phone")} required />
-              <input type="email" className="contact-input" placeholder="Email" required />
+              <input type="text" className="contact-input" placeholder={t("Имя", "Name")} required value={name} onChange={(e) => setName(e.target.value)} />
+              <input
+                type="tel"
+                inputMode="tel"
+                className="contact-input"
+                placeholder="+7 (___) ___-__-__"
+                required
+                value={phone}
+                onChange={(e) => { setPhone(formatPhoneInput(e.target.value)); if (errors.phone) setErrors({ ...errors, phone: false }); }}
+              />
+              {errors.phone && <p className="consent-error" style={{ marginTop: -8 }}>{t("Введите номер в формате +7 (999) 123-45-67", "Enter phone as +7 (999) 123-45-67")}</p>}
+              <input type="email" className="contact-input" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} />
               <div>
                 <label className="contact-label" style={{ marginBottom: 8, display: "block" }}>{t("Как узнали о клубе?", "How did you learn about the club?")}</label>
-                <select className="contact-input" style={{ appearance: "none", cursor: "pointer" }} required>
+                <select className="contact-input" style={{ appearance: "none", cursor: "pointer" }} required value={howHeard} onChange={(e) => setHowHeard(e.target.value)}>
                   <option value="" style={{ background: "#08080A" }}>{t("Выберите", "Select")}</option>
                   {howHeardOptions.map((opt, i) => (<option key={i} value={opt.ru} style={{ background: "#08080A" }}>{t(opt.ru, opt.en)}</option>))}
                 </select>
               </div>
-              <textarea className="contact-input contact-textarea" placeholder={t("Сообщение (по желанию)", "Message (optional)")} />
+              <textarea className="contact-input contact-textarea" placeholder={t("Сообщение (по желанию)", "Message (optional)")} value={message} onChange={(e) => setMessage(e.target.value)} />
               <div className="consent-block">
                 <label className="consent-label">
-                  <input type="checkbox" className="consent-checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setShowError(false); }} />
+                  <input type="checkbox" className="consent-checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setErrors({ ...errors, consent: false }); }} />
                   <span className="consent-checkmark" />
                   <span className="consent-text">
                     {t("Я даю согласие на обработку персональных данных в соответствии с ", "I consent to the processing of personal data in accordance with the ")}
@@ -86,9 +134,9 @@ export default function ClubPage() {
                     </Link>
                   </span>
                 </label>
-                {showError && <p className="consent-error">{t("Для отправки заявки необходимо дать согласие на обработку персональных данных", "You must consent to the processing of personal data to submit")}</p>}
+                {errors.consent && <p className="consent-error">{t("Для отправки заявки необходимо дать согласие на обработку персональных данных", "You must consent to the processing of personal data to submit")}</p>}
               </div>
-              <button type="submit" className="contact-submit" style={{ alignSelf: "center" }} disabled={!consent}>{t("Отправить заявку", "Submit application")}</button>
+              <button type="submit" className="contact-submit" style={{ alignSelf: "center" }} disabled={!consent || submitting}>{submitting ? t("Отправка...", "Submitting...") : t("Отправить заявку", "Submit application")}</button>
             </form>
           )}
         </div>

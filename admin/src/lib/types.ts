@@ -73,3 +73,25 @@ export interface TextBlock {
   value_ru: string;
   value_en: string;
 }
+
+export type VisitedStatus = "pending" | "came" | "no_show" | "cancelled";
+
+export interface Reservation {
+  id: number;
+  name: string;
+  phone: string;
+  date: string;
+  time: string;
+  guests: string;
+  comment: string;
+  consent: boolean;
+  source: string;
+  event_name: string;
+  visited: VisitedStatus;
+  manager_note: string;
+  iiko_id: string | null;
+  iiko_status: string | null;
+  iiko_error: string | null;
+  created_at: string;
+  updated_at: string;
+}

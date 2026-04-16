@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import pool from "@/lib/db";
+import { normalizePhone } from "@/lib/phone";
 
 const IIKO_BASE_URL = "https://api-ru.iiko.services";
 const IIKO_API_LOGIN = process.env.IIKO_API_LOGIN || "a1828182eba646dea445f379128776e0";
@@ -52,9 +53,7 @@ async function createIikoCustomer(
   name: string,
   phone: string
 ): Promise<string> {
-  // Normalize phone: keep only digits, ensure starts with 7 for Russia
-  const cleanPhone = phone.replace(/\D/g, "").replace(/^8/, "7");
-
+  // Phone here is already normalized to "+7XXXXXXXXXX"
   const res = await fetch(`${IIKO_BASE_URL}/api/1/loyalty/iiko/customer/create_or_update`, {
     method: "POST",
     headers: {
@@ -65,7 +64,7 @@ async function createIikoCustomer(
       organizationId,
       client: {
         name,
-        phone: cleanPhone,
+        phone,
       },
     }),
   });
@@ -84,6 +83,7 @@ async function createIikoReserve(
   organizationId: string,
   customerId: string,
   date: string,
+  time: string,
   guests: number,
   comment: string
 ): Promise<string> {
@@ -102,8 +102,9 @@ async function createIikoReserve(
   const terminalGroupId = termData.terminalGroups?.[0]?.items?.[0]?.id;
   if (!terminalGroupId) throw new Error("No terminal group found");
 
-  // Build datetime: if date is YYYY-MM-DD, add default time 19:00
-  const dateTime = date ? `${date} 19:00:00.000` : "";
+  // Build datetime: combine date + user-chosen time, fallback to 19:00
+  const hhmm = /^\d{2}:\d{2}$/.test(time) ? time : "19:00";
+  const dateTime = date ? `${date} ${hhmm}:00.000` : "";
 
   const res = await fetch(`${IIKO_BASE_URL}/api/1/reserve/create`, {
     method: "POST",
@@ -165,11 +166,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Consent is required" }, { status: 400, headers });
     }
 
+    // Normalize phone to iiko format "+7XXXXXXXXXX"
+    const phoneNormalized = normalizePhone(String(body.phone));
+    if (!phoneNormalized) {
+      return NextResponse.json(
+        { error: "Некорректный номер телефона. Ожидается формат +7XXXXXXXXXX" },
+        { status: 400, headers }
+      );
+    }
+
     // Save to local PostgreSQL
     const { rows } = await pool.query(
-      `INSERT INTO reservations (name, phone, date, guests, comment, consent)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING id`,
-      [body.name, body.phone, body.date || "", body.guests || "", body.comment || "", body.consent]
+      `INSERT INTO reservations (name, phone, date, time, guests, comment, consent, source, event_name)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING id`,
+      [
+        body.name,
+        phoneNormalized,
+        body.date || "",
+        body.time || "",
+        body.guests || "",
+        body.comment || "",
+        body.consent,
+        body.source || "",
+        body.event_name || "",
+      ]
     );
 
     const reservationId = rows[0].id;
@@ -180,8 +200,8 @@ export async function POST(req: NextRequest) {
         const token = await getIikoToken();
         const orgId = await getOrganizationId(token);
 
-        // Create or find guest card
-        const customerId = await createIikoCustomer(token, orgId, body.name, body.phone);
+        // Create or find guest card (phone is already normalized to +7XXXXXXXXXX)
+        const customerId = await createIikoCustomer(token, orgId, body.name, phoneNormalized);
 
         // Create reservation
         const iikoId = await createIikoReserve(
@@ -189,6 +209,7 @@ export async function POST(req: NextRequest) {
           orgId,
           customerId,
           body.date || "",
+          body.time || "",
           parseInt(body.guests) || 2,
           body.comment || ""
         );

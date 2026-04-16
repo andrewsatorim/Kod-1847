@@ -99,14 +99,25 @@ CREATE TABLE IF NOT EXISTS reservations (
   name          VARCHAR(255) NOT NULL,
   phone         VARCHAR(50) NOT NULL,
   date          VARCHAR(50) NOT NULL DEFAULT '',
+  time          VARCHAR(10) NOT NULL DEFAULT '',
   guests        VARCHAR(20) NOT NULL DEFAULT '',
   comment       TEXT NOT NULL DEFAULT '',
   consent       BOOLEAN NOT NULL DEFAULT FALSE,
+  source        VARCHAR(100) NOT NULL DEFAULT '',
+  event_name    VARCHAR(255) NOT NULL DEFAULT '',
+  visited       VARCHAR(20) NOT NULL DEFAULT 'pending'
+                CHECK (visited IN ('pending', 'came', 'no_show', 'cancelled')),
+  manager_note  TEXT NOT NULL DEFAULT '',
   iiko_id       VARCHAR(255),
   iiko_status   VARCHAR(50),
   iiko_error    TEXT,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE INDEX IF NOT EXISTS idx_reservations_created_at ON reservations(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_reservations_visited    ON reservations(visited);
+CREATE INDEX IF NOT EXISTS idx_reservations_source     ON reservations(source);
 
 -- Analytics: sessions
 CREATE TABLE IF NOT EXISTS analytics_sessions (
