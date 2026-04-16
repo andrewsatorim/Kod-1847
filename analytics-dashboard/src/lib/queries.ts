@@ -37,6 +37,28 @@ export interface DeviceStats {
 }
 export interface ReferrerStat { source: string; count: number; }
 
+export type VisitedStatus = "pending" | "came" | "no_show" | "cancelled";
+
+export interface ReservationItem {
+  id: number;
+  name: string;
+  phone: string;
+  date: string;
+  time: string;
+  guests: string;
+  comment: string;
+  consent: boolean;
+  source: string;
+  event_name: string;
+  visited: VisitedStatus;
+  manager_note: string;
+  iiko_id: string | null;
+  iiko_status: string | null;
+  iiko_error: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 const EMPTY_OVERVIEW: OverviewStats = {
   totalPageviews: 0,
   totalSessions: 0,
@@ -72,6 +94,10 @@ export async function getBookingsByDay(range: DateRange): Promise<BookingDay[]> 
 
 export async function getBookingSources(range: DateRange): Promise<BookingSource[]> {
   return safeFetch(`/api/analytics/booking-sources?${qs(range)}`, []);
+}
+
+export async function getReservations(range: DateRange): Promise<ReservationItem[]> {
+  return safeFetch(`/api/reservations?${qs(range)}&limit=200`, []);
 }
 
 // ── Clicks ──────────────────────────────────────────────────────
