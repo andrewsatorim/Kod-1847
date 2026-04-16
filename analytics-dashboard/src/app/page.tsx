@@ -11,6 +11,7 @@ import BookingsTab from "@/components/BookingsTab";
 import ClicksTab from "@/components/ClicksTab";
 import DevicesTab from "@/components/DevicesTab";
 import SourcesTab from "@/components/SourcesTab";
+import IikoTab from "@/components/IikoTab";
 import type { DateRange } from "@/lib/queries";
 
 type Period = "today" | "7d" | "30d" | "90d" | "custom";
@@ -108,6 +109,7 @@ export default function DashboardPage() {
             <TabsTrigger value="clicks">Клики</TabsTrigger>
             <TabsTrigger value="devices">Устройства</TabsTrigger>
             <TabsTrigger value="sources">Источники</TabsTrigger>
+            <TabsTrigger value="iiko">iiko</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview"><OverviewTab range={range} /></TabsContent>
@@ -116,6 +118,7 @@ export default function DashboardPage() {
           <TabsContent value="clicks"><ClicksTab range={range} /></TabsContent>
           <TabsContent value="devices"><DevicesTab range={range} /></TabsContent>
           <TabsContent value="sources"><SourcesTab range={range} /></TabsContent>
+          <TabsContent value="iiko"><IikoTab range={range} /></TabsContent>
         </Tabs>
       </main>
     </div>
