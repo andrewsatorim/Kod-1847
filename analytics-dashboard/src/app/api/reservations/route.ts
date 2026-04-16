@@ -23,9 +23,9 @@ export async function GET(req: NextRequest) {
 
   const where: string[] = [];
   const params: unknown[] = [];
-  // Даты приходят как 'YYYY-MM-DD' в локальной зоне Москвы.
-  if (from) { params.push(from + "T00:00:00+03:00"); where.push(`created_at >= $${params.length}::timestamptz`); }
-  if (to)   { params.push(to   + "T23:59:59+03:00"); where.push(`created_at <= $${params.length}::timestamptz`); }
+  // Сравниваем created_at по московской календарной дате (created_at хранится в UTC).
+  if (from) { params.push(from); where.push(`(created_at AT TIME ZONE 'Europe/Moscow')::date >= $${params.length}::date`); }
+  if (to)   { params.push(to);   where.push(`(created_at AT TIME ZONE 'Europe/Moscow')::date <= $${params.length}::date`); }
   const whereSql = where.length ? `where ${where.join(" and ")}` : "";
 
   const rows = await dbQuery(`
