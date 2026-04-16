@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getBookingsByDay, getBookingSources, getOverviewStats, type DateRange } from "@/lib/queries";
+import { getOverviewStats, type DateRange } from "@/lib/queries";
 import {
   listReservations,
   patchReservation,
@@ -196,9 +196,7 @@ function ReservationCard({ r, onChange }: { r: Reservation; onChange: (next: Res
 }
 
 export default function BookingsTab({ range }: { range: DateRange }) {
-  const [bookings, setBookings] = useState<{ date: string; bookings: number }[]>([]);
-  const [sources, setSources] = useState<{ source: string; count: number }[]>([]);
-  const [stats, setStats] = useState<{ totalBookings: number; conversionRate: string; totalSessions: number } | null>(null);
+  const [totalSessions, setTotalSessions] = useState<number | null>(null);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<VisitStatus | "all">("all");
@@ -210,11 +208,35 @@ export default function BookingsTab({ range }: { range: DateRange }) {
   }, [range]);
 
   useEffect(() => {
-    getBookingsByDay(range).then(setBookings);
-    getBookingSources(range).then(setSources);
-    getOverviewStats(range).then(s => setStats({ totalBookings: s.totalBookings, conversionRate: s.conversionRate, totalSessions: s.totalSessions }));
+    // визиты по-прежнему считаются через analytics_sessions (Supabase)
+    getOverviewStats(range).then(s => setTotalSessions(s.totalSessions));
     reload();
   }, [range, reload]);
+
+  // Метрики/график/источники считаем из локальных reservations (Beget Postgres)
+  const totalBookings = reservations.length;
+  const conversionRate = totalSessions && totalSessions > 0
+    ? ((totalBookings / totalSessions) * 100).toFixed(1)
+    : "0";
+
+  const bookings = useMemo(() => {
+    const byDay: Record<string, number> = {};
+    for (const r of reservations) {
+      const day = (r.created_at || "").slice(0, 10);
+      if (!day) continue;
+      byDay[day] = (byDay[day] || 0) + 1;
+    }
+    return Object.entries(byDay).map(([date, count]) => ({ date, bookings: count })).sort((a, b) => a.date.localeCompare(b.date));
+  }, [reservations]);
+
+  const sources = useMemo(() => {
+    const by: Record<string, number> = {};
+    for (const r of reservations) {
+      const key = (r.source || "").trim() || "unknown";
+      by[key] = (by[key] || 0) + 1;
+    }
+    return Object.entries(by).map(([source, count]) => ({ source, count })).sort((a, b) => b.count - a.count);
+  }, [reservations]);
 
   const counts = useMemo(() => {
     const c: Record<VisitStatus | "all", number> = { all: reservations.length, pending: 0, came: 0, no_show: 0, cancelled: 0 };
@@ -261,21 +283,21 @@ export default function BookingsTab({ range }: { range: DateRange }) {
         <Card className="bg-ink-light border-stone-dim/20">
           <CardHeader className="pb-2"><CardTitle className="text-xs font-sans font-medium text-stone tracking-wide uppercase">Всего заявок</CardTitle></CardHeader>
           <CardContent>
-            <div className="text-3xl font-serif text-linen">{stats?.totalBookings ?? "..."}</div>
+            <div className="text-3xl font-serif text-linen">{totalBookings}</div>
             <p className="text-xs text-stone-dim mt-3 leading-relaxed">Общее количество отправленных форм бронирования за выбранный период.</p>
           </CardContent>
         </Card>
         <Card className="bg-ink-light border-stone-dim/20">
           <CardHeader className="pb-2"><CardTitle className="text-xs font-sans font-medium text-stone tracking-wide uppercase">Конверсия</CardTitle></CardHeader>
           <CardContent>
-            <div className="text-3xl font-serif text-gold">{stats?.conversionRate ?? "..."}%</div>
+            <div className="text-3xl font-serif text-gold">{conversionRate}%</div>
             <p className="text-xs text-stone-dim mt-3 leading-relaxed">Процент посетителей, оставивших заявку. Формула: заявки / визиты × 100.</p>
           </CardContent>
         </Card>
         <Card className="bg-ink-light border-stone-dim/20">
           <CardHeader className="pb-2"><CardTitle className="text-xs font-sans font-medium text-stone tracking-wide uppercase">Визиты</CardTitle></CardHeader>
           <CardContent>
-            <div className="text-3xl font-serif text-linen">{stats?.totalSessions ?? "..."}</div>
+            <div className="text-3xl font-serif text-linen">{totalSessions ?? "..."}</div>
             <p className="text-xs text-stone-dim mt-3 leading-relaxed">Общее число уникальных сессий, из которых рассчитывается конверсия.</p>
           </CardContent>
         </Card>

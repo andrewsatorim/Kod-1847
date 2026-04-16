@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { format, subDays } from "date-fns";
 import { isAuthenticated, logout } from "@/lib/auth";
 import LoginForm from "@/components/LoginForm";
@@ -47,6 +47,27 @@ export default function DashboardPage() {
   const [period, setPeriod] = useState<Period>("today");
   const [customFrom, setCustomFrom] = useState("");
   const [customTo, setCustomTo] = useState("");
+
+  const TABS = ["overview", "pages", "bookings", "clicks", "devices", "sources", "iiko"] as const;
+  type Tab = typeof TABS[number];
+  const [tab, setTab] = useState<Tab>("overview");
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const fromHash = window.location.hash.replace(/^#/, "") as Tab;
+    if (TABS.includes(fromHash)) setTab(fromHash);
+    const onHash = () => {
+      const v = window.location.hash.replace(/^#/, "") as Tab;
+      if (TABS.includes(v)) setTab(v);
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  const changeTab = (v: string) => {
+    setTab(v as Tab);
+    if (typeof window !== "undefined") history.replaceState(null, "", `#${v}`);
+  };
 
   if (!authed) {
     return <LoginForm onSuccess={() => setAuthedOverride(true)} />;
@@ -101,7 +122,7 @@ export default function DashboardPage() {
 
       {/* Content */}
       <main className="container py-8">
-        <Tabs defaultValue="overview">
+        <Tabs value={tab} onValueChange={changeTab}>
           <TabsList className="mb-8 bg-ink-light border border-stone-dim/20">
             <TabsTrigger value="overview">Обзор</TabsTrigger>
             <TabsTrigger value="pages">Страницы</TabsTrigger>
