@@ -12,7 +12,7 @@ interface Props { open: boolean; onClose: () => void; }
 export default function ReservationModal({ open, onClose }: Props) {
   const { t } = useLang();
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7 ");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [guests, setGuests] = useState("2");
@@ -65,7 +65,7 @@ export default function ReservationModal({ open, onClose }: Props) {
   };
 
   const reset = () => {
-    setName(""); setPhone(""); setDate(""); setTime(""); setGuests("2"); setComment("");
+    setName(""); setPhone("+7 "); setDate(""); setTime(""); setGuests("2"); setComment("");
     setConsent(false); setErrors({}); setSubmitted(false);
   };
 

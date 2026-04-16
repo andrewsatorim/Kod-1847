@@ -18,12 +18,13 @@ export function isPhoneValid(raw: string): boolean {
 }
 
 // Форматирование для отображения в поле ввода: "+7 (999) 123-45-67"
-// Работает с любым вводом, выравнивая под шаблон по мере набора цифр.
+// Префикс "+7 " присутствует всегда, даже если пользователь стёр всё.
 export function formatPhoneInput(raw: string): string {
   const digits = (raw || "").replace(/\D/g, "");
   let d = digits;
   if (d.startsWith("8")) d = "7" + d.slice(1);
-  if (!d) return "";
+  // Пусто или только "7" — оставляем готовый префикс
+  if (!d || d === "7") return "+7 ";
   if (!d.startsWith("7")) d = "7" + d;
   d = d.slice(0, 11);
 

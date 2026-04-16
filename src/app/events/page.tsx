@@ -33,13 +33,13 @@ export default function EventsPage() {
   const { t } = useLang();
   const [registerModal, setRegisterModal] = useState<number | null>(null);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7 ");
   const [errors, setErrors] = useState<{ phone?: boolean }>({});
   const [submitting, setSubmitting] = useState(false);
 
   const closeModal = () => {
     setRegisterModal(null);
-    setName(""); setPhone(""); setErrors({});
+    setName(""); setPhone("+7 "); setErrors({});
   };
 
   const handleSubmit = async (e: FormEvent) => {

@@ -28,7 +28,7 @@ export default function ClubPage() {
   const [submitted, setSubmitted] = useState(false);
   const [consent, setConsent] = useState(false);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState("+7 ");
   const [email, setEmail] = useState("");
   const [howHeard, setHowHeard] = useState("");
   const [message, setMessage] = useState("");

@@ -33,11 +33,10 @@ function sourceLabel(src: string): string {
   return sourceNames[src] || src || "—";
 }
 
-function formatDateTime(date: string, time: string): string {
+function formatDate(date: string): string {
   if (!date) return "—";
   const parts = date.split("-");
-  const d = parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : date;
-  return time ? `${d}, ${time}` : d;
+  return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : date;
 }
 
 function formatCreated(iso: string): string {
@@ -217,7 +216,7 @@ export default function BookingsTab({ range }: { range: DateRange }) {
                       onClick={() => setExpanded(isOpen ? null : r.id)}
                       className="w-full flex items-center gap-4 px-4 py-3 text-left"
                     >
-                      <div className="flex-1 grid grid-cols-2 md:grid-cols-5 gap-3 items-center text-xs">
+                      <div className="flex-1 grid grid-cols-2 md:grid-cols-6 gap-3 items-center text-xs">
                         <div>
                           <div className="text-stone-dim mb-0.5 uppercase tracking-wide text-[10px]">Гость</div>
                           <div className="text-linen font-medium text-sm">{r.name}</div>
@@ -227,8 +226,12 @@ export default function BookingsTab({ range }: { range: DateRange }) {
                           <div className="text-linen text-sm">{r.phone}</div>
                         </div>
                         <div>
-                          <div className="text-stone-dim mb-0.5 uppercase tracking-wide text-[10px]">Дата и время</div>
-                          <div className="text-linen text-sm">{formatDateTime(r.date, r.time)}</div>
+                          <div className="text-stone-dim mb-0.5 uppercase tracking-wide text-[10px]">Дата</div>
+                          <div className="text-linen text-sm">{formatDate(r.date)}</div>
+                        </div>
+                        <div>
+                          <div className="text-stone-dim mb-0.5 uppercase tracking-wide text-[10px]">Время</div>
+                          <div className="text-linen text-sm">{r.time || "—"}</div>
                         </div>
                         <div>
                           <div className="text-stone-dim mb-0.5 uppercase tracking-wide text-[10px]">Гостей</div>
@@ -256,7 +259,6 @@ export default function BookingsTab({ range }: { range: DateRange }) {
 
                     {isOpen && (
                       <div className="border-t border-stone-dim/15 px-4 py-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                        <Field label="Комментарий гостя">{r.comment || "—"}</Field>
                         <Field label="Заметка менеджера">{r.manager_note || "—"}</Field>
                         <Field label="Согласие на обработку ПДн">{r.consent ? "Да" : "Нет"}</Field>
                         <Field label="Создана">{formatCreated(r.created_at)}</Field>

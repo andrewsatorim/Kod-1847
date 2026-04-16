@@ -23,11 +23,10 @@ function sourceName(src: string): string {
   return sourceLabels[src] || src || "—";
 }
 
-function formatDateTime(date: string, time: string): string {
+function formatDate(date: string): string {
   if (!date) return "—";
   const parts = date.split("-");
-  const d = parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : date;
-  return time ? `${d}, ${time}` : d;
+  return parts.length === 3 ? `${parts[2]}.${parts[1]}.${parts[0]}` : date;
 }
 
 function formatCreated(iso: string): string {
@@ -175,7 +174,7 @@ export default function ReservationsPage() {
                   onClick={() => setExpanded(isOpen ? null : r.id)}
                   className="w-full flex items-center gap-4 px-5 py-4 text-left"
                 >
-                  <div className="flex-1 grid grid-cols-2 md:grid-cols-5 gap-3 items-center">
+                  <div className="flex-1 grid grid-cols-2 md:grid-cols-6 gap-3 items-center">
                     <div>
                       <div className="text-xs text-stone mb-0.5">Гость</div>
                       <div className="text-linen font-medium">{r.name}</div>
@@ -185,8 +184,12 @@ export default function ReservationsPage() {
                       <div className="text-linen">{r.phone}</div>
                     </div>
                     <div>
-                      <div className="text-xs text-stone mb-0.5">Дата и время</div>
-                      <div className="text-linen">{formatDateTime(r.date, r.time)}</div>
+                      <div className="text-xs text-stone mb-0.5">Дата</div>
+                      <div className="text-linen">{formatDate(r.date)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-stone mb-0.5">Время</div>
+                      <div className="text-linen">{r.time || "—"}</div>
                     </div>
                     <div>
                       <div className="text-xs text-stone mb-0.5">Гостей</div>
@@ -213,7 +216,6 @@ export default function ReservationsPage() {
                 {isOpen && (
                   <div className="border-t border-border px-5 py-4 space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                      <Field label="Комментарий гостя">{r.comment || "—"}</Field>
                       <Field label="Согласие на обработку ПДн">{r.consent ? "Да" : "Нет"}</Field>
                       <Field label="Создана">{formatCreated(r.created_at)}</Field>
                       <Field label="Обновлена">{formatCreated(r.updated_at)}</Field>
