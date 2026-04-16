@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
 import Link from "next/link";
@@ -19,7 +19,75 @@ const TIME_SLOTS: string[] = (() => {
   return slots;
 })();
 
-const initial = { name: "", phone: "", date: "", time: "", guests: "2", comment: "" };
+const initial = { name: "", phone: "", date: "", time: "14:00", guests: "2", comment: "" };
+
+const ITEM_H = 36;
+
+function TimeWheel({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const lockRef = useRef(false);
+  const settleRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const idx = Math.max(0, TIME_SLOTS.indexOf(value));
+    lockRef.current = true;
+    ref.current.scrollTo({ top: idx * ITEM_H, behavior: "auto" });
+    setTimeout(() => { lockRef.current = false; }, 50);
+  }, [value]);
+
+  const onScroll = () => {
+    if (!ref.current || lockRef.current) return;
+    if (settleRef.current) clearTimeout(settleRef.current);
+    settleRef.current = setTimeout(() => {
+      if (!ref.current) return;
+      const idx = Math.round(ref.current.scrollTop / ITEM_H);
+      const clamped = Math.max(0, Math.min(TIME_SLOTS.length - 1, idx));
+      const v = TIME_SLOTS[clamped];
+      ref.current.scrollTo({ top: clamped * ITEM_H, behavior: "smooth" });
+      if (v && v !== value) onChange(v);
+    }, 90);
+  };
+
+  return (
+    <div style={{ position: "relative", height: ITEM_H * 5, marginTop: 4 }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: ITEM_H * 2, height: ITEM_H, borderTop: "1px solid #B89860", borderBottom: "1px solid #B89860", pointerEvents: "none", zIndex: 1 }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: ITEM_H * 2, background: "linear-gradient(#08080A, rgba(8,8,10,0))", pointerEvents: "none", zIndex: 2 }} />
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: ITEM_H * 2, background: "linear-gradient(rgba(8,8,10,0), #08080A)", pointerEvents: "none", zIndex: 2 }} />
+      <div
+        ref={ref}
+        onScroll={onScroll}
+        style={{
+          height: "100%",
+          overflowY: "scroll",
+          scrollSnapType: "y mandatory",
+          paddingTop: ITEM_H * 2,
+          paddingBottom: ITEM_H * 2,
+          scrollbarWidth: "none",
+        }}
+      >
+        {TIME_SLOTS.map(s => (
+          <div
+            key={s}
+            style={{
+              height: ITEM_H,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              scrollSnapAlign: "center",
+              fontFamily: "'Bodoni Moda', serif",
+              fontSize: s === value ? 22 : 16,
+              color: s === value ? "#F5F0E8" : "#6B6760",
+              transition: "color .15s, font-size .15s",
+            }}
+          >
+            {s}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function ReservationModal({ open, onClose }: Props) {
   const { t } = useLang();
@@ -79,17 +147,8 @@ export default function ReservationModal({ open, onClose }: Props) {
             <div className="modal-field"><label className="modal-label">{t("Дата", "Date")}</label><input type="date" className="modal-input" required min={today} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} /></div>
             <div className="modal-field">
               <label className="modal-label">{t("Время", "Time")}</label>
-              <select
-                className="modal-input"
-                required
-                value={form.time}
-                onChange={(e) => setForm({ ...form, time: e.target.value })}
-                style={{ appearance: "none", WebkitAppearance: "none", cursor: "pointer" }}
-              >
-                <option value="" style={{ background: "#08080A" }}>{t("Выберите время", "Select time")}</option>
-                {TIME_SLOTS.map(s => <option key={s} value={s} style={{ background: "#08080A" }}>{s}</option>)}
-              </select>
-              <div style={{ marginTop: 6, fontSize: 11, color: "#6B6760" }}>{t("Время работы: с 14:00 до 02:00", "Hours: 2pm – 2am")}</div>
+              <TimeWheel value={form.time || TIME_SLOTS[0]} onChange={(v) => setForm({ ...form, time: v })} />
+              <div style={{ marginTop: 6, fontSize: 11, color: "#6B6760", textAlign: "center" }}>{t("Время работы: с 14:00 до 02:00", "Hours: 2pm – 2am")}</div>
             </div>
             <div className="modal-field"><label className="modal-label">{t("Количество гостей", "Number of guests")}</label><input type="number" className="modal-input" min="1" max="20" placeholder="2" required value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} /></div>
             <div className="modal-field"><label className="modal-label">{t("Комментарий", "Comment")}</label><input type="text" className="modal-input" placeholder={t("Пожелания", "Preferences")} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} /></div>
