@@ -44,7 +44,7 @@ export default function DashboardPage() {
   const authedFromStore = useAuth();
   const [authedOverride, setAuthedOverride] = useState<boolean | null>(null);
   const authed = authedOverride ?? authedFromStore;
-  const [period, setPeriod] = useState<Period>("30d");
+  const [period, setPeriod] = useState<Period>("today");
   const [customFrom, setCustomFrom] = useState("");
   const [customTo, setCustomTo] = useState("");
 
