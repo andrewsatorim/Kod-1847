@@ -2,6 +2,7 @@
 import { FormEvent, useState } from "react";
 import { useLang } from "@/context/LanguageContext";
 import { trackEvent } from "@/lib/analytics";
+import { submitBookingRequest } from "@/lib/bookings";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -25,9 +26,22 @@ export default function ClubPage() {
   const [submitted, setSubmitted] = useState(false);
   const [consent, setConsent] = useState(false);
   const [showError, setShowError] = useState(false);
-  const handleSubmit = (e: FormEvent) => {
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [howHeard, setHowHeard] = useState("");
+  const [message, setMessage] = useState("");
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!consent) { setShowError(true); return; }
+    await submitBookingRequest({
+      guest_name: name,
+      phone,
+      email: email || null,
+      comment: [howHeard ? `Источник: ${howHeard}` : "", message].filter(Boolean).join("\n") || null,
+      source: "club_membership",
+      consent_pdn: consent,
+    });
     trackEvent("booking_submit", { source: "club_membership" });
     setSubmitted(true);
   };
@@ -64,17 +78,17 @@ export default function ClubPage() {
             </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
-              <input type="text" className="contact-input" placeholder={t("Имя", "Name")} required />
-              <input type="tel" className="contact-input" placeholder={t("Телефон", "Phone")} required />
-              <input type="email" className="contact-input" placeholder="Email" required />
+              <input type="text" className="contact-input" placeholder={t("Имя", "Name")} required value={name} onChange={(e) => setName(e.target.value)} />
+              <input type="tel" className="contact-input" placeholder={t("Телефон", "Phone")} required value={phone} onChange={(e) => setPhone(e.target.value)} />
+              <input type="email" className="contact-input" placeholder="Email" required value={email} onChange={(e) => setEmail(e.target.value)} />
               <div>
                 <label className="contact-label" style={{ marginBottom: 8, display: "block" }}>{t("Как узнали о клубе?", "How did you learn about the club?")}</label>
-                <select className="contact-input" style={{ appearance: "none", cursor: "pointer" }} required>
+                <select className="contact-input" style={{ appearance: "none", cursor: "pointer" }} required value={howHeard} onChange={(e) => setHowHeard(e.target.value)}>
                   <option value="" style={{ background: "#08080A" }}>{t("Выберите", "Select")}</option>
                   {howHeardOptions.map((opt, i) => (<option key={i} value={opt.ru} style={{ background: "#08080A" }}>{t(opt.ru, opt.en)}</option>))}
                 </select>
               </div>
-              <textarea className="contact-input contact-textarea" placeholder={t("Сообщение (по желанию)", "Message (optional)")} />
+              <textarea className="contact-input contact-textarea" placeholder={t("Сообщение (по желанию)", "Message (optional)")} value={message} onChange={(e) => setMessage(e.target.value)} />
               <div className="consent-block">
                 <label className="consent-label">
                   <input type="checkbox" className="consent-checkbox" checked={consent} onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setShowError(false); }} />
