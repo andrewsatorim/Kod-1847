@@ -99,10 +99,14 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
 
     const start = `${dt.dateOnly} ${dt.time.length === 5 ? dt.time + ":00" : dt.time}.000`;
 
+    const phone = normalizePhone(r.phone);
+    if (!phone) throw new Error("В заявке не указан телефон — iiko требует phone для клиента");
+
     const created = await iikoCall<{ reserveInfo?: { id: string }; correlationId?: string }>("/api/1/reserve/create", {
       organizationId: orgId,
       terminalGroupId,
-      customer: { name: r.name, type: "regular" },
+      customer: { name: r.name || "Гость", phone, type: "regular" },
+      phone,
       guestsCount: guestsNum,
       shouldRemind: false,
       tableIds: [tableId],
@@ -110,7 +114,6 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
       durationInMinutes: 120,
       guests: { count: guestsNum, splitBetweenPersons: false },
       comment: [r.comment || "", r.manager_note || ""].filter(Boolean).join(" | ").slice(0, 480),
-      phone: normalizePhone(r.phone),
     });
 
     const iikoId = created.reserveInfo?.id || created.correlationId || "";
