@@ -8,13 +8,16 @@ interface Props { open: boolean; onClose: () => void; }
 
 const ANALYTICS_API = process.env.NEXT_PUBLIC_ANALYTICS_API_URL || "https://analytics.kod1847.ru";
 
-// Допустимое время — с 14:00 до 02:00 (с переходом через полночь).
-function isTimeAllowed(t: string): boolean {
-  const m = t.match(/^(\d{2}):(\d{2})$/);
-  if (!m) return false;
-  const mins = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
-  return mins >= 14 * 60 || mins <= 2 * 60;
-}
+// Слоты с 14:00 до 02:00 (с переходом через полночь) с шагом 30 минут.
+const TIME_SLOTS: string[] = (() => {
+  const slots: string[] = [];
+  for (let m = 14 * 60; m <= 26 * 60; m += 30) {
+    const h = Math.floor(m / 60) % 24;
+    const min = m % 60;
+    slots.push(`${String(h).padStart(2, "0")}:${String(min).padStart(2, "0")}`);
+  }
+  return slots;
+})();
 
 const initial = { name: "", phone: "", date: "", time: "", guests: "2", comment: "" };
 
@@ -25,18 +28,12 @@ export default function ReservationModal({ open, onClose }: Props) {
   const [showError, setShowError] = useState(false);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState(false);
-  const [timeError, setTimeError] = useState("");
 
-  const reset = () => { setForm(initial); setConsent(false); setShowError(false); setDone(false); setSending(false); setTimeError(""); };
+  const reset = () => { setForm(initial); setConsent(false); setShowError(false); setDone(false); setSending(false); };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!consent) { setShowError(true); return; }
-    if (!isTimeAllowed(form.time)) {
-      setTimeError(t("Время должно быть с 14:00 до 02:00", "Time must be between 2pm and 2am"));
-      return;
-    }
-    setTimeError("");
     setSending(true);
     const source = typeof window !== "undefined" ? window.location.pathname : "/";
     try {
@@ -82,22 +79,17 @@ export default function ReservationModal({ open, onClose }: Props) {
             <div className="modal-field"><label className="modal-label">{t("Дата", "Date")}</label><input type="date" className="modal-input" required min={today} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} /></div>
             <div className="modal-field">
               <label className="modal-label">{t("Время", "Time")}</label>
-              <input
-                type="time"
+              <select
                 className="modal-input"
                 required
-                step={1800}
                 value={form.time}
-                onChange={(e) => {
-                  const v = e.target.value;
-                  setForm({ ...form, time: v });
-                  if (v && !isTimeAllowed(v)) setTimeError(t("Время должно быть с 14:00 до 02:00", "Time must be between 2pm and 2am"));
-                  else setTimeError("");
-                }}
-              />
-              <div style={{ marginTop: 6, fontSize: 11, color: timeError ? "#C44" : "#6B6760" }}>
-                {timeError || t("Время работы: с 14:00 до 02:00", "Hours: 2pm – 2am")}
-              </div>
+                onChange={(e) => setForm({ ...form, time: e.target.value })}
+                style={{ appearance: "none", WebkitAppearance: "none", cursor: "pointer" }}
+              >
+                <option value="" style={{ background: "#08080A" }}>{t("Выберите время", "Select time")}</option>
+                {TIME_SLOTS.map(s => <option key={s} value={s} style={{ background: "#08080A" }}>{s}</option>)}
+              </select>
+              <div style={{ marginTop: 6, fontSize: 11, color: "#6B6760" }}>{t("Время работы: с 14:00 до 02:00", "Hours: 2pm – 2am")}</div>
             </div>
             <div className="modal-field"><label className="modal-label">{t("Количество гостей", "Number of guests")}</label><input type="number" className="modal-input" min="1" max="20" placeholder="2" required value={form.guests} onChange={(e) => setForm({ ...form, guests: e.target.value })} /></div>
             <div className="modal-field"><label className="modal-label">{t("Комментарий", "Comment")}</label><input type="text" className="modal-input" placeholder={t("Пожелания", "Preferences")} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} /></div>
