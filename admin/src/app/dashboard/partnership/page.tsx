@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import type { PartnershipFormat, ClubEvent } from "@/lib/types";
 
 export default function PartnershipPage() {
@@ -16,11 +15,11 @@ export default function PartnershipPage() {
 
   useEffect(() => {
     Promise.all([
-      supabase.from("partnership_formats").select("*").order("sort_order"),
-      supabase.from("club_events").select("*").order("sort_order"),
+      fetch("/api/partnership-formats").then((r) => r.json()),
+      fetch("/api/club-events").then((r) => r.json()),
     ]).then(([fmts, evts]) => {
-      setFormats((fmts.data as PartnershipFormat[]) || []);
-      setClubEvents((evts.data as ClubEvent[]) || []);
+      setFormats(fmts || []);
+      setClubEvents(evts || []);
       setLoading(false);
     });
   }, [rev]);
@@ -43,11 +42,19 @@ export default function PartnershipPage() {
 
     if (payload.id) {
       const { id, ...rest } = payload;
-      await supabase.from("partnership_formats").update(rest).eq("id", id);
+      await fetch(`/api/partnership-formats/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest),
+      });
     } else {
       const { id: _unused, ...rest } = payload;
       void _unused;
-      await supabase.from("partnership_formats").insert(rest);
+      await fetch("/api/partnership-formats", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest),
+      });
     }
     setSaving(false);
     setEditingFormat(null);
@@ -56,7 +63,7 @@ export default function PartnershipPage() {
 
   async function deleteFormat(id: number) {
     if (!confirm("Удалить формат?")) return;
-    await supabase.from("partnership_formats").delete().eq("id", id);
+    await fetch(`/api/partnership-formats/${id}`, { method: "DELETE" });
     reload();
   }
 
@@ -65,9 +72,17 @@ export default function PartnershipPage() {
     setSaving(true);
     if (editingClubEvent.id) {
       const { id, ...rest } = editingClubEvent as ClubEvent;
-      await supabase.from("club_events").update(rest).eq("id", id);
+      await fetch(`/api/club-events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest),
+      });
     } else {
-      await supabase.from("club_events").insert(editingClubEvent);
+      await fetch("/api/club-events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingClubEvent),
+      });
     }
     setSaving(false);
     setEditingClubEvent(null);
@@ -76,7 +91,7 @@ export default function PartnershipPage() {
 
   async function deleteClubEvent(id: number) {
     if (!confirm("Удалить клубное событие?")) return;
-    await supabase.from("club_events").delete().eq("id", id);
+    await fetch(`/api/club-events/${id}`, { method: "DELETE" });
     reload();
   }
 

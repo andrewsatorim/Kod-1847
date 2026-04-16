@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 import Sidebar from "@/components/Sidebar";
 
 export default function DashboardLayout({
@@ -14,21 +13,17 @@ export default function DashboardLayout({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) {
+    fetch("/api/auth/me")
+      .then((r) => {
+        if (!r.ok) {
+          router.replace("/login");
+        } else {
+          setReady(true);
+        }
+      })
+      .catch(() => {
         router.replace("/login");
-      } else {
-        setReady(true);
-      }
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) router.replace("/login");
-    });
-
-    return () => subscription.unsubscribe();
+      });
   }, [router]);
 
   if (!ready) {

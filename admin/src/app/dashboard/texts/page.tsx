@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import type { TextBlock } from "@/lib/types";
 
 const keyLabels: Record<string, string> = {
@@ -31,10 +30,12 @@ export default function TextsPage() {
   const reload = () => setRev((r) => r + 1);
 
   useEffect(() => {
-    supabase.from("texts").select("*").order("id").then(({ data }) => {
-      setTexts((data as TextBlock[]) || []);
-      setLoading(false);
-    });
+    fetch("/api/texts")
+      .then((r) => r.json())
+      .then((data) => {
+        setTexts(data || []);
+        setLoading(false);
+      });
   }, [rev]);
 
   function startEdit(text: TextBlock) {
@@ -44,10 +45,11 @@ export default function TextsPage() {
 
   async function handleSave(id: number) {
     setSaving(true);
-    await supabase
-      .from("texts")
-      .update({ value_ru: editData.value_ru, value_en: editData.value_en })
-      .eq("id", id);
+    await fetch(`/api/texts/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value_ru: editData.value_ru, value_en: editData.value_en }),
+    });
     setSaving(false);
     setEditingId(null);
     reload();
@@ -56,13 +58,17 @@ export default function TextsPage() {
   async function handleAdd() {
     const key = prompt("Ключ текстового блока (например: footer_note):");
     if (!key) return;
-    await supabase.from("texts").insert({ key, value_ru: "", value_en: "" });
+    await fetch("/api/texts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key, value_ru: "", value_en: "" }),
+    });
     reload();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Удалить текстовый блок?")) return;
-    await supabase.from("texts").delete().eq("id", id);
+    await fetch(`/api/texts/${id}`, { method: "DELETE" });
     reload();
   }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import type { Contact } from "@/lib/types";
 
 const keyLabels: Record<string, string> = {
@@ -22,18 +21,21 @@ export default function ContactsPage() {
   const reload = () => setRev((r) => r + 1);
 
   useEffect(() => {
-    supabase.from("contacts").select("*").order("id").then(({ data }) => {
-      setContacts((data as Contact[]) || []);
-      setLoading(false);
-    });
+    fetch("/api/contacts")
+      .then((r) => r.json())
+      .then((data) => {
+        setContacts(data || []);
+        setLoading(false);
+      });
   }, [rev]);
 
   async function handleSave(contact: Contact) {
     setSaving(contact.id);
-    await supabase
-      .from("contacts")
-      .update({ value_ru: contact.value_ru, value_en: contact.value_en })
-      .eq("id", contact.id);
+    await fetch(`/api/contacts/${contact.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ value_ru: contact.value_ru, value_en: contact.value_en }),
+    });
     setSaving(null);
     setEditing(null);
     reload();
@@ -42,13 +44,17 @@ export default function ContactsPage() {
   async function handleAdd() {
     const key = prompt("Ключ контакта (например: email, whatsapp):");
     if (!key) return;
-    await supabase.from("contacts").insert({ key, value_ru: "", value_en: "" });
+    await fetch("/api/contacts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key, value_ru: "", value_en: "" }),
+    });
     reload();
   }
 
   async function handleDelete(id: number) {
     if (!confirm("Удалить контакт?")) return;
-    await supabase.from("contacts").delete().eq("id", id);
+    await fetch(`/api/contacts/${id}`, { method: "DELETE" });
     reload();
   }
 

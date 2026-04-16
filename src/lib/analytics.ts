@@ -1,6 +1,6 @@
-import { getSupabase } from "./supabase";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
-// ── Session Management ────────────────���─────────────────────────
+// ── Session Management ──────────────────────────────────────────
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
@@ -16,7 +16,7 @@ function getSessionId(): string {
   return sid;
 }
 
-// ── Device Detection ────────────────────���───────────────────────
+// ── Device Detection ────────────────────────────────────────────
 
 function getDevice(): string {
   if (typeof navigator === "undefined") return "unknown";
@@ -47,28 +47,23 @@ let pagesViewed = 0;
 let sessionCreated = false;
 let scrollListenerAttached = false;
 
-// ── Helpers ─────���───────────────���───────────────────────────────
+// ── Helpers ─────────────────────────────────────────────────────
 
-function send(table: string, data: Record<string, unknown>) {
-  const sb = getSupabase();
-  if (!sb) return;
-  sb.from(table).insert(data).then(() => {});
+function send(action: string, data: Record<string, unknown>) {
+  if (!API_URL) return;
+  fetch(`${API_URL}/api/public/analytics`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, data }),
+  }).catch(() => {});
 }
 
-function sendWithKeepalive(table: string, data: Record<string, unknown>) {
-  if (typeof window === "undefined") return;
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return;
-  fetch(`${url}/rest/v1/${table}`, {
+function sendWithKeepalive(action: string, data: Record<string, unknown>) {
+  if (typeof window === "undefined" || !API_URL) return;
+  fetch(`${API_URL}/api/public/analytics`, {
     method: "POST",
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action, data }),
     keepalive: true,
   }).catch(() => {});
 }
@@ -82,9 +77,8 @@ function ensureSession() {
   pagesViewed = 0;
   maxScrollDepth = 0;
 
-  const sid = getSessionId();
-  send("analytics_sessions", {
-    session_id: sid,
+  send("session_create", {
+    session_id: getSessionId(),
     device: getDevice(),
     browser: getBrowser(),
     pages_viewed: 0,
@@ -93,44 +87,17 @@ function ensureSession() {
   });
 }
 
-function updateSession() {
-  const sb = getSupabase();
-  if (!sb) return;
-  const sid = getSessionId();
-  const duration = Math.round((Date.now() - sessionStartTime) / 1000);
-
-  sb.from("analytics_sessions")
-    .update({
-      duration,
-      pages_viewed: pagesViewed,
-      max_scroll_depth: maxScrollDepth,
-    })
-    .eq("session_id", sid)
-    .then(() => {});
-}
-
 function updateSessionKeepalive() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return;
+  if (!API_URL) return;
   const sid = getSessionId();
   const duration = Math.round((Date.now() - sessionStartTime) / 1000);
 
-  fetch(`${url}/rest/v1/analytics_sessions?session_id=eq.${encodeURIComponent(sid)}`, {
-    method: "PATCH",
-    headers: {
-      apikey: key,
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      duration,
-      pages_viewed: pagesViewed,
-      max_scroll_depth: maxScrollDepth,
-    }),
-    keepalive: true,
-  }).catch(() => {});
+  sendWithKeepalive("session_update", {
+    session_id: sid,
+    duration,
+    pages_viewed: pagesViewed,
+    max_scroll_depth: maxScrollDepth,
+  });
 }
 
 // ── Pageview Tracking ───────────────────────────────────────────
@@ -142,7 +109,7 @@ export function trackPageview(page?: string) {
   maxScrollDepth = 0;
 
   const currentPage = page || window.location.pathname;
-  send("analytics_pageviews", {
+  send("pageview", {
     page: currentPage,
     referrer: document.referrer || null,
     device: getDevice(),
@@ -161,7 +128,7 @@ export function trackPageview(page?: string) {
 
 export function trackEvent(eventType: string, metadata?: Record<string, unknown>) {
   ensureSession();
-  send("analytics_events", {
+  send("event", {
     event_type: eventType,
     page: typeof window !== "undefined" ? window.location.pathname : "",
     metadata: metadata || {},
@@ -188,7 +155,7 @@ export function trackTimeOnPage() {
   const seconds = Math.round((Date.now() - pageStartTime) / 1000);
   if (seconds < 1) return;
 
-  sendWithKeepalive("analytics_events", {
+  sendWithKeepalive("event", {
     event_type: "time_on_page",
     page: window.location.pathname,
     metadata: { seconds },
@@ -207,7 +174,7 @@ export function initAnalytics() {
     trackTimeOnPage();
 
     if (maxScrollDepth > 0) {
-      sendWithKeepalive("analytics_events", {
+      sendWithKeepalive("event", {
         event_type: "scroll_depth",
         page: window.location.pathname,
         metadata: { depth: maxScrollDepth },

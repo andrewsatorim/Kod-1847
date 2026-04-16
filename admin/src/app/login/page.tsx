@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,9 +11,11 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) router.replace("/dashboard");
-    });
+    fetch("/api/auth/me")
+      .then((r) => {
+        if (r.ok) router.replace("/dashboard");
+      })
+      .catch(() => {});
   }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -22,12 +23,13 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     });
 
-    if (error) {
+    if (!res.ok) {
       setError("Неверный логин или пароль");
       setLoading(false);
     } else {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import type { Event } from "@/lib/types";
 
 const emptyEvent: Omit<Event, "id" | "created_at"> = {
@@ -28,12 +27,10 @@ export default function EventsPage() {
   const reload = () => setRev((r) => r + 1);
 
   useEffect(() => {
-    supabase
-      .from("events")
-      .select("*")
-      .order("sort_order")
-      .then(({ data }) => {
-        setEvents((data as Event[]) || []);
+    fetch("/api/events")
+      .then((r) => r.json())
+      .then((data) => {
+        setEvents(data || []);
         setLoading(false);
       });
   }, [rev]);
@@ -45,9 +42,17 @@ export default function EventsPage() {
     if (editing.id) {
       const { id, created_at: _ca, ...rest } = editing as Event;
       void _ca;
-      await supabase.from("events").update(rest).eq("id", id);
+      await fetch(`/api/events/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest),
+      });
     } else {
-      await supabase.from("events").insert(editing);
+      await fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editing),
+      });
     }
 
     setSaving(false);
@@ -57,15 +62,16 @@ export default function EventsPage() {
 
   async function handleDelete(id: number) {
     if (!confirm("Удалить мероприятие?")) return;
-    await supabase.from("events").delete().eq("id", id);
+    await fetch(`/api/events/${id}`, { method: "DELETE" });
     reload();
   }
 
   async function toggleActive(event: Event) {
-    await supabase
-      .from("events")
-      .update({ is_active: !event.is_active })
-      .eq("id", event.id);
+    await fetch(`/api/events/${event.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...event, is_active: !event.is_active }),
+    });
     reload();
   }
 

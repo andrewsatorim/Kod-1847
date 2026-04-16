@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 
 const nav = [
   { href: "/dashboard", label: "Обзор", icon: "grid" },
@@ -51,7 +50,7 @@ export default function Sidebar() {
   const router = useRouter();
 
   async function handleLogout() {
-    await supabase.auth.signOut();
+    await fetch("/api/auth/logout", { method: "POST" });
     router.replace("/login");
   }
 
