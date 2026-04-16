@@ -4,6 +4,17 @@ function qs(range: DateRange) {
   return `from=${encodeURIComponent(range.from)}&to=${encodeURIComponent(range.to)}`;
 }
 
+async function safeFetch<T>(url: string, fallback: T): Promise<T> {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return fallback;
+    const data = await res.json();
+    return data ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 // ── Types ──────────────────────────────────────────────────────
 
 export interface OverviewStats {
@@ -26,54 +37,57 @@ export interface DeviceStats {
 }
 export interface ReferrerStat { source: string; count: number; }
 
+const EMPTY_OVERVIEW: OverviewStats = {
+  totalPageviews: 0,
+  totalSessions: 0,
+  avgDuration: 0,
+  bounceRate: 0,
+  totalBookings: 0,
+  conversionRate: "0",
+};
+
+const EMPTY_DEVICES: DeviceStats = { devices: [], browsers: [] };
+
 // ── Overview ────────────────────────────────────────────────────
 
 export async function getOverviewStats(range: DateRange): Promise<OverviewStats> {
-  const res = await fetch(`/api/analytics/overview?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/overview?${qs(range)}`, EMPTY_OVERVIEW);
 }
 
 export async function getPageviewsByDay(range: DateRange): Promise<PageviewDay[]> {
-  const res = await fetch(`/api/analytics/pageviews-by-day?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/pageviews-by-day?${qs(range)}`, []);
 }
 
 // ── Pages ───────────────────────────────────────────────────────
 
 export async function getTopPages(range: DateRange): Promise<PageStat[]> {
-  const res = await fetch(`/api/analytics/top-pages?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/top-pages?${qs(range)}`, []);
 }
 
 // ── Bookings ────────────────────────────────────────────────────
 
 export async function getBookingsByDay(range: DateRange): Promise<BookingDay[]> {
-  const res = await fetch(`/api/analytics/bookings-by-day?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/bookings-by-day?${qs(range)}`, []);
 }
 
 export async function getBookingSources(range: DateRange): Promise<BookingSource[]> {
-  const res = await fetch(`/api/analytics/booking-sources?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/booking-sources?${qs(range)}`, []);
 }
 
 // ── Clicks ──────────────────────────────────────────────────────
 
 export async function getClickStats(range: DateRange): Promise<ClickStat[]> {
-  const res = await fetch(`/api/analytics/clicks?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/clicks?${qs(range)}`, []);
 }
 
 // ── Devices ─────────────────────────────────────────────────────
 
 export async function getDeviceStats(range: DateRange): Promise<DeviceStats> {
-  const res = await fetch(`/api/analytics/devices?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/devices?${qs(range)}`, EMPTY_DEVICES);
 }
 
 // ── Sources ─────────────────────────────────────────────────────
 
 export async function getReferrerStats(range: DateRange): Promise<ReferrerStat[]> {
-  const res = await fetch(`/api/analytics/referrers?${qs(range)}`);
-  return res.json();
+  return safeFetch(`/api/analytics/referrers?${qs(range)}`, []);
 }
