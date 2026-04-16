@@ -22,11 +22,9 @@ export default function ContactsPage() {
 
   useEffect(() => {
     fetch("/api/contacts")
-      .then((r) => r.json())
-      .then((data) => {
-        setContacts(data || []);
-        setLoading(false);
-      });
+      .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+      .then((data) => { setContacts(Array.isArray(data) ? data : []); setLoading(false); })
+      .catch(() => setLoading(false));
   }, [rev]);
 
   async function handleSave(contact: Contact) {

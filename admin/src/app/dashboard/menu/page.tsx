@@ -40,10 +40,9 @@ export default function MenuPage() {
   useEffect(() => {
     let active = true;
     fetch(`/api/menu-categories?tab=${activeTab}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (active) setCategories(data || []);
-      });
+      .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+      .then((data) => { if (active) setCategories(Array.isArray(data) ? data : []); })
+      .catch(() => { if (active) setCategories([]); });
     return () => { active = false; };
   }, [activeTab, rev]);
 

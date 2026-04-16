@@ -28,9 +28,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetch("/api/stats")
-      .then((r) => r.json())
+      .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
       .then(setStats)
-      .catch(() => {});
+      .catch(() => setStats({ events: 0, menuCategories: 0, menuItems: 0, contacts: 0, texts: 0, partnershipFormats: 0, clubEvents: 0 }));
   }, []);
 
   return (

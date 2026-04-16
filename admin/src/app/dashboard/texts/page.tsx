@@ -31,11 +31,9 @@ export default function TextsPage() {
 
   useEffect(() => {
     fetch("/api/texts")
-      .then((r) => r.json())
-      .then((data) => {
-        setTexts(data || []);
-        setLoading(false);
-      });
+      .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+      .then((data) => { setTexts(Array.isArray(data) ? data : []); setLoading(false); })
+      .catch(() => setLoading(false));
   }, [rev]);
 
   function startEdit(text: TextBlock) {

@@ -15,13 +15,13 @@ export default function PartnershipPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/partnership-formats").then((r) => r.json()),
-      fetch("/api/club-events").then((r) => r.json()),
+      fetch("/api/partnership-formats").then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); }),
+      fetch("/api/club-events").then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); }),
     ]).then(([fmts, evts]) => {
-      setFormats(fmts || []);
-      setClubEvents(evts || []);
+      setFormats(Array.isArray(fmts) ? fmts : []);
+      setClubEvents(Array.isArray(evts) ? evts : []);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
   }, [rev]);
 
   async function saveFormat() {
