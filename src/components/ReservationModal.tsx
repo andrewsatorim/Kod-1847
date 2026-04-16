@@ -19,7 +19,22 @@ const TIME_SLOTS: string[] = (() => {
   return slots;
 })();
 
-const initial = { name: "", phone: "", date: "", time: "14:00", guests: "2", comment: "" };
+const initial = { name: "", phone: "+7 ", date: "", time: "14:00", guests: "2", comment: "" };
+
+function formatPhone(raw: string): string {
+  let d = raw.replace(/\D/g, "");
+  if (d.startsWith("8")) d = "7" + d.slice(1);
+  if (!d.startsWith("7")) d = "7" + d;
+  d = d.slice(0, 11);
+  const a = d.slice(1, 4), b = d.slice(4, 7), c = d.slice(7, 9), e = d.slice(9, 11);
+  let out = "+7";
+  if (a) out += " (" + a;
+  if (a.length === 3) out += ")";
+  if (b) out += " " + b;
+  if (c) out += "-" + c;
+  if (e) out += "-" + e;
+  return out;
+}
 
 const ITEM_H = 36;
 
@@ -143,7 +158,7 @@ export default function ReservationModal({ open, onClose }: Props) {
         ) : (
           <form onSubmit={handleSubmit}>
             <div className="modal-field"><label className="modal-label">{t("Имя", "Name")}</label><input type="text" className="modal-input" placeholder={t("Имя и фамилия", "Full name")} required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
-            <div className="modal-field"><label className="modal-label">{t("Телефон", "Phone")}</label><input type="tel" className="modal-input" placeholder="+7 (___) ___ __ __" required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
+            <div className="modal-field"><label className="modal-label">{t("Телефон", "Phone")}</label><input type="tel" inputMode="tel" className="modal-input" placeholder="+7 (___) ___-__-__" required value={form.phone} onChange={(e) => setForm({ ...form, phone: formatPhone(e.target.value) })} onFocus={(e) => { if (!form.phone || form.phone === "+7 ") e.target.setSelectionRange(3, 3); }} /></div>
             <div className="modal-field"><label className="modal-label">{t("Дата", "Date")}</label><input type="date" className="modal-input" required min={today} value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} /></div>
             <div className="modal-field">
               <label className="modal-label">{t("Время", "Time")}</label>
