@@ -30,7 +30,7 @@ export default function PagesTab({ range }: { range: DateRange }) {
     getTopPages(range).then(setPages);
   }, [range]);
 
-  const total = pages.reduce((sum, p) => sum + p.views, 0);
+  const total = pages.reduce((sum: number, p: { views: number }) => sum + p.views, 0);
   const chartData = pages.slice(0, 7).map(p => ({ name: pageNames[p.page] || p.page, views: p.views }));
 
   return (
