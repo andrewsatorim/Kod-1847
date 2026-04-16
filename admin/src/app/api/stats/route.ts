@@ -11,9 +11,7 @@ export async function GET() {
         (SELECT COUNT(*) FROM contacts)::int AS contacts,
         (SELECT COUNT(*) FROM texts)::int AS texts,
         (SELECT COUNT(*) FROM partnership_formats)::int AS "partnershipFormats",
-        (SELECT COUNT(*) FROM club_events)::int AS "clubEvents",
-        (SELECT COUNT(*) FROM reservations)::int AS "reservations",
-        (SELECT COUNT(*) FROM reservations WHERE visited = 'pending')::int AS "reservationsPending"
+        (SELECT COUNT(*) FROM club_events)::int AS "clubEvents"
     `);
     return NextResponse.json(result.rows[0]);
   } catch (err) {

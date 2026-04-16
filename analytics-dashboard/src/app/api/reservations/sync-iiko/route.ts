@@ -34,7 +34,6 @@ async function getOrgId(token: string): Promise<string> {
   return data.organizations?.[0]?.id;
 }
 
-// Маппинг статусов iiko → наше поле visited
 function mapIikoStatus(status: string): string | null {
   const s = (status || "").toLowerCase();
   if (s === "closed" || s === "started" || s === "arrived") return "came";
@@ -50,16 +49,14 @@ async function fetchReserveStatuses(
 ): Promise<Record<string, string>> {
   const map: Record<string, string> = {};
 
-  // iiko не даёт batch-эндпоинта для статусов по ids, поэтому берём
-  // список резервов на период и матчим локально. Здесь берём 90 дней.
-  const sectionsRes = await fetch(`${IIKO_BASE_URL}/api/1/terminal_groups`, {
+  const tgRes = await fetch(`${IIKO_BASE_URL}/api/1/terminal_groups`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     body: JSON.stringify({ organizationIds: [orgId] }),
   });
-  if (!sectionsRes.ok) return map;
+  if (!tgRes.ok) return map;
 
-  const tgData = await sectionsRes.json();
+  const tgData = await tgRes.json();
   const terminalGroupIds: string[] = [];
   for (const org of tgData.terminalGroups || []) {
     for (const item of org.items || []) terminalGroupIds.push(item.id);

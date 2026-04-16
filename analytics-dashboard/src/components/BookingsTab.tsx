@@ -55,13 +55,60 @@ export default function BookingsTab({ range }: { range: DateRange }) {
   const [reservations, setReservations] = useState<ReservationItem[]>([]);
   const [filter, setFilter] = useState<VisitedStatus | "all">("all");
   const [expanded, setExpanded] = useState<number | null>(null);
+  const [rev, setRev] = useState(0);
+  const [syncing, setSyncing] = useState(false);
+  const [syncMsg, setSyncMsg] = useState("");
 
   useEffect(() => {
     getBookingsByDay(range).then(setBookings);
     getBookingSources(range).then(setSources);
     getOverviewStats(range).then(s => setStats({ totalBookings: s.totalBookings, conversionRate: s.conversionRate, totalSessions: s.totalSessions }));
     getReservations(range).then(setReservations);
-  }, [range]);
+  }, [range, rev]);
+
+  async function setVisited(id: number, visited: VisitedStatus) {
+    await fetch(`/api/reservations/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ visited }),
+    });
+    setRev(r => r + 1);
+  }
+
+  async function saveNote(id: number, manager_note: string) {
+    await fetch(`/api/reservations/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ manager_note }),
+    });
+    setRev(r => r + 1);
+  }
+
+  async function deleteReservation(id: number) {
+    if (!confirm("Удалить заявку?")) return;
+    await fetch(`/api/reservations/${id}`, { method: "DELETE" });
+    setRev(r => r + 1);
+  }
+
+  async function handleSyncIiko() {
+    setSyncing(true);
+    setSyncMsg("");
+    try {
+      const res = await fetch("/api/reservations/sync-iiko", { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        setSyncMsg(`Обновлено: ${data.updated} из ${data.checked}`);
+        setRev(r => r + 1);
+      } else {
+        setSyncMsg(`Ошибка: ${data.error || "неизвестно"}`);
+      }
+    } catch (e) {
+      setSyncMsg(`Ошибка сети: ${e instanceof Error ? e.message : "неизвестно"}`);
+    } finally {
+      setSyncing(false);
+      setTimeout(() => setSyncMsg(""), 5000);
+    }
+  }
 
   const filtered = filter === "all" ? reservations : reservations.filter(r => r.visited === filter);
 
@@ -169,11 +216,24 @@ export default function BookingsTab({ range }: { range: DateRange }) {
       {/* Список карточек заявок */}
       <Card className="bg-ink-light border-stone-dim/20">
         <CardHeader>
-          <CardTitle className="font-serif text-lg text-linen">Список заявок</CardTitle>
-          <CardDescription className="text-stone text-sm">
-            Все заявки с сайта за выбранный период — имя, телефон, дата визита, источник и отметка о визите.
-            Управление статусом и заметками — в админ-панели.
-          </CardDescription>
+          <div className="flex items-start justify-between gap-3 flex-wrap">
+            <div>
+              <CardTitle className="font-serif text-lg text-linen">Список заявок</CardTitle>
+              <CardDescription className="text-stone text-sm mt-1">
+                Все заявки с сайта за выбранный период. Раскройте карточку, чтобы изменить статус визита или оставить заметку менеджера.
+              </CardDescription>
+            </div>
+            <div className="flex items-center gap-3">
+              {syncMsg && <span className="text-xs text-stone-dim">{syncMsg}</span>}
+              <button
+                onClick={handleSyncIiko}
+                disabled={syncing}
+                className="px-3 py-1.5 bg-ink-lighter/50 border border-stone-dim/20 text-linen text-xs rounded-lg hover:border-gold/40 transition-colors disabled:opacity-50"
+              >
+                {syncing ? "Синхронизация..." : "Синхронизировать с iiko"}
+              </button>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex gap-2 mb-5 flex-wrap">
@@ -258,22 +318,38 @@ export default function BookingsTab({ range }: { range: DateRange }) {
                     </button>
 
                     {isOpen && (
-                      <div className="border-t border-stone-dim/15 px-4 py-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                        <Field label="Заметка менеджера">{r.manager_note || "—"}</Field>
-                        <Field label="Согласие на обработку ПДн">{r.consent ? "Да" : "Нет"}</Field>
-                        <Field label="Создана">{formatCreated(r.created_at)}</Field>
-                        <Field label="iiko статус">
-                          {r.iiko_status
-                            ? <span className={r.iiko_status === "success" ? "text-[#7AB588]" : "text-[#D98585]"}>{r.iiko_status}</span>
-                            : "—"}
-                        </Field>
-                        <Field label="iiko ID">{r.iiko_id || "—"}</Field>
-                        {r.iiko_error && (
-                          <div className="md:col-span-2">
-                            <div className="text-stone-dim mb-1 uppercase tracking-wide text-[10px]">Ошибка iiko</div>
-                            <pre className="text-[#D98585] bg-ink/50 border border-stone-dim/15 rounded p-2 overflow-x-auto whitespace-pre-wrap">{r.iiko_error}</pre>
-                          </div>
-                        )}
+                      <div className="border-t border-stone-dim/15 px-4 py-4 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                          <Field label="Согласие на обработку ПДн">{r.consent ? "Да" : "Нет"}</Field>
+                          <Field label="Создана">{formatCreated(r.created_at)}</Field>
+                          <Field label="iiko статус">
+                            {r.iiko_status
+                              ? <span className={r.iiko_status === "success" ? "text-[#7AB588]" : "text-[#D98585]"}>{r.iiko_status}</span>
+                              : "—"}
+                          </Field>
+                          <Field label="iiko ID">{r.iiko_id || "—"}</Field>
+                          {r.iiko_error && (
+                            <div className="md:col-span-2">
+                              <div className="text-stone-dim mb-1 uppercase tracking-wide text-[10px]">Ошибка iiko</div>
+                              <pre className="text-[#D98585] bg-ink/50 border border-stone-dim/15 rounded p-2 overflow-x-auto whitespace-pre-wrap">{r.iiko_error}</pre>
+                            </div>
+                          )}
+                        </div>
+
+                        <NoteEditor initial={r.manager_note} onSave={(n) => saveNote(r.id, n)} />
+
+                        <div className="flex flex-wrap gap-2 pt-3 border-t border-stone-dim/15">
+                          <StatusButton active={r.visited === "came"} color="success" onClick={() => setVisited(r.id, "came")}>Пришёл</StatusButton>
+                          <StatusButton active={r.visited === "no_show"} color="danger" onClick={() => setVisited(r.id, "no_show")}>Не пришёл</StatusButton>
+                          <StatusButton active={r.visited === "cancelled"} color="stone" onClick={() => setVisited(r.id, "cancelled")}>Отмена</StatusButton>
+                          <StatusButton active={r.visited === "pending"} color="gold" onClick={() => setVisited(r.id, "pending")}>Сбросить</StatusButton>
+                          <button
+                            onClick={() => deleteReservation(r.id)}
+                            className="ml-auto px-3 py-1.5 text-xs text-stone-dim hover:text-[#D98585] transition-colors"
+                          >
+                            Удалить
+                          </button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -292,6 +368,68 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div>
       <div className="text-stone-dim mb-1 uppercase tracking-wide text-[10px]">{label}</div>
       <div className="text-linen">{children}</div>
+    </div>
+  );
+}
+
+function StatusButton({
+  active, color, onClick, children,
+}: {
+  active: boolean;
+  color: "success" | "danger" | "stone" | "gold";
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  const map = {
+    success: "bg-[#5B9A6E]/15 text-[#7AB588] border-[#5B9A6E]/30",
+    danger:  "bg-[#C46B6B]/15 text-[#D98585] border-[#C46B6B]/30",
+    stone:   "bg-stone-dim/15 text-stone border-stone-dim/30",
+    gold:    "bg-gold/15 text-gold border-gold/30",
+  };
+  return (
+    <button
+      onClick={onClick}
+      className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+        active ? map[color] : "bg-ink-lighter/40 text-stone border-stone-dim/20 hover:text-linen"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function NoteEditor({ initial, onSave }: { initial: string; onSave: (n: string) => Promise<void> }) {
+  const [value, setValue] = useState(initial);
+  const [saving, setSaving] = useState(false);
+  const dirty = value !== initial;
+
+  return (
+    <div>
+      <div className="text-stone-dim mb-1 uppercase tracking-wide text-[10px]">Заметка менеджера</div>
+      <textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        rows={2}
+        placeholder="Внутренний комментарий: предпочтения, договорённости..."
+        className="w-full text-sm bg-ink/50 border border-stone-dim/20 rounded p-2 text-linen placeholder:text-stone-dim/50 focus:outline-none focus:border-gold/40"
+      />
+      {dirty && (
+        <div className="mt-2 flex gap-2">
+          <button
+            onClick={async () => { setSaving(true); await onSave(value); setSaving(false); }}
+            disabled={saving}
+            className="px-3 py-1.5 bg-gold text-ink text-xs rounded-lg hover:bg-gold/80 transition-colors disabled:opacity-50"
+          >
+            {saving ? "Сохранение..." : "Сохранить"}
+          </button>
+          <button
+            onClick={() => setValue(initial)}
+            className="px-3 py-1.5 text-xs text-stone hover:text-linen transition-colors"
+          >
+            Отмена
+          </button>
+        </div>
+      )}
     </div>
   );
 }

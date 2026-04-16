@@ -11,12 +11,9 @@ interface Stats {
   texts: number;
   partnershipFormats: number;
   clubEvents: number;
-  reservations: number;
-  reservationsPending: number;
 }
 
 const cards = [
-  { key: "reservations" as const, label: "Заявки (ожидают)", href: "/dashboard/reservations", badge: "reservationsPending" as const, highlight: true },
   { key: "events" as const, label: "Мероприятия", href: "/dashboard/events" },
   { key: "menuCategories" as const, label: "Категории меню", href: "/dashboard/menu" },
   { key: "menuItems" as const, label: "Позиции меню", href: "/dashboard/menu" },
@@ -33,7 +30,7 @@ export default function DashboardPage() {
     fetch("/api/stats")
       .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
       .then(setStats)
-      .catch(() => setStats({ events: 0, menuCategories: 0, menuItems: 0, contacts: 0, texts: 0, partnershipFormats: 0, clubEvents: 0, reservations: 0, reservationsPending: 0 }));
+      .catch(() => setStats({ events: 0, menuCategories: 0, menuItems: 0, contacts: 0, texts: 0, partnershipFormats: 0, clubEvents: 0 }));
   }, []);
 
   return (
