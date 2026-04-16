@@ -39,6 +39,7 @@ const ALLOWED_PATHS = [
   "/api/1/terminal_groups",
   "/api/1/reserve/available_restaurant_sections",
   "/api/1/reserve/restaurant_sections_workload",
+  "/api/1/reserve/create",
 ];
 
 export async function POST(req: NextRequest) {
