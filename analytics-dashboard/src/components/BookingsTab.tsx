@@ -20,7 +20,8 @@ const sourceNames: Record<string, string> = {
   "/partnership": "Партнёрство",
   events: "Мероприятия",
   club_membership: "Членство",
-  "": "—",
+  "": "Не указан",
+  unknown: "Не указан",
 };
 
 const statusLabels: Record<VisitStatus | "all", string> = {
@@ -341,7 +342,7 @@ export default function BookingsTab({ range }: { range: DateRange }) {
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {sources.map(s => (
                 <div key={s.source} className="flex items-center justify-between rounded-lg border border-stone-dim/15 bg-ink-lighter/50 px-4 py-3">
-                  <span className="text-sm text-linen">{sourceNames[s.source] || s.source}</span>
+                  <span className="text-sm text-linen">{sourceNames[s.source] || s.source || "Не указан"}</span>
                   <span className="text-sm font-serif text-gold">{s.count}</span>
                 </div>
               ))}
