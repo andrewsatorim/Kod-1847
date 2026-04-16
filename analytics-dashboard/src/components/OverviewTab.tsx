@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getOverviewStats, getPageviewsByDay, type DateRange } from "@/lib/queries";
+import { getOverviewStats, getPageviewsByDay, type DateRange, type OverviewStats } from "@/lib/queries";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 function formatDuration(seconds: number): string {
@@ -13,7 +13,7 @@ function formatDuration(seconds: number): string {
 }
 
 export default function OverviewTab({ range }: { range: DateRange }) {
-  const [stats, setStats] = useState<Awaited<ReturnType<typeof getOverviewStats>> | null>(null);
+  const [stats, setStats] = useState<OverviewStats | null>(null);
   const [chartData, setChartData] = useState<{ date: string; views: number }[]>([]);
 
   useEffect(() => {

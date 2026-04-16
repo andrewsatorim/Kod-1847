@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getTopPages, type DateRange } from "@/lib/queries";
+import { getTopPages, type DateRange, type PageStat } from "@/lib/queries";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 function formatDuration(seconds: number): string {
@@ -24,13 +24,13 @@ const pageNames: Record<string, string> = {
 };
 
 export default function PagesTab({ range }: { range: DateRange }) {
-  const [pages, setPages] = useState<Awaited<ReturnType<typeof getTopPages>>>([]);
+  const [pages, setPages] = useState<PageStat[]>([]);
 
   useEffect(() => {
     getTopPages(range).then(setPages);
   }, [range]);
 
-  const total = pages.reduce((sum: number, p: { views: number }) => sum + p.views, 0);
+  const total = pages.reduce((sum, p) => sum + p.views, 0);
   const chartData = pages.slice(0, 7).map(p => ({ name: pageNames[p.page] || p.page, views: p.views }));
 
   return (
