@@ -2,15 +2,18 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      router.replace(user ? "/dashboard" : "/login");
-    });
+    fetch("/api/auth/me")
+      .then((r) => {
+        router.replace(r.ok ? "/dashboard" : "/login");
+      })
+      .catch(() => {
+        router.replace("/login");
+      });
   }, [router]);
 
   return (

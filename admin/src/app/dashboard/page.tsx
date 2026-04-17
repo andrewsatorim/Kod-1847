@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
 
 interface Stats {
   events: number;
@@ -28,27 +27,10 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
-    async function load() {
-      const [events, cats, items, contacts, texts, pf, ce] = await Promise.all([
-        supabase.from("events").select("id", { count: "exact", head: true }),
-        supabase.from("menu_categories").select("id", { count: "exact", head: true }),
-        supabase.from("menu_items").select("id", { count: "exact", head: true }),
-        supabase.from("contacts").select("id", { count: "exact", head: true }),
-        supabase.from("texts").select("id", { count: "exact", head: true }),
-        supabase.from("partnership_formats").select("id", { count: "exact", head: true }),
-        supabase.from("club_events").select("id", { count: "exact", head: true }),
-      ]);
-      setStats({
-        events: events.count ?? 0,
-        menuCategories: cats.count ?? 0,
-        menuItems: items.count ?? 0,
-        contacts: contacts.count ?? 0,
-        texts: texts.count ?? 0,
-        partnershipFormats: pf.count ?? 0,
-        clubEvents: ce.count ?? 0,
-      });
-    }
-    load();
+    fetch("/api/stats")
+      .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+      .then(setStats)
+      .catch(() => setStats({ events: 0, menuCategories: 0, menuItems: 0, contacts: 0, texts: 0, partnershipFormats: 0, clubEvents: 0 }));
   }, []);
 
   return (

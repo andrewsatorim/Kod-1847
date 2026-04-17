@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import PublishButton from "@/components/PublishButton";
 
 const nav = [
   { href: "/dashboard", label: "Обзор", icon: "grid" },
@@ -11,6 +11,7 @@ const nav = [
   { href: "/dashboard/partnership", label: "Партнёрство", icon: "handshake" },
   { href: "/dashboard/contacts", label: "Контакты", icon: "phone" },
   { href: "/dashboard/texts", label: "Тексты", icon: "text" },
+  { href: "/dashboard/navigation", label: "Навигация", icon: "nav" },
 ];
 
 const icons: Record<string, React.ReactNode> = {
@@ -44,6 +45,11 @@ const icons: Record<string, React.ReactNode> = {
       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
     </svg>
   ),
+  nav: (
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+  ),
 };
 
 export default function Sidebar() {
@@ -51,7 +57,7 @@ export default function Sidebar() {
   const router = useRouter();
 
   async function handleLogout() {
-    await supabase.auth.signOut();
+    await fetch("/api/auth/logout", { method: "POST" });
     router.replace("/login");
   }
 
@@ -85,7 +91,8 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="p-3 border-t border-border">
+      <div className="p-3 border-t border-border space-y-2">
+        <PublishButton />
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-stone hover:text-danger hover:bg-danger-dim transition-colors"

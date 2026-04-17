@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import type { MenuCategory, MenuItem } from "@/lib/types";
 
 const tabs = [
@@ -40,15 +39,10 @@ export default function MenuPage() {
 
   useEffect(() => {
     let active = true;
-    supabase
-      .from("menu_categories")
-      .select("*, menu_items(*)")
-      .eq("tab", activeTab)
-      .order("sort_order")
-      .order("sort_order", { referencedTable: "menu_items" })
-      .then(({ data }) => {
-        if (active) setCategories((data as MenuCategory[]) || []);
-      });
+    fetch(`/api/menu-categories?tab=${activeTab}`)
+      .then((r) => { if (!r.ok) throw new Error(r.statusText); return r.json(); })
+      .then((data) => { if (active) setCategories(Array.isArray(data) ? data : []); })
+      .catch(() => { if (active) setCategories([]); });
     return () => { active = false; };
   }, [activeTab, rev]);
 
@@ -60,9 +54,17 @@ export default function MenuPage() {
     if (editingCat.id) {
       const { id, menu_items: _mi, ...rest } = editingCat as MenuCategory;
       void _mi;
-      await supabase.from("menu_categories").update(rest).eq("id", id);
+      await fetch(`/api/menu-categories/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest),
+      });
     } else {
-      await supabase.from("menu_categories").insert({ ...editingCat, tab: activeTab });
+      await fetch("/api/menu-categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...editingCat, tab: activeTab }),
+      });
     }
     setSaving(false);
     setEditingCat(null);
@@ -71,7 +73,7 @@ export default function MenuPage() {
 
   async function deleteCat(id: number) {
     if (!confirm("Удалить категорию и все позиции в ней?")) return;
-    await supabase.from("menu_categories").delete().eq("id", id);
+    await fetch(`/api/menu-categories/${id}`, { method: "DELETE" });
     reload();
   }
 
@@ -80,9 +82,17 @@ export default function MenuPage() {
     setSaving(true);
     if (editingItem.id) {
       const { id, ...rest } = editingItem as MenuItem;
-      await supabase.from("menu_items").update(rest).eq("id", id);
+      await fetch(`/api/menu-items/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(rest),
+      });
     } else {
-      await supabase.from("menu_items").insert(editingItem);
+      await fetch("/api/menu-items", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingItem),
+      });
     }
     setSaving(false);
     setEditingItem(null);
@@ -91,7 +101,7 @@ export default function MenuPage() {
 
   async function deleteItem(id: number) {
     if (!confirm("Удалить позицию?")) return;
-    await supabase.from("menu_items").delete().eq("id", id);
+    await fetch(`/api/menu-items/${id}`, { method: "DELETE" });
     reload();
   }
 
