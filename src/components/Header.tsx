@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useLang } from "@/context/LanguageContext";
 import Link from "next/link";
+import navData from "@/data/nav.json";
 
 export default function Header() {
   const { lang, toggle, setLang, t } = useLang();
@@ -19,15 +20,11 @@ export default function Header() {
     return () => obs.disconnect();
   }, []);
 
-  const navLinks = [
-    { href: "/#about", labelRu: "\u041e \u043a\u043b\u0443\u0431\u0435", labelEn: "About" },
-    { href: "/tea-room", labelRu: "\u0427\u0430\u0439\u043d\u044b\u0439 \u0437\u0430\u043b", labelEn: "Tea Room" },
-    { href: "/hookah-room", labelRu: "\u041a\u0430\u043b\u044c\u044f\u043d\u043d\u044b\u0439 \u0437\u0430\u043b", labelEn: "Hookah Room" },
-    { href: "/menu", labelRu: "\u041c\u0435\u043d\u044e", labelEn: "Menu" },
-    { href: "/events", labelRu: "\u041c\u0435\u0440\u043e\u043f\u0440\u0438\u044f\u0442\u0438\u044f", labelEn: "Events" },
-    { href: "/partnership", labelRu: "Партнёрство", labelEn: "Partnership" },
-    { href: "/#contacts", labelRu: "\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b", labelEn: "Contact" },
-  ];
+  const navLinks = navData.map((item) => ({
+    href: item.href,
+    labelRu: item.title_ru,
+    labelEn: item.title_en,
+  }));
 
   return (
     <>
