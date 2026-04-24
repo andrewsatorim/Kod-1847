@@ -6,18 +6,36 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const slug = searchParams.get("slug");
 
-    let query = `SELECT * FROM miniapp_menu_categories`;
-    const params = [];
+    let catQuery = `SELECT * FROM miniapp_menu_categories`;
+    const catParams: string[] = [];
 
     if (slug && ["tea", "hookah"].includes(slug)) {
-      query += ` WHERE slug = $1`;
-      params.push(slug);
+      catQuery += ` WHERE slug = $1`;
+      catParams.push(slug);
     }
 
-    query += ` ORDER BY sort_order ASC`;
+    catQuery += ` ORDER BY sort_order ASC, id ASC`;
 
-    const { rows } = await pool.query(query, params);
-    return NextResponse.json(rows);
+    const { rows: categories } = await pool.query(catQuery, catParams);
+
+    if (categories.length === 0) {
+      return NextResponse.json([]);
+    }
+
+    const categoryIds = categories.map((c) => c.id);
+    const { rows: items } = await pool.query(
+      `SELECT * FROM miniapp_menu_items
+       WHERE category_id = ANY($1::int[])
+       ORDER BY sort_order ASC, id ASC`,
+      [categoryIds]
+    );
+
+    const result = categories.map((cat) => ({
+      ...cat,
+      items: items.filter((item) => item.category_id === cat.id),
+    }));
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Error fetching menu:", error);
     return NextResponse.json(
