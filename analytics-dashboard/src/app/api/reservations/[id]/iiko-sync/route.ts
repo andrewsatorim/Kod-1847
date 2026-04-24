@@ -77,44 +77,57 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     const orgId = orgs.organizations?.[0]?.id;
     if (!orgId) throw new Error("В iiko нет организаций");
 
-    const tg = await iikoCall<{ terminalGroups: { items: { id: string }[] }[] }>("/api/1/terminal_groups", { organizationIds: [orgId] });
-    const terminalGroupId = tg.terminalGroups?.[0]?.items?.[0]?.id;
-    if (!terminalGroupId) throw new Error("Нет терминальной группы");
+    // Terminal groups may not be configured — make this optional
+    let terminalGroupId: string | null = null;
+    try {
+      const tg = await iikoCall<{ terminalGroups: { items: { id: string }[] }[] }>("/api/1/terminal_groups", { organizationIds: [orgId] });
+      terminalGroupId = tg.terminalGroups?.[0]?.items?.[0]?.id ?? null;
+    } catch {
+      // Non-fatal — proceed without terminal group
+    }
 
-    const sect = await iikoCall<{ restaurantSections: { tables: { id: string; seatingCapacity: number; isDeleted: boolean }[] }[] }>(
-      "/api/1/reserve/available_restaurant_sections",
-      { terminalGroupIds: [terminalGroupId] }
-    );
-    const guestsNum = parseInt(r.guests || "1", 10) || 1;
+    // Find a suitable table only if we have a terminal group
     let tableId: string | null = null;
-    for (const s of sect.restaurantSections || []) {
-      const t = (s.tables || []).find(x => !x.isDeleted && (x.seatingCapacity || 0) >= guestsNum);
-      if (t) { tableId = t.id; break; }
+    if (terminalGroupId) {
+      try {
+        const sect = await iikoCall<{ restaurantSections: { tables: { id: string; seatingCapacity: number; isDeleted: boolean }[] }[] }>(
+          "/api/1/reserve/available_restaurant_sections",
+          { terminalGroupIds: [terminalGroupId] }
+        );
+        const guestsNum = parseInt(r.guests || "1", 10) || 1;
+        for (const s of sect.restaurantSections || []) {
+          const t = (s.tables || []).find(x => !x.isDeleted && (x.seatingCapacity || 0) >= guestsNum);
+          if (t) { tableId = t.id; break; }
+        }
+        if (!tableId) {
+          const fb = (sect.restaurantSections || []).flatMap(s => s.tables || []).find(t => !t.isDeleted);
+          tableId = fb?.id ?? null;
+        }
+      } catch {
+        // Non-fatal — proceed without table assignment
+      }
     }
-    if (!tableId) {
-      const fb = (sect.restaurantSections || []).flatMap(s => s.tables || []).find(t => !t.isDeleted);
-      tableId = fb?.id || null;
-    }
-    if (!tableId) throw new Error("В iiko нет столов");
 
     const start = `${dt.dateOnly} ${dt.time.length === 5 ? dt.time + ":00" : dt.time}.000`;
 
     const phone = normalizePhone(r.phone);
     if (!phone) throw new Error("В заявке не указан телефон — iiko требует phone для клиента");
 
-    const created = await iikoCall<{ reserveInfo?: { id: string }; correlationId?: string }>("/api/1/reserve/create", {
+    const reserveBody: Record<string, unknown> = {
       organizationId: orgId,
-      terminalGroupId,
       customer: { name: r.name || "Гость", phone, type: "regular" },
       phone,
-      guestsCount: guestsNum,
+      guestsCount: parseInt(r.guests || "1", 10) || 1,
       shouldRemind: false,
-      tableIds: [tableId],
       estimatedStartTime: start,
       durationInMinutes: 120,
-      guests: { count: guestsNum, splitBetweenPersons: false },
+      guests: { count: parseInt(r.guests || "1", 10) || 1, splitBetweenPersons: false },
       comment: [r.comment || "", r.manager_note || ""].filter(Boolean).join(" | ").slice(0, 480),
-    });
+    };
+    if (terminalGroupId) reserveBody.terminalGroupId = terminalGroupId;
+    if (tableId) reserveBody.tableIds = [tableId];
+
+    const created = await iikoCall<{ reserveInfo?: { id: string }; correlationId?: string }>("/api/1/reserve/create", reserveBody);
 
     const iikoId = created.reserveInfo?.id || created.correlationId || "";
     if (!iikoId) throw new Error("iiko не вернул id");
